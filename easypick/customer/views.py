@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from django.db.models import Q
 
 
 # Create your views here.
@@ -185,10 +186,11 @@ def wishlist(request):
         'wishlist_items': wishlist_items
     })
 
-def wishlist_remove(request,id): 
+def wishlist_remove(request, id): 
     wishlist_item = get_object_or_404(WishlistItems, id=id)
     wishlist_item.delete()
     return redirect('wishlist')
+
 def customer_dashboard_view(request):
     return render(request,'customer/customer_dashboard.html',{'user':request.user})
 
@@ -282,7 +284,7 @@ def cart_order(request,id):
     cart=Cart.objects.get(customer=request.user)
     cart_item=CartItems.objects.filter(cart=cart).select_related('product')
     address=Address.objects.filter(user=request.user).first()
-    s
+    
     
     return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'subtotal':subtotal})
 
@@ -307,3 +309,14 @@ def order_confirm_view(request, id):
 
 def payment_view(request):
     return render(request,'customer/payment.html')
+
+def search_view(request):
+    search_product=request.GET.get('search')
+    if search_product:
+        product=ProductVariant.objects.filter(
+            Q(product__name__icontains=search_product) | 
+            Q(product__description__icontains=search_product)
+        ).select_related('product').prefetch_related('images')
+    else:
+        product=ProductVariant.objects.none()
+    return render(request,'customer/search_result.html',{'product':product, 'query': search_product})

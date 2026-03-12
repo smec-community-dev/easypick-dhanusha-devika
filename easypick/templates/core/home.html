@@ -77,10 +77,15 @@
         </nav>
 
         <div class="flex items-center gap-4">
-            <div class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
-                <span class="material-symbols-outlined text-white/70 text-xl">search</span>
-                <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-48 text-white" placeholder="Search products..." type="text"/>
-            </div>
+            <form method="GET" action="{% url 'search' %}">
+                <div class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
+                    
+                    <input type="text" name="search" placeholder="Search products..." class="bg-transparent outline-none text-white placeholder-white/70 px-2">
+
+                    
+
+                </div>
+            </form>
             
             <div class="flex items-center gap-1">
                 <a href="{% url 'cart' %}" class="inline-block">
@@ -179,7 +184,7 @@
                          style='background-image: url("{{x.category_image.url}}");'>
                     </div>
                 </div>
-                
+               
                 <div class="flex flex-col flex-grow">
                     <h3 class="text-lg font-semibold text-[#141514] group-hover:text-primary transition-colors line-clamp-1">
                         {{x.category_description}}
