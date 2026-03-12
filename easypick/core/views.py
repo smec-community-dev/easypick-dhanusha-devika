@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from seller.models import ProductVariant
+from customer.models import Wishlist, WishlistItems
 
 def main_home_view(request):
     return render(request,'core/main_home.html')
@@ -41,10 +42,19 @@ def shop_view(request):
     products_count = product.count()
     product = product[:20]  # pagination limit
     
+    in_wishlist_ids = set()
+    if request.user.is_authenticated:
+        wishlist = Wishlist.objects.filter(customer=request.user).first()
+        if wishlist:
+            in_wishlist_ids = set(
+                WishlistItems.objects.filter(wishlist=wishlist).values_list("product_id", flat=True)
+            )
+    
     return render(request, 'core/shop.html', {
         'product': product,
         'products': product,  # for count
-        'products_count': products_count
+        'products_count': products_count,
+        'in_wishlist_ids': in_wishlist_ids
     })
 
 def logout_view(request):

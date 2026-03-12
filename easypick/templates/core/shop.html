@@ -59,9 +59,18 @@
             }
         }
 
-        .fav-active .material-symbols-outlined {
-            font-variation-settings: 'FILL' 1 !important;
+        /* Enhanced Wishlist Active State - Higher Specificity */
+        button.wishlist-btn.fav-active {
+            background-color: rgba(239, 68, 68, 0.15) !important;
+        }
+        button.wishlist-btn.fav-active .material-symbols-outlined {
             color: #ef4444 !important;
+            font-variation-settings: 'FILL' 1, 'wght' 400 !important;
+            text-shadow: 0 0 4px rgba(239, 68, 68, 0.3) !important;
+        }
+        button.wishlist-btn:not(.fav-active) .material-symbols-outlined {
+            color: inherit !important;
+            font-variation-settings: 'FILL' 0 !important;
         }
     </style>
 </head>
