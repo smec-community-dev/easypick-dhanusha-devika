@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>EasyPick | Shop All</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -35,310 +38,390 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle;
         }
-        body { font-family: 'Inter', sans-serif; }
-        .animate-fade-in { animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .fav-active .material-symbols-outlined { font-variation-settings: 'FILL' 1 !important; color: #ef4444 !important; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fav-active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1 !important;
+            color: #ef4444 !important;
+        }
     </style>
 </head>
+
 <body class="bg-background-light dark:bg-background-dark text-[#141514]">
 
-<header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="bg-white/10 p-1.5 rounded-lg">
-                <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+    <header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/10 p-1.5 rounded-lg">
+                    <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+                </div>
+                <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
             </div>
-            <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
-        </div>
 
-        <nav class="hidden md:flex items-center gap-10">
-            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="#">About Us</a>
-            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="#">Contact</a>
-        </nav>
+            <nav class="hidden md:flex items-center gap-10">
+                <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider"
+                    href="#">About Us</a>
+                <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider"
+                    href="#">Contact</a>
+            </nav>
 
-        <div class="flex items-center gap-4">
-            <div class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
-                <span class="material-symbols-outlined text-white/70 text-xl">search</span>
-                <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-48 text-white" placeholder="Search products..." type="text"/>
-            </div>
-            
-            <div class="flex items-center gap-1">
-                <a href="{% url 'cart' %}" class="inline-block">
-                    <button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                        <span class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">3</span>
-                    </button>
-                </a>
-                <a href="{% url 'wishlist' %}" class="inline-block">
-                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                </a>
-                
-                <div class="relative inline-block">
-                    <button id="accountButton" class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
-                        <span class="material-symbols-outlined text-white">person</span>
-                        <span class="material-symbols-outlined text-sm hidden md:inline text-white">expand_more</span>
-                    </button>
-                    <div id="userDropdown" class="absolute right-0 top-full pt-2 w-52 hidden z-[100]">
-                        <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in">
-                            <div class="px-4 py-3 border-b border-gray-50">
-                                <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Account</p>
-                                <p class="text-sm font-bold text-gray-900 truncate">{{data.first_name}}</p>
-                            </div>
-                            <a href="{% url 'customer_dashboard' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                <span class="material-symbols-outlined text-lg text-gray-400">dashboard</span>
-                                My Dashboard
-                            </a>
-                            <a href="/customer/profile/" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                <span class="material-symbols-outlined text-lg text-gray-400">account_circle</span>
-                                My Profile
-                            </a>
-                            <div class="my-2 border-t border-gray-100"></div>
-                            <button onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold">
-                                <span class="material-symbols-outlined text-lg">logout</span>
-                                Sign Out
-                            </button>
-                        </div>
-                    </div>
+            <div class="flex items-center gap-4">
+                <div
+                    class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
+                    <span class="material-symbols-outlined text-white/70 text-xl">search</span>
+                    <input
+                        class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-48 text-white"
+                        placeholder="Search products..." type="text" />
                 </div>
 
-                <button class="p-2 md:hidden hover:bg-white/10 rounded-full transition-colors">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
+                <div class="flex items-center gap-1">
+                    <a href="{% url 'cart' %}" class="inline-block">
+                        <button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span
+                                class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">3</span>
+                        </button>
+                    </a>
+                    <a href="{% url 'wishlist' %}" class="inline-block">
+                        <button
+                            class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
+                            <span class="material-symbols-outlined">favorite</span>
+                        </button>
+                    </a>
+
+                    <div class="relative inline-block">
+                        <button id="accountButton"
+                            class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
+                            <span class="material-symbols-outlined text-white">person</span>
+                            <span
+                                class="material-symbols-outlined text-sm hidden md:inline text-white">expand_more</span>
+                        </button>
+                        <div id="userDropdown" class="absolute right-0 top-full pt-2 w-52 hidden z-[100]">
+                            <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in">
+                                <div class="px-4 py-3 border-b border-gray-50">
+                                    <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Account</p>
+                                    <p class="text-sm font-bold text-gray-900 truncate">{{data.first_name}}</p>
+                                </div>
+                                <a href="{% url 'customer_dashboard' %}"
+                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
+                                    <span class="material-symbols-outlined text-lg text-gray-400">dashboard</span>
+                                    My Dashboard
+                                </a>
+                                <a href="/customer/profile/"
+                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
+                                    <span class="material-symbols-outlined text-lg text-gray-400">account_circle</span>
+                                    My Profile
+                                </a>
+                                <div class="my-2 border-t border-gray-100"></div>
+                                <button onclick="confirmLogout()"
+                                    class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold">
+                                    <span class="material-symbols-outlined text-lg">logout</span>
+                                    Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="p-2 md:hidden hover:bg-white/10 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="w-full">
-    <section class="bg-white border-b border-[#f2f3f2]">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 py-10">
-            <h1 class="text-3xl md:text-4xl font-black text-[#141514] tracking-tight">Shop All</h1>
-            <p class="text-[#737874] mt-2 text-base">Premium products curated for your lifestyle.</p>
-        </div>
-    </section>
-    
-    <div class="max-w-7xl mx-auto px-4 md:px-12 py-8">
-        <div class="flex flex-col lg:flex-row gap-8">
-            
-            <aside class="w-full lg:w-64 flex-shrink-0">
-                <form method="GET" action="{% url 'product_filter' %}">
+    <main class="w-full">
+        <section class="bg-white border-b border-[#f2f3f2]">
+            <div class="max-w-7xl mx-auto px-6 md:px-12 py-10">
+                <h1 class="text-3xl md:text-4xl font-black text-[#141514] tracking-tight">Shop All</h1>
+                <p class="text-[#737874] mt-2 text-base">Premium products curated for your lifestyle.</p>
+            </div>
+        </section>
+
+        <div class="max-w-7xl mx-auto px-4 md:px-12 py-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <aside class="w-full lg:w-64 flex-shrink-0">
+
+                    <form method="GET">
+
                     <div class="border-b border-gray-200 pb-6">
-                        <h3 class="font-bold text-[#141514] mb-4 flex items-center justify-between cursor-pointer">
-                            Price Range
-                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                        </h3>
+                    <h3 class="font-bold text-[#141514] mb-4 flex items-center justify-between cursor-pointer">
+                    Price Range
+                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </h3>
 
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="relative flex-1">
-                                <span class="absolute left-3 top-2 text-[#737874] text-xs">$</span>
-                                <input name="min_price" class="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-primary/20 focus:border-primary" placeholder="Min" type="number" value="{{ request.GET.min_price }}">
-                            </div>
-                            <span class="text-[#737874]">-</span>
-                            <div class="relative flex-1">
-                                <span class="absolute left-3 top-2 text-[#737874] text-xs">$</span>
-                                <input name="max_price" class="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-primary/20 focus:border-primary" placeholder="Max" type="number" value="{{ request.GET.max_price }}">
-                            </div>
-                        </div>
-                        
-                        <a href="{% url 'shop' %}">
-                            <button type="submit" class="bg-black text-white px-4 py-1 rounded text-sm">
-                            Apply
-                            </button>
-                        </a>
+                    <div class="flex items-center gap-3 mb-4">
+
+                    <div class="relative flex-1">
+                    <span class="absolute left-3 top-2 text-[#737874] text-xs">$</span>
+                    <input name="min_price"
+                    class="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded"
+                    placeholder="Min"
+                    type="number"
+                    value="{{ min_price }}">
                     </div>
-                </form>
-            </aside>
 
-            <div class="flex-1">
-                <form method="GET">
+                    <span class="text-[#737874]">-</span>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between mb-8 pb-4 border-b border-[#f2f3f2]">
-    
-        <p class="text-sm text-[#737874] mb-4 sm:mb-0">
-            Showing <span class="font-bold text-[#141514]">{{ products|length }}</span> products
-        </p>
+                    <div class="relative flex-1">
+                    <span class="absolute left-3 top-2 text-[#737874] text-xs">$</span>
+                    <input name="max_price"
+                    class="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded"
+                    placeholder="Max"
+                    type="number"
+                    value="{{ max_price }}">
+                    </div>
 
-        <div class="flex items-center gap-3">
-            
-            <label class="text-sm font-medium text-[#737874]" for="sort">Sort by:</label>
+                    </div>
 
-            <form method="GET">
+                    <button type="submit" class="bg-black text-white px-4 py-1 rounded text-sm">
+                    Apply
+                    </button>
 
-            <select name="sort" onchange="this.form.submit()"
-            class="form-select border-none bg-[#f2f3f2] rounded-lg text-sm focus:ring-primary py-2 pl-3 pr-8 cursor-pointer">
+                    </div>
 
-            <option value="new_arrival">Newest Arrivals</option>
-            <option value="low">Price: Low to High</option>
-            <option value="high">Price: High to Low</option>
+                    </form>
 
-            </select>
+                </aside>
 
-            </form>
+                <div class="flex-1 lg:w-0">
 
-        </div>
+                </div>
 
-</div>
 
-</form>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {% for x in product %}
-                    <div class="product-card group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-500">
-                        <div class="absolute top-3 left-0 right-0 z-10 px-3 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button class="wishlist-btn p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:text-red-500 transition-colors {% if x.id in in_wishlist_ids %}fav-active{% endif %}" data-variant-id="{{ x.id }}">
-                                <span class="material-symbols-outlined text-[18px]">favorite</span>
-                            </button>
-                            
-                            <label class="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm cursor-pointer">
-                                <input type="checkbox" class="w-3 h-3 rounded border-gray-300 text-primary focus:ring-primary">
-                                <span class="text-[9px] font-bold text-gray-700 uppercase">Compare</span>
-                            </label>
-                        </div>
+                <div class="flex-1">
+                    <form method="GET">
 
-                        <a href="{% url 'single' x.id %}" class="block">
-                            <div class="aspect-square w-full bg-[#f8f9fa] flex items-center justify-center p-6 overflow-hidden">
-                                {% with x.images.all|first as primary_image %}
-                                <img src="{{ primary_image.image_url.url }}" 
-                                     class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110" 
-                                     alt="{{x.product.name}}">
-                                {% endwith %}
+                        <div
+                            class="flex flex-col sm:flex-row items-center justify-between mb-8 pb-4 border-b border-[#f2f3f2]">
+
+
+                            <p class="text-sm text-[#737874] mb-4 sm:mb-0">
+                                Showing <span class="font-bold text-[#141514]">{{ product|length }}</span> of {{ products_count }} products
+                            </p>
+
+                            <div class="flex items-center gap-3">
+
+                                <label class="text-sm font-medium text-[#737874]" for="sort">Sort by:</label>
+
+
+
+                                <select name="sort" onchange="this.form.submit()"
+                                    class="form-select border-none bg-[#f2f3f2] rounded-lg text-sm focus:ring-primary py-2 pl-3 pr-8 cursor-pointer">
+
+                                    <option value="new_arrival">Newest Arrivals</option>
+                                    <option value="low">Price: Low to High</option>
+                                    <option value="high">Price: High to Low</option>
+
+                                </select>
+
+
+
                             </div>
 
-                            <div class="p-4 space-y-2">
-                                <h3 class="text-xs md:text-sm font-bold text-[#141514] line-clamp-2 min-h-[36px] leading-snug group-hover:text-primary transition-colors">
-                                    {{x.product.name}}
-                                </h3>
+                        </div>
 
-                                <div class="flex items-center gap-1.5">
-                                    <div class="flex items-center text-primary font-black text-[10px]">
-                                        4.9 <span class="material-symbols-outlined text-[10px] ml-0.5" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </form>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {% for x in product %}
+                        <div
+                            class="product-card group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-500">
+                            <div
+                                class="absolute top-3 left-0 right-0 z-10 px-3 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <button
+                                    class="wishlist-btn p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:text-red-500 transition-colors {% if x.id in in_wishlist_ids %}fav-active{% endif %}"
+                                    data-variant-id="{{ x.id }}">
+                                    <span class="material-symbols-outlined text-[18px]">favorite</span>
+                                </button>
+
+                                <label
+                                    class="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-3 h-3 rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="text-[9px] font-bold text-gray-700 uppercase">Compare</span>
+                                </label>
+                            </div>
+
+                            <a href="{% url 'single' x.id %}" class="block">
+                                <div
+                                    class="aspect-square w-full bg-[#f8f9fa] flex items-center justify-center p-6 overflow-hidden">
+                                    {% with x.images.all|first as primary_image %}
+                                    <img src="{{ primary_image.image_url.url }}"
+                                        class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110"
+                                        alt="{{x.product.name}}">
+                                    {% endwith %}
+                                </div>
+
+                                <div class="p-4 space-y-2">
+                                    <h3
+                                        class="text-xs md:text-sm font-bold text-[#141514] line-clamp-2 min-h-[36px] leading-snug group-hover:text-primary transition-colors">
+                                        {{x.product.name}}
+                                    </h3>
+
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="flex items-center text-primary font-black text-[10px]">
+                                            4.9 <span class="material-symbols-outlined text-[10px] ml-0.5"
+                                                style="font-variation-settings: 'FILL' 1;">star</span>
+                                        </div>
+                                        <span class="text-[9px] font-bold text-gray-400">(86)</span>
                                     </div>
-                                    <span class="text-[9px] font-bold text-gray-400">(86)</span>
-                                </div>
 
-                                <div class="flex flex-wrap items-baseline gap-1.5">
-                                    <span class="text-base font-black text-[#141514]">₹{{x.selling_price}}</span>
-                                    <span class="text-[10px] text-gray-400 line-through">₹{{x.mrp_price}}</span>
-                                    <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1 py-0.5 rounded">14% Off</span>
-                                </div>
+                                    <div class="flex flex-wrap items-baseline gap-1.5">
+                                        <span class="text-base font-black text-[#141514]">₹{{x.selling_price}}</span>
+                                        <span class="text-[10px] text-gray-400 line-through">₹{{x.mrp_price}}</span>
+                                        <span
+                                            class="text-[9px] font-bold text-green-600 bg-green-50 px-1 py-0.5 rounded">14%
+                                            Off</span>
+                                    </div>
 
-                                <div class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-xs text-gray-400">local_shipping</span>
-                                    <p class="text-[10px] text-gray-500">Delivery by <span class="text-gray-900 font-bold">Mon, 9th</span></p>
-                                </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span
+                                            class="material-symbols-outlined text-xs text-gray-400">local_shipping</span>
+                                        <p class="text-[10px] text-gray-500">Delivery by <span
+                                                class="text-gray-900 font-bold">Mon, 9th</span></p>
+                                    </div>
 
-                                <div class="pt-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                    <a href="{% url 'add_cart' x.id %}" class="w-full bg-primary text-white py-2 rounded-lg text-[10px] font-bold hover:bg-[#3a493d] flex items-center justify-center gap-1.5">
-                                        <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
-                                        Add to Cart
-                                    </a>
+                                    <div class="pt-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                        <a href="{% url 'add_cart' x.id %}"
+                                            class="w-full bg-primary text-white py-2 rounded-lg text-[10px] font-bold hover:bg-[#3a493d] flex items-center justify-center gap-1.5">
+                                            <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                                            Add to Cart
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
 
-                <div class="mt-16 flex justify-center">
-                    <nav class="flex items-center gap-2">
-                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">chevron_left</span>
-                        </button>
-                        <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
-                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">2</button>
-                        <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">chevron_right</span>
-                        </button>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer class="bg-white border-t border-[#f2f3f2] pt-20 pb-10 px-6 md:px-12">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-primary p-1.5 rounded-lg">
-                        <span class="material-symbols-outlined text-white text-2xl">grid_view</span>
+                    <div class="mt-16 flex justify-center">
+                        <nav class="flex items-center gap-2">
+                            <button
+                                class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">2</button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#f2f3f2] hover:bg-primary hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                        </nav>
                     </div>
-                    <h2 class="text-xl font-extrabold tracking-tight text-[#141514]">EasyPick</h2>
                 </div>
-                <p class="text-[#737874] text-sm leading-relaxed">We curate only the finest lifestyle products that balance aesthetic appeal with long-term functionality.</p>
-            </div>
-            <div>
-                <h4 class="font-bold text-[#141514] mb-6">Company</h4>
-                <ul class="space-y-4 text-sm text-[#737874]">
-                    <li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Sustainability</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-[#141514] mb-6">Support</h4>
-                <ul class="space-y-4 text-sm text-[#737874]">
-                    <li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Shipping & Returns</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-[#141514] mb-6">Contact</h4>
-                <p class="text-[#737874] text-sm leading-relaxed">123 Minimalist Avenue<br/>Creative Quarter, NY 10012<br/>hello@easypick.com</p>
             </div>
         </div>
-        <div class="border-t border-[#f2f3f2] pt-10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-[#737874] text-xs uppercase tracking-widest font-bold">© 2026 EasyPick. Crafted for Better Living.</p>
+    </main>
+
+    <footer class="bg-white border-t border-[#f2f3f2] pt-20 pb-10 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="bg-primary p-1.5 rounded-lg">
+                            <span class="material-symbols-outlined text-white text-2xl">grid_view</span>
+                        </div>
+                        <h2 class="text-xl font-extrabold tracking-tight text-[#141514]">EasyPick</h2>
+                    </div>
+                    <p class="text-[#737874] text-sm leading-relaxed">We curate only the finest lifestyle products that
+                        balance aesthetic appeal with long-term functionality.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#141514] mb-6">Company</h4>
+                    <ul class="space-y-4 text-sm text-[#737874]">
+                        <li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#141514] mb-6">Support</h4>
+                    <ul class="space-y-4 text-sm text-[#737874]">
+                        <li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#141514] mb-6">Contact</h4>
+                    <p class="text-[#737874] text-sm leading-relaxed">123 Minimalist Avenue<br />Creative Quarter, NY
+                        10012<br />hello@easypick.com</p>
+                </div>
+            </div>
+            <div class="border-t border-[#f2f3f2] pt-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-[#737874] text-xs uppercase tracking-widest font-bold">© 2026 EasyPick. Crafted for
+                    Better Living.</p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-<script>
-    function confirmLogout() {
-        if (confirm("Are you sure you want to sign out?")) {
-            window.location.href = "/logout";
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to sign out?")) {
+                window.location.href = "/logout";
+            }
         }
-    }
-   
-    const btn = document.getElementById('accountButton');
-    const menu = document.getElementById('userDropdown');
 
-    btn?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.toggle('hidden');
-    });
+        const btn = document.getElementById('accountButton');
+        const menu = document.getElementById('userDropdown');
 
-    window.addEventListener('click', (e) => {
-        if (!menu?.contains(e.target) && !btn?.contains(e.target)) {
-            menu?.classList.add('hidden');
+        btn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menu.classList.toggle('hidden');
+        });
+
+
+
+        window.addEventListener('click', (e) => {
+            if (!menu?.contains(e.target) && !btn?.contains(e.target)) {
+                menu?.classList.add('hidden');
+            }
+        });
+
+        async function toggleWishlist(variantId, button) {
+
+            try {
+                const response = await fetch(`/toggle_wishlist/${variantId}/`, {
+                    method: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const data = await response.json();
+                if (data.in_wishlist) button.classList.add('fav-active');
+                else button.classList.remove('fav-active');
+            } catch (error) {
+                console.error('Wishlist toggle failed:', error);
+            }
         }
-    });
 
-    async function toggleWishlist(variantId, button) {
-        try {
-            const response = await fetch(`/toggle_wishlist/${variantId}/`, {
-                method: 'GET',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            });
-            const data = await response.json();
-            if (data.in_wishlist) button.classList.add('fav-active');
-            else button.classList.remove('fav-active');
-        } catch (error) {
-            console.error('Wishlist toggle failed:', error);
-        }
-    }
-
-    document.addEventListener('click', function (e) {
-        const wishBtn = e.target.closest('.wishlist-btn');
-        if (wishBtn) {
-            e.preventDefault();
-            const variantId = wishBtn.dataset.variantId;
-            if (variantId) toggleWishlist(variantId, wishBtn);
-        }
-    });
-</script>
+        document.addEventListener('click', function (e) {
+            const wishBtn = e.target.closest('.wishlist-btn');
+            if (wishBtn) {
+                e.preventDefault();
+                const variantId = wishBtn.dataset.variantId;
+                if (variantId) toggleWishlist(variantId, wishBtn);
+            }
+        });
+    </script>
 </body>
+
 </html>

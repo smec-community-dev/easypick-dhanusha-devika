@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from django.db.models import Q
+from decimal import Decimal, InvalidOperation
+
 
 
 # Create your views here.
@@ -218,18 +220,44 @@ def customer_recently_viewd(request):
 def customer_recommentation(request):
     return render(request,'customer/customer_recommentation.html')
 
+
 def shop_view(request):
-    product=ProductVariant.objects.all().select_related('product').prefetch_related('images')
-    
+    products = ProductVariant.objects.all().select_related('product').prefetch_related('images')
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    sort = request.GET.get('sort')
+
+    if min_price:
+            products = products.filter(selling_price__gte=min_price)
+    if max_price:
+            products = products.filter(selling_price__lte=max_price)
+        
+
+    if sort == "new_arrival":
+        products = products.order_by("-id")
+    elif sort == "low":
+        products = products.order_by("selling_price")
+    elif sort == "high":
+        products = products.order_by("-selling_price")
+    elif sort == "name":
+        products = products.order_by("product__name")
+
     in_wishlist_ids = set()
     if request.user.is_authenticated:
         wishlist = Wishlist.objects.filter(customer=request.user).first()
         if wishlist:
-            in_wishlist_ids = set(WishlistItems.objects.filter(
-                wishlist=wishlist
-            ).values_list('product_id', flat=True))
-    
-    return render(request,'core/shop.html',{'product':product, 'in_wishlist_ids': in_wishlist_ids})
+            in_wishlist_ids = set(
+                WishlistItems.objects.filter(wishlist=wishlist).values_list("product_id", flat=True)
+            )
+
+    return render(request, "core/shop.html", {
+        "product": products,
+        "in_wishlist_ids": in_wishlist_ids,
+        "selected_sort": sort,
+        "min_price": min_price,
+        "max_price": max_price,
+    })
 
 def delete_account(request):
     if request.method=="POST":
@@ -314,7 +342,7 @@ def cart_order(request,id):
     cart=Cart.objects.get(customer=request.user)
     cart_item=CartItems.objects.filter(cart=cart).select_related('product')
     address=Address.objects.filter(user=request.user).first()
-    
+    subtotal=0
     
     return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'subtotal':subtotal})
 
@@ -351,23 +379,3 @@ def search_view(request):
         product=ProductVariant.objects.none()
     return render(request,'customer/search_result.html',{'product':product, 'query': search_product})
 
-def product_filter(request):
-    products=ProductVariant.objects.all().select_related('product').prefetch_related('images')
-    max_price=request.GET.get('max_price')
-    min_price=request.GET.get('min_price')
-    if min_price:
-        products = products.filter(selling_price__gte=min_price)
-    if max_price:
-        products = products.filter(selling_price__lte=max_price)
-    return render(request,'customer/price_filter.html',{'products':products})
-
-def sort_view(request):
-    products=ProductVariant.objects.all().select_related('product').prefetch_related('images')
-    sort=request.GET.get('sort')
-    if sort=='new_arrival':
-        products=products.order_by('-id')
-    elif sort=='low':
-        products=products.order_by('selling_price')
-    elif sort == 'high':
-        products = products.order_by('-selling_price')
-    return render(request,'customer/price_filter.html',{'products':products})
