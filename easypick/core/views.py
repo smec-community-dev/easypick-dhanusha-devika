@@ -20,6 +20,21 @@ def login_view(request):
             return redirect('login')
     return render(request,'core/login.html')
 
+def admin_view(request):
+    if request.method=="POST":
+        username=request.POST.get('email')
+        password=request.POST.get('password')
+        user=authenticate(request,password=password,username=username)
+        if user is not None and user.is_superuser:
+            login(request,user)
+            messages.success(request,'Login Successfully')
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request,"You are not authorized as admin")
+            return redirect('login')
+    return render(request,'core/login.html')
+
+
 def shop_view(request):
     product = ProductVariant.objects.select_related('product').prefetch_related('images').all()
     
