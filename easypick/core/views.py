@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from seller.models import ProductVariant
 from customer.models import Wishlist, WishlistItems
@@ -32,7 +33,14 @@ def admin_view(request):
         else:
             messages.error(request,"You are not authorized as admin")
             return redirect('login')
-    return render(request,'core/login.html')
+    return render(request,'admin/admin_login.html')
+
+
+def admin_dashboard(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        messages.error(request, "You are not authorized as admin")
+        return redirect('admin_login')
+    return render(request, 'admin/admin_dashboard.html')
 
 
 def shop_view(request):
