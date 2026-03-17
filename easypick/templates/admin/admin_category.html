@@ -36,33 +36,42 @@
     <div class="flex h-screen overflow-hidden">
         <aside class="w-64 bg-primary text-white flex flex-col shrink-0">
             <div class="p-6 flex items-center gap-3">
-                <div class="size-8 bg-secondary rounded-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary font-bold">shopping_basket</span>
-                </div>
-                <h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
+            <div class="size-8 bg-secondary rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary font-bold">shopping_basket</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
             </div>
             <nav class="flex-1 px-3 space-y-1">
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
-                    <span class="material-symbols-outlined size-5">dashboard</span> Dashboard
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
-                    <span class="material-symbols-outlined size-5">group</span> Users
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
-                    <span class="material-symbols-outlined size-5">inventory_2</span> Products
-                </a>
-                <a class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors" href="#">
-                    <span class="material-symbols-outlined size-5">shopping_cart</span> Category
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
-                    <span class="material-symbols-outlined size-5">monitoring</span> Seller
-                </a>
+            <a class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors" href="#">
+            <span class="material-symbols-outlined size-5">dashboard</span>
+                                Dashboard
+                            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="{% url 'admin_user' %}">
+            <span class="material-symbols-outlined size-5">group</span>
+                                Users
+                            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
+            <span class="material-symbols-outlined size-5">inventory_2</span>
+                                Products
+                            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="{% url 'admin_category' %}">
+            <span class="material-symbols-outlined size-5">shopping_cart</span>
+                                Category
+                            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
+            <span class="material-symbols-outlined size-5">monitoring</span>
+                                Seller
+                            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors" href="#">
+            <span class="material-symbols-outlined size-5">settings</span>
+                                Settings
+                            </a>
             </nav>
             <div class="p-4 border-t border-white/10">
-                <div class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
-                    <span class="material-symbols-outlined size-5">logout</span>
-                    <span class="text-sm font-medium">Logout</span>
-                </div>
+            <div class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 rounded-lg transition-colors">
+            <span class="material-symbols-outlined size-5">logout</span>
+            <span class="text-sm font-medium">Logout</span>
+            </div>
             </div>
         </aside>
 
@@ -73,9 +82,11 @@
                     <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-primary/40" placeholder="Search categories..." type="text"/>
                 </div>
                 <div class="flex items-center gap-4">
+                    <a href="{% url 'add_category' %}">
                     <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/90 transition-all">
                         <span class="material-symbols-outlined text-sm">add</span> Add Category
                     </button>
+                    </a>
                 </div>
             </header>
 
@@ -97,74 +108,68 @@
                                 <tr class="bg-neutral-bg/50">
                                     <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider">Icon & Name</th>
                                     <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider">Slug</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider">Products</th>
                                     <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider">Subcategories</th>
                                     <th class="px-6 py-4 text-xs font-semibold text-primary/60 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-secondary/10">
-                                <tr class="hover:bg-neutral-bg/20 transition-colors">
+                                {% for category in categories %}
+                                <tr class="hover:bg-neutral-bg/20 transition-colors" data-category-id="{{ category.id }}">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
+                                            {% if category.category_image %}
+                                            <img src="{{ category.category_image.url }}" alt="{{ category.category_name }}" class="size-10 rounded object-cover">
+                                            {% else %}
                                             <div class="size-10 rounded bg-secondary/20 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-primary">home</span>
+                                                <span class="material-symbols-outlined text-primary">category</span>
                                             </div>
-                                            <span class="text-sm font-bold text-primary">Home & Decor</span>
+                                            {% endif %}
+                                            <span class="text-sm font-bold text-primary">{{ category.category_name }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-primary/60">home-decor</td>
-                                    <td class="px-6 py-4 text-sm text-primary/80">1,240 items</td>
+                                    <td class="px-6 py-4 text-sm text-primary/60">{{ category.slug }}</td>
                                     <td class="px-6 py-4">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Active</span>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                                            {% if category.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                                            {{ category.is_active|yesno:"Active,Inactive" }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {% with subcount=category.subcategory_set.count %}
+                                        <div class="flex flex-col gap-2">
+                                            {% if subcount > 0 %}
+                                            <button class="text-primary hover:text-primary font-medium text-sm flex items-center gap-1 subcategory-toggle" 
+                                                    data-category-id="{{ category.id }}">
+                                                <span class="material-symbols-outlined text-sm">expand_more</span>
+                                                View ({{ subcount }})
+                                            </button>
+                                            {% else %}
+                                            <span class="text-primary/60 text-sm">No subcategories</span>
+                                            {% endif %}
+                                            <a href="{% url 'add_category' %}?parent={{ category.id }}" 
+                                               class="bg-secondary text-primary px-3 py-1 text-xs font-bold rounded hover:bg-secondary hover:shadow-sm transition-all flex items-center gap-1 justify-center">
+                                                <span class="material-symbols-outlined text-xs">add</span>
+                                                Add
+                                            </a>
+                                        </div>
+                                        {% endwith %}
                                     </td>
                                     <td class="px-6 py-4 text-right space-x-2">
                                         <button class="p-1.5 text-primary/60 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">edit</span></button>
                                         <button class="p-1.5 text-red-400 hover:text-red-600 transition-colors"><span class="material-symbols-outlined text-xl">delete</span></button>
                                     </td>
                                 </tr>
-                                <tr class="hover:bg-neutral-bg/20 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div class="size-10 rounded bg-secondary/20 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-primary">checkroom</span>
-                                            </div>
-                                            <span class="text-sm font-bold text-primary">Fashion</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-primary/60">fashion-apparel</td>
-                                    <td class="px-6 py-4 text-sm text-primary/80">3,150 items</td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Active</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right space-x-2">
-                                        <button class="p-1.5 text-primary/60 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">edit</span></button>
-                                        <button class="p-1.5 text-red-400 hover:text-red-600 transition-colors"><span class="material-symbols-outlined text-xl">delete</span></button>
-                                    </td>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-primary/60">No categories found</td>
                                 </tr>
-                                <tr class="hover:bg-neutral-bg/20 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div class="size-10 rounded bg-secondary/20 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-primary">devices</span>
-                                            </div>
-                                            <span class="text-sm font-bold text-primary">Electronics</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-primary/60">electronics</td>
-                                    <td class="px-6 py-4 text-sm text-primary/80">842 items</td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">Hidden</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right space-x-2">
-                                        <button class="p-1.5 text-primary/60 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">edit</span></button>
-                                        <button class="p-1.5 text-red-400 hover:text-red-600 transition-colors"><span class="material-symbols-outlined text-xl">delete</span></button>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                     <div class="p-4 bg-neutral-bg/30 border-t border-secondary/10 flex justify-between items-center">
-                        <p class="text-xs text-primary/60">Showing 3 of 12 categories</p>
+                        <p class="text-xs text-primary/60">{% with total=categories|length %}{{ forloop.counter }} of {{ total }} categories{% endwith %}</p>
                         <div class="flex gap-1">
                             <button class="size-8 flex items-center justify-center rounded border border-secondary/20 bg-white text-primary hover:bg-secondary/10 transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
                             <button class="size-8 flex items-center justify-center rounded border border-secondary/20 bg-primary text-white">1</button>
@@ -173,6 +178,56 @@
                         </div>
                     </div>
                 </div>
+
+                {% for category in categories %}
+                <div id="subcat-section-{{ category.id }}" class="mt-6 bg-white rounded-xl border border-secondary/20 shadow-sm overflow-hidden hidden subcategory-section">
+                    <div class="p-6 border-b border-secondary/10 bg-neutral-bg/30">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined">subdirectory_arrow_right</span>
+                                Subcategories for "{{ category.category_name }}"
+                            </h3>
+                            <div class="flex gap-2">
+                                <a href="{% url 'add_category' %}?parent={{ category.id }}" 
+                                   class="bg-secondary text-primary px-4 py-1.5 text-xs font-bold rounded-lg hover:bg-secondary hover:shadow-md transition-all flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">add</span>
+                                    Add Subcategory
+                                </a>
+                                <button class="px-3 py-1 bg-primary text-white text-xs rounded-lg font-medium hover:bg-primary/90 transition-all subcategory-hide" 
+                                        data-category-id="{{ category.id }}">
+                                    Hide
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        {% include "admin/admin_subcategory_table.html" with subcategories=category.subcategory_set.all %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Show subcategories
+                    document.querySelectorAll('.subcategory-toggle').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const catId = this.dataset.categoryId;
+                            const section = document.getElementById('subcat-section-' + catId);
+                            section.classList.remove('hidden');
+                            section.scrollIntoView({ behavior: 'smooth' });
+                        });
+                    });
+                    
+                    // Hide subcategories
+                    document.querySelectorAll('.subcategory-hide').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const catId = this.dataset.categoryId;
+                            const section = document.getElementById('subcat-section-' + catId);
+                            section.classList.add('hidden');
+                        });
+                    });
+                });
+                </script>
             </div>
         </main>
     </div>

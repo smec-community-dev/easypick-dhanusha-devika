@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Add Category | EasyPick Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "neutral-bg": "#e8eae6",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #e8eae6; }
+        input[type="text"], input[type="date"], textarea {
+            @apply block w-full rounded border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm;
+        }
+        .field-label { @apply block text-sm font-bold text-primary mb-1 md:mb-0; }
+    </style>
+</head>
+<body class="bg-neutral-bg text-slate-900">
+    <div class="min-h-screen flex flex-col">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+            <div class="flex items-center gap-4">
+                <a href="{% url 'admin_category' %}" class="flex items-center justify-center size-8 rounded-full hover:bg-gray-100 transition-colors">
+                    <span class="material-symbols-outlined text-primary">arrow_back</span>
+                </a>
+                <div class="flex items-center gap-2 text-sm text-gray-500">
+                    <span class="font-bold text-primary text-base">Add Category</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="size-8 bg-primary rounded flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary text-sm">shopping_basket</span>
+                </div>
+                <span class="font-bold text-primary">EasyPick</span>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-12">
+            <div class="max-w-4xl mx-auto">
+                <form action="." method="POST" enctype="multipart/form-data" class="bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+                    {% csrf_token %}
+                    
+                    <div class="p-6 md:p-10 space-y-8">
+                        <div class="space-y-2">
+                            <label for="parent_category" class="block text-sm font-semibold text-primary">
+                                Parent Category <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <select name="category" id="parent_category" required
+                                    class="w-full pl-10 pr-4 py-2 bg-white border border-secondary/30 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none">
+                                    <option value="" disabled selected>Select a parent category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.category_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-primary/60 text-xl">category</span>
+                                </div>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-primary/60 text-xl">expand_more</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-primary/60">Choose the main category this subcategory belongs to.</p>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-center gap-6">
+                            <label class="field-label" for="id_category_name">Subcategory name:</label>
+                            <div class="col-span-3">
+                                <input type="text" name="category_name" id="id_category_name" maxlength="50" required placeholder="e.g. Smartphones">
+                            </div>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-start gap-6">
+                            <label class="field-label mt-2" for="id_category_description">Category description:</label>
+                            <div class="col-span-3">
+                                <textarea name="category_description" id="id_category_description" maxlength="200" rows="3" required placeholder="Describe the products in this category..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-center gap-6">
+                            <label class="field-label" for="id_category_image">Category image:</label>
+                            <div class="col-span-3">
+                                <input type="file" name="category_image" id="id_category_image" accept="image/*" 
+                                       class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-secondary/20 file:text-primary hover:file:bg-secondary/30 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-start gap-6">
+                            <label class="field-label mt-2" for="id_created_at">Created at:</label>
+                            <div class="col-span-3">
+                                <div class="flex items-center gap-3">
+                                    <input type="date" name="created_at" id="id_created_at" required class="max-w-[200px]">
+                                    <button type="button" onclick="setToday()" class="text-xs font-bold text-secondary hover:text-primary uppercase">Today |</button>
+                                    <span class="material-symbols-outlined text-gray-400">calendar_month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-center gap-6">
+                            <div class="md:col-start-2 col-span-3 flex items-center gap-2">
+                                <input type="checkbox" name="is_active" id="id_is_active" checked 
+                                       class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary">
+                                <label class="text-sm font-bold text-primary" for="id_is_active">Is active</label>
+                            </div>
+                        </div>
+
+                        <div class="md:grid md:grid-cols-4 md:items-center gap-6">
+                            <label class="field-label" for="id_slug">Slug:</label>
+                            <div class="col-span-3">
+                                <input type="text" name="slug" id="id_slug" required 
+                                       class="bg-gray-50 font-mono text-gray-500" placeholder="auto-generated-slug">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 px-6 py-5 border-t border-gray-200 flex flex-wrap gap-3 justify-end md:justify-center lg:justify-end">
+                        <button type="submit" name="_save" class="bg-[#2d4d44] hover:bg-primary text-white px-8 py-2.5 text-xs font-bold rounded uppercase tracking-widest transition-all shadow-sm">
+                            Save
+                        </button>
+                        <button type="submit" name="_addanother" class="bg-[#4a6b61] hover:bg-primary text-white px-5 py-2.5 text-xs font-bold rounded uppercase tracking-widest transition-all shadow-sm">
+                            Save and add another
+                        </button>
+                        <button type="submit" name="_continue" class="bg-[#4a6b61] hover:bg-primary text-white px-5 py-2.5 text-xs font-bold rounded uppercase tracking-widest transition-all shadow-sm">
+                            Save and continue editing
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Automatic Slug Generator
+        const nameInput = document.getElementById('id_category_name');
+        const slugInput = document.getElementById('id_slug');
+
+        nameInput.addEventListener('input', function() {
+            let slug = nameInput.value
+                .toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            slugInput.value = slug;
+        });
+
+        // Date Helper
+        function setToday() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('id_created_at').value = today;
+        }
+    </script>
+</body>
+</html>
