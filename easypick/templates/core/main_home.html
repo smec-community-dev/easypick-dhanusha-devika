@@ -34,49 +34,66 @@
 <body class="bg-background-light dark:bg-background-dark text-[#141514]">
 
 <header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-6 md:gap-10">
         <div class="flex items-center gap-3 shrink-0">
             <div class="bg-white/10 p-1.5 rounded-lg">
                 <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
             </div>
-            <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
+            <h2 class="text-xl font-extrabold tracking-tight hidden sm:block">EasyPick</h2>
         </div>
 
-        <form method="GET" action="{% url 'search' %}" class="flex-1 max-w-3xl flex items-center bg-white/10 rounded-lg px-4 py-2 focus-within:bg-white/20 transition-all">
+        <form method="GET" action="{% url 'search' %}" class="flex-1 max-w-2xl flex items-center bg-white/10 rounded-lg px-4 py-2 focus-within:bg-white/20 transition-all">
             <span class="material-symbols-outlined text-white/70 text-xl">search</span>
-            <input name="search" class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-full text-white ml-2" placeholder="Search products, categories..." type="text"/>
+            <input name="search" class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-full text-white ml-2" placeholder="Search products..." type="text"/>
         </form>
 
-        <div class="relative shrink-0">
-            <button id="accountButton" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 outline-none">
-                <span class="material-symbols-outlined text-white">person</span>
-                <span class="text-sm font-bold uppercase tracking-wider hidden md:inline">Login Options</span>
-                <span class="material-symbols-outlined text-sm text-white">expand_more</span>
-            </button>
+        <div class="flex items-center gap-2 md:gap-4 shrink-0">
             
-            <div id="userDropdown" class="absolute right-0 top-full pt-2 w-56 hidden z-[100]">
-                <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in text-[#141514]">
-                    <div class="px-4 py-2 border-b border-gray-50">
-                        <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Join EasyPick</p>
-                    </div>
-                    
-                    <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                        <span class="material-symbols-outlined text-primary">shopping_bag</span>
-                        <div class="flex flex-col">
-                            <span class="text-sm font-bold">Customer Login</span>
-                            <span class="text-[10px] text-gray-500">I want to shop</span>
-                        </div>
-                    </a>
-                    
-                    <div class="my-1 border-t border-gray-100"></div>
+            <a href="{% url 'wishlist' %}" class="p-2 hover:bg-white/10 rounded-lg transition-colors relative group" title="Wishlist">
+                <span class="material-symbols-outlined text-white">favorite</span>
+                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-400 rounded-full border border-[#4a5d4e]"></span>
+            </a>
 
-                    <a href="/login/seller" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                        <span class="material-symbols-outlined text-orange-600">storefront</span>
-                        <div class="flex flex-col">
-                            <span class="text-sm font-bold">Seller Login</span>
-                            <span class="text-[10px] text-gray-500">I want to sell</span>
+            <a href="{% url 'cart' %}" class="p-2 hover:bg-white/10 rounded-lg transition-colors relative group" title="Shopping Cart">
+                <span class="material-symbols-outlined text-white">shopping_cart</span>
+                <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-red-500 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#4a5d4e] min-w-[18px] text-center">
+                    {{ cart_item|length|default:"0" }}
+                </span>
+            </a>
+
+            <div class="h-8 w-[1px] bg-white/10 mx-1 hidden md:block"></div>
+
+            <div class="relative">
+                <button id="accountButton" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 outline-none">
+                    <span class="material-symbols-outlined text-white">person</span>
+                    <span class="text-sm font-bold uppercase tracking-wider hidden lg:inline">Login Options</span>
+                    <span class="material-symbols-outlined text-sm text-white">expand_more</span>
+                </button>
+                
+                <div id="userDropdown" class="absolute right-0 top-full pt-2 w-56 hidden z-[100]">
+                    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in text-[#141514]">
+                        <div class="px-4 py-2 border-b border-gray-50">
+                            <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Join EasyPick</p>
                         </div>
-                    </a>
+                        
+                        <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                            <span class="material-symbols-outlined text-primary">shopping_bag</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">Customer Login</span>
+                                <span class="text-[10px] text-gray-500">I want to shop</span>
+                            </div>
+                        </a>
+                        
+                        <div class="my-1 border-t border-gray-100"></div>
+
+                        <a href="/login/seller" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                            <span class="material-symbols-outlined text-orange-600">storefront</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">Seller Login</span>
+                                <span class="text-[10px] text-gray-500">I want to sell</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

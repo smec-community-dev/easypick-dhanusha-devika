@@ -57,7 +57,14 @@
             -webkit-box-orient: vertical;  
             overflow: hidden;
         }
-        
+        /* Hide scrollbar for Webkit browsers */
+        #categoryCarousel .flex::-webkit-scrollbar {
+            display: none;
+        }
+        #categoryCarousel .flex {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-[#141514]">
@@ -174,26 +181,34 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {% for x in category %}
-            <a href="{% url 'category_view' x.id %}" class="group flex flex-col h-full">
-                <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-[4/5] mb-4">
-                    <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" 
-                         style='background-image: url("{{x.category_image.url}}");'>
-                    </div>
-                </div>
-               
-                <div class="flex flex-col flex-grow">
-                    <h3 class="text-lg font-semibold text-[#141514] group-hover:text-primary transition-colors line-clamp-1">
-                        {{x.category_description}}
-                    </h3>
-                    <p class="text-[#737874] text-sm mb-3">{{x.category_name}}</p>
-                    
-                    <div class="mt-auto pt-2">
+        <div id="categoryCarousel" class="flex gap-6 scrollbar-none overflow-hidden relative">
+            <button id="prevBtn" class="absolute left-0 z-10 w-12 h-12 bg-white/80 hover:bg-white shadow-lg rounded-full flex items-center justify-center text-primary text-xl -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <div class="flex gap-6 pb-4 -ml-6 pl-12 pr-12 overflow-x-auto snap-x snap-mandatory scrollbar-none">
+                {% for x in category %}
+                <a href="{% url 'category_view' x.id %}" class="group flex flex-col h-[300px] w-[220px] flex-shrink-0 snap-center">
+                    <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-square mb-3 flex-shrink-0">
+                        <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" 
+                             style='background-image: url("{{x.category_image.url}}");'>
                         </div>
-                </div>
-            </a>
-            {% endfor %}
+                    </div>
+                   
+                    <div class="flex flex-col flex-grow px-2">
+                        <h3 class="text-sm font-semibold text-[#141514] group-hover:text-primary transition-colors line-clamp-1 text-center leading-tight">
+                            {{x.category_description}}
+                        </h3>
+                        <p class="text-[#737874] text-xs mb-2 text-center font-bold">{{x.category_name}}</p>
+                        
+                        <div class="mt-auto pt-1">
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <button id="nextBtn" class="absolute right-0 z-10 w-12 h-12 bg-white/80 hover:bg-white shadow-lg rounded-full flex items-center justify-center text-primary text-xl -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
         </div>
     </section>
     <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 border-t border-gray-100">
@@ -389,6 +404,32 @@
             wishBtn.classList.toggle('fav-btn-active');
         }
     });
+
+    // Category carousel navigation
+    const carousel = document.getElementById('categoryCarousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (carousel && prevBtn && nextBtn) {
+        const scrollAmount = 240; // Card width + gap
+        
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+        
+        // Auto-hide buttons based on scroll position
+        const checkButtons = () => {
+            const { scrollLeft, scrollWidth, clientWidth } = carousel.children[1];
+            prevBtn.style.opacity = scrollLeft > 0 ? '1' : '0.5';
+            nextBtn.style.opacity = scrollLeft < scrollWidth - clientWidth - 1 ? '1' : '0.5';
+        };
+        
+        carousel.children[1].addEventListener('scroll', checkButtons);
+        checkButtons();
+    }
     
 </script>
 

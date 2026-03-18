@@ -46,7 +46,7 @@ def home_view(request):
 
     return render(request,'core/home.html',{'data':request.user,'category':category,"products":products})
 
-
+@login_required
 def customer_profile_update_view(request):
     address = Address.objects.filter(user=request.user)
     user_data = request.user
@@ -157,7 +157,7 @@ def customer_notification_view(request):
     return render(request,'customer/notification.html')
 
 
-
+@login_required(login_url="/login")
 def add_wishlist(request, id):
     variant = ProductVariant.objects.get(id=id)
 
@@ -169,7 +169,7 @@ def add_wishlist(request, id):
     )
 
     return redirect('single', id=id)
-
+@login_required(login_url="/login")
 def wishlist(request):
     wishlist = Wishlist.objects.filter(customer=request.user).first()
 
@@ -337,7 +337,7 @@ def single_view(request,id):
         'in_wishlist': in_wishlist
     })
 
-@login_required
+@login_required(login_url="/login")
 def add_cart(request, id):
 
     variant = ProductVariant.objects.get(id=id)
@@ -361,11 +361,12 @@ def add_cart(request, id):
     return redirect('single', id=id)
         
 
-
+@login_required
 def cart_remove(request,id):
     cart_item=CartItems.objects.get(id=id)
     cart_item.delete()
     return redirect('cart')
+@login_required(login_url="/login")
 def cart_view(request):
     cart_user, created = Cart.objects.get_or_create(customer=request.user)
     cart=get_object_or_404(Cart,customer=request.user)
@@ -379,7 +380,7 @@ def cart_view(request):
             subtotal += variant.selling_price * item.quantity
     return render(request,'customer/cart.html',{'cart_item':cart_item, 'subtotal': subtotal,'cart':cart})   
    
-
+@login_required
 def cart_order(request,id):
     cart=Cart.objects.get(customer=request.user)
     cart_item=CartItems.objects.filter(cart=cart).select_related('product')
@@ -392,7 +393,7 @@ def cart_order(request,id):
             subtotal += variant.selling_price * item.quantity
     return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'subtotal':subtotal})
 
-@login_required
+@login_required(login_url="/login")
 def order_confirm_view(request, id):
     product = ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
     address = Address.objects.filter(user=request.user)
@@ -427,7 +428,7 @@ def search_view(request):
     else:
         product=ProductVariant.objects.none()
     return render(request,'customer/search_result.html',{'product':product, 'query': search_product})
-
+@login_required(login_url="/login")
 def review_view(request, id):
     product = get_object_or_404(Product, id=id)
     product_reviews = Review.objects.filter(product=product).prefetch_related('images')
@@ -435,14 +436,9 @@ def review_view(request, id):
         rating = request.POST.get('rating')
         comments = request.POST.get('comments')
         images = request.FILES.getlist('images')
-
         review = Review.objects.create(product=product,user=request.user,rating=rating,comments=comments)
         for img in images:
-            ReviewImage.objects.create(
-                review=review,
-                image=img
-            )
-
+            ReviewImage.objects.create(review=review,image=img)
         return redirect('single', id=product.id)
 
     context = {
