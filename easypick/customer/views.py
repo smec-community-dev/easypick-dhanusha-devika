@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from django.db.models import Q
+from django.db.models import Q, Avg
 from decimal import Decimal, InvalidOperation
 from django.http import JsonResponse
 from django.contrib.auth.signals import user_logged_in
@@ -40,11 +40,11 @@ def customer_register_view(request):
 
 @login_required
 def home_view(request):
-    # products=ProductVariant.objects.all()
-    # image=ProductImage.objects.filter(variant__in=products)
+    products=ProductVariant.objects.all()
+    
     category=Category.objects.all()
 
-    return render(request,'core/home.html',{'data':request.user,'category':category})
+    return render(request,'core/home.html',{'data':request.user,'category':category,"products":products})
 
 
 def customer_profile_update_view(request):
@@ -294,26 +294,26 @@ def delete_account_confirmation(request):
     return redirect('/')
 
 def category_view(request,id):
-    product=SubCategory.objects.get(id=id)
-    min_price = request.GET.get('min_price')
-    max_price = request.GET.get('max_price')
+    from django.shortcuts import get_object_or_404
+    category = get_object_or_404(Category, id=id)
+    products = SubCategory.objects.filter(category=category, is_active=True)
     sort = request.GET.get('sort')
-
-    if min_price:
-            products = products.filter(selling_price__gte=min_price)
-    if max_price:
-            products = products.filter(selling_price__lte=max_price)
-        
-
     if sort == "new_arrival":
-        products = products.order_by("-id")
+        products = products.order_by("-created_at")
     elif sort == "low":
-        products = products.order_by("selling_price")
+        products = products.order_by("id")
     elif sort == "high":
-        products = products.order_by("-selling_price")
+        products = products.order_by("-id")
     elif sort == "name":
-        products = products.order_by("product__name")
-    return render(request,'core/category.html',{'products':product})
+        products = products.order_by("subcategory_name")
+
+    context = {
+        'category': category,
+        'products': products,
+        'selected_sort': sort,
+        
+    }
+    return render(request, 'core/category.html', context)
 
 def subcategory_view(request,id):
     product=ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
@@ -321,6 +321,8 @@ def subcategory_view(request,id):
 
 def single_view(request,id):
     product=ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
+    
+   
     
     in_wishlist = False
     if request.user.is_authenticated:
@@ -330,7 +332,10 @@ def single_view(request,id):
                 wishlist=wishlist, product=product
             ).exists()
     
-    return render(request,'core/single_product.html',{'product':product, 'in_wishlist': in_wishlist})
+    return render(request,'core/single_product.html',{
+        'product':product, 
+        'in_wishlist': in_wishlist
+    })
 
 @login_required
 def add_cart(request, id):
@@ -380,7 +385,11 @@ def cart_order(request,id):
     cart_item=CartItems.objects.filter(cart=cart).select_related('product')
     address=Address.objects.filter(user=request.user).first()
     subtotal=0
-    
+    subtotal = 0
+    for item in cart_item:
+        variant = item.product.variants.first()
+        if variant:
+            subtotal += variant.selling_price * item.quantity
     return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'subtotal':subtotal})
 
 @login_required
@@ -427,13 +436,7 @@ def review_view(request, id):
         comments = request.POST.get('comments')
         images = request.FILES.getlist('images')
 
-        review = Review.objects.create(
-            product=product,
-            user=request.user,
-            rating=rating,
-            comments=comments
-        )
-
+        review = Review.objects.create(product=product,user=request.user,rating=rating,comments=comments)
         for img in images:
             ReviewImage.objects.create(
                 review=review,
@@ -454,34 +457,34 @@ def review_view(request, id):
 
 
 
-# @receiver(user_logged_in)
-# def register_mail(sender, request, user, **kwargs):
-#     subject = "Welcome to EasyPick 🎉"
+@receiver(user_logged_in)
+def register_mail(sender, request, user, **kwargs):
+    subject = "Welcome to EasyPick 🎉"
 
-#     message = f"""
-#     Hi {user.username},
+    message = f"""
+    Hi {user.username},
 
-#     Welcome to EasyPick! 🎉
+    Welcome to EasyPick! 🎉
 
-#     Your account has been successfully created.
+    Your account has been successfully created.
 
-#     You can now:
-#     - Browse products 🛍️
-#     - Add items to cart 🛒
-#     - Place orders 🚀
+    You can now:
+    - Browse products 🛍️
+    - Add items to cart 🛒
+    - Place orders 🚀
 
-#     If you have any questions, feel free to contact us.
+    If you have any questions, feel free to contact us.
 
-#     Happy Shopping!
+    Happy Shopping!
 
-#     Regards,  
-#     EasyPick Team
-#     """
+    Regards,  
+    EasyPick Team
+    """
 
-#     send_mail(
-#             subject,
-#             message,
-#             'dhanushasuresh2026@gmail.com',
-#             [user.email],
-#             fail_silently=False,
-#         )
+    send_mail(
+            subject,
+            message,
+            'dhanushasuresh2026@gmail.com',
+            [user.email],
+            fail_silently=False,
+        )
