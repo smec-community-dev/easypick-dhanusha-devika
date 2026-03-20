@@ -102,6 +102,9 @@
                 <a href="{% url 'wishlist' %}" class="inline-block">
                     <button class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">favorite</span>
+                        <span id="cart-count-badge" class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">
+                            {{ wishlist_item|length }}
+                        </span>
                     </button>
                 </a>
                 
@@ -175,8 +178,8 @@
                 <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Our Selection</span>
                 <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">Featured Products</h2>
             </div>
-            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'shop' %}">
-                View all items
+            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'all_category' %}">
+                View all
                 <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
         </div>
@@ -217,6 +220,10 @@
                 <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Full Collection</span>
                 <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">All Products</h2>
             </div>
+            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'all_category' %}">
+                View all item
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
             
         </div>
 
@@ -293,7 +300,7 @@
                             </a>
                         </div>
                         {% endfor %}
-                    </div>
+            </div>
         </div>
     </section>
 

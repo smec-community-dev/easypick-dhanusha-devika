@@ -41,10 +41,11 @@ def customer_register_view(request):
 @login_required
 def home_view(request):
     products=ProductVariant.objects.all()
-    
+    cart_item=CartItems.objects.filter(cart__customer=request.user)
+    wishlist_item=WishlistItems.objects.filter(wishlist__customer=request.user)
     category=Category.objects.all()
 
-    return render(request,'core/home.html',{'data':request.user,'category':category,"products":products})
+    return render(request,'core/home.html',{'data':request.user,'category':category,"products":products,"cart_item":cart_item,"wishlist_item":wishlist_item})
 
 @login_required
 def customer_profile_update_view(request):
@@ -487,4 +488,5 @@ def register_mail(sender, request, user, **kwargs):
         )
     
 def all_category(request):
-    return render(request,'all_category.html')
+    category=Category.objects.all()
+    return render(request,'core/all_category.html',{"catgeory":category})
