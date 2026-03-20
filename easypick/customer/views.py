@@ -98,6 +98,7 @@ def delete_address(request,id):
     address.delete()
     return redirect('customer_profile')
 
+@login_required(login_url="/login")
 def update_address(request,id):
     address_data=Address.objects.get(id=id)
     if request.method=="POST":
@@ -242,7 +243,7 @@ def customer_recently_viewd(request):
 def customer_recommentation(request):
     return render(request,'customer/customer_recommentation.html')
 
-
+@login_required
 def shop_view(request):
     products = ProductVariant.objects.all().select_related('product').prefetch_related('images')
 
@@ -484,3 +485,6 @@ def register_mail(sender, request, user, **kwargs):
             [user.email],
             fail_silently=False,
         )
+    
+def all_category(request):
+    return render(request,'all_category.html')

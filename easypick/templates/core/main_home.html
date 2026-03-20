@@ -33,7 +33,73 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark text-[#141514]">
 
-{% include "includes/navbar.html" %}
+<header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-6 md:gap-10">
+        <div class="flex items-center gap-3 shrink-0">
+            <div class="bg-white/10 p-1.5 rounded-lg">
+                <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+            </div>
+            <h2 class="text-xl font-extrabold tracking-tight hidden sm:block">EasyPick</h2>
+        </div>
+
+        <form method="GET" action="{% url 'search' %}" class="flex-1 max-w-2xl flex items-center bg-white/10 rounded-lg px-4 py-2 focus-within:bg-white/20 transition-all">
+            <span class="material-symbols-outlined text-white/70 text-xl">search</span>
+            <input name="search" class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-full text-white ml-2" placeholder="Search products..." type="text"/>
+        </form>
+
+        <div class="flex items-center gap-2 md:gap-4 shrink-0">
+            
+            <a href="{% url 'wishlist' %}" class="p-2 hover:bg-white/10 rounded-lg transition-colors relative group" title="Wishlist">
+                <span class="material-symbols-outlined text-white">favorite</span>
+                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-400 rounded-full border border-[#4a5d4e]"></span>
+            </a>
+
+            <a href="{% url 'cart' %}" class="p-2 hover:bg-white/10 rounded-lg transition-colors relative group" title="Shopping Cart">
+                <span class="material-symbols-outlined text-white">shopping_cart</span>
+                <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-red-500 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#4a5d4e] min-w-[18px] text-center">
+                    {{ cart_item|length|default:"0" }}
+                </span>
+            </a>
+
+            <div class="h-8 w-[1px] bg-white/10 mx-1 hidden md:block"></div>
+
+            <div class="relative">
+                <button id="accountButton" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 outline-none">
+                    <span class="material-symbols-outlined text-white">person</span>
+                    <span class="text-sm font-bold uppercase tracking-wider hidden lg:inline">Login Options</span>
+                    <span class="material-symbols-outlined text-sm text-white">expand_more</span>
+                </button>
+                
+                <div id="userDropdown" class="absolute right-0 top-full pt-2 w-56 hidden z-[100]">
+                    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in text-[#141514]">
+                        <div class="px-4 py-2 border-b border-gray-50">
+                            <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Join EasyPick</p>
+                        </div>
+                        
+                        <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                            <span class="material-symbols-outlined text-primary">shopping_bag</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">Customer Login</span>
+                                <span class="text-[10px] text-gray-500">I want to shop</span>
+                            </div>
+                        </a>
+                        
+                        <div class="my-1 border-t border-gray-100"></div>
+
+                        <a href="/login/seller" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                            <span class="material-symbols-outlined text-orange-600">storefront</span>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">Seller Login</span>
+                                <span class="text-[10px] text-gray-500">I want to sell</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 
 <main class="w-full">
     <section class="relative w-full h-[600px] flex items-center overflow-hidden">
@@ -69,17 +135,27 @@
                 <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Our Selection</span>
                 <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">Featured Products</h2>
             </div>
-            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'shop' %}">
+            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'all_category' %}">
                 View all items
                 <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
         </div>
 
-        <div id="categoryCarousel" class="flex gap-6 scrollbar-none overflow-hidden relative">
+<div id="categoryCarousel" class="flex gap-6 overflow-hidden relative w-full">
+            <!-- Custom scrollbar hiding CSS -->
+            <style>
+                #categoryCarousel .carousel-track {
+                    scrollbar-width: none; /* Firefox */
+                    -ms-overflow-style: none; /* IE/Edge */
+                }
+                #categoryCarousel .carousel-track::-webkit-scrollbar {
+                    display: none; /* Chrome/Safari/Webkit */
+                }
+            </style>
             <button id="prevBtn" class="absolute left-0 z-10 w-12 h-12 bg-white/80 hover:bg-white shadow-lg rounded-full flex items-center justify-center text-primary text-xl -translate-y-1/2 top-1/2 transition-all hidden md:flex">
                 <span class="material-symbols-outlined">chevron_left</span>
             </button>
-            <div class="flex gap-6 pb-4 -ml-6 pl-12 pr-12 overflow-x-auto snap-x snap-mandatory scrollbar-none">
+            <div id="carouselTrack" class="carousel-track flex gap-6 pb-4 -ml-6 pl-12 pr-12 overflow-x-auto snap-x snap-mandatory transition-transform duration-300 ease-in-out" style="width: max-content;">
                 {% for x in category %}
                 <a href="{% url 'category_view' x.id %}" class="group flex flex-col h-[300px] w-[220px] flex-shrink-0 snap-center">
                     <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-square mb-3 flex-shrink-0">
@@ -106,22 +182,7 @@
         </div>
     </section>
     <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 border-t border-gray-100">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
-            <div>
-                <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Full Collection</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">All Products</h2>
-            </div>
-            
-            <form method="GET" class="flex items-center gap-2">
-                <label class="text-sm font-medium text-gray-500">Sort by:</label>
-                <select name="sort" onchange="this.form.submit()" class="text-sm border-gray-200 rounded-lg focus:ring-primary focus:border-primary">
-                    <option value="">Default</option>
-                    <option value="new_arrival" {% if request.GET.sort == 'new_arrival' %}selected{% endif %}>New Arrivals</option>
-                    <option value="low" {% if request.GET.sort == 'low' %}selected{% endif %}>Price: Low to High</option>
-                    <option value="high" {% if request.GET.sort == 'high' %}selected{% endif %}>Price: High to Low</option>
-                    <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Name A-Z</option>
-                </select>
-            </form>
+       
         </div>
 
         <div class="flex flex-col lg:flex-row gap-10">
@@ -222,20 +283,80 @@
 </footer>
 
 <script>
-    const btn = document.getElementById('accountButton');
-    const menu = document.getElementById('userDropdown');
+    // --- Account Dropdown Logic ---
+    const accountBtn = document.getElementById('accountButton');
+    const userMenu = document.getElementById('userDropdown');
 
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.toggle('hidden');
+    if (accountBtn && userMenu) {
+        accountBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+            userMenu.classList.toggle('animate-fade-in');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!userMenu.contains(e.target) && !accountBtn.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    }
+
+    // --- Category Carousel Logic ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (!track || !prevBtn || !nextBtn) return;
+
+        // How much to scroll on each click (width of one card + gap)
+        const scrollAmount = 244; 
+
+        nextBtn.addEventListener('click', () => {
+            track.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            track.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Optional: Hide buttons if at the start or end of scroll
+        track.addEventListener('scroll', () => {
+            const isAtStart = track.scrollLeft <= 0;
+            const isAtEnd = track.scrollLeft + track.offsetWidth >= track.scrollWidth - 10;
+            
+            prevBtn.style.opacity = isAtStart ? '0.3' : '1';
+            prevBtn.style.pointerEvents = isAtStart ? 'none' : 'auto';
+            
+            nextBtn.style.opacity = isAtEnd ? '0.3' : '1';
+            nextBtn.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+        });
     });
 
-    window.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !btn.contains(e.target)) {
-            menu.classList.add('hidden');
-        }
+    // --- Wishlist Toggle (Visual Only) ---
+    const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+    wishlistBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const icon = this.querySelector('.material-symbols-outlined');
+            
+            // Toggle Fill and Color
+            if (icon.style.fontVariationSettings.includes("'FILL' 1")) {
+                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                this.classList.remove('text-red-500');
+            } else {
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                this.classList.add('text-red-500');
+            }
+        });
     });
 </script>
-
 </body>
 </html>

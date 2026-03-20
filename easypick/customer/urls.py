@@ -37,6 +37,7 @@ urlpatterns = [
     path('select-order-address/<int:product_id>/<int:address_id>/', views.select_order_address, name='select_order_address'),
     path('search/',views.search_view,name='search'),
     path('review',views.review_view,name='review'),
+    path('all_category',views.review_view,name='all_category'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -218,16 +218,6 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">All Products</h2>
             </div>
             
-            <form method="GET" class="flex items-center gap-2">
-                <label class="text-sm font-medium text-gray-500">Sort by:</label>
-                <select name="sort" onchange="this.form.submit()" class="text-sm border-gray-200 rounded-lg focus:ring-primary focus:border-primary">
-                    <option value="">Default</option>
-                    <option value="new_arrival" {% if request.GET.sort == 'new_arrival' %}selected{% endif %}>New Arrivals</option>
-                    <option value="low" {% if request.GET.sort == 'low' %}selected{% endif %}>Price: Low to High</option>
-                    <option value="high" {% if request.GET.sort == 'high' %}selected{% endif %}>Price: High to Low</option>
-                    <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Name A-Z</option>
-                </select>
-            </form>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-10">
