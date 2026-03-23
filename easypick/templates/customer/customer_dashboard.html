@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick Customer Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "neutral-light": "#e8eae6",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900">
+<div class="flex min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-primary text-white flex flex-col fixed h-full z-50">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-10">
+<div class="size-8 bg-secondary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold">eco</span>
+</div>
+<span class="text-xl font-bold tracking-tight">EasyPick</span>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="{% url 'customer_order'%}">
+<span class="material-symbols-outlined">package</span>
+<span class="text-sm font-medium">My Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="{% url 'customer_recentlyviewed' %}">
+<span class="material-symbols-outlined">visibility</span>
+<span class="text-sm font-medium">Recently Viewed</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="{% url 'customer_recommentation' %}">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-sm font-medium">Recommendations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="{% url 'wishlist' %}">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-sm font-medium">Wishlist</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-white/10">
+<button onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 p-8">
+<!-- Header Section -->
+<header class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-black text-primary leading-tight tracking-tight">Welcome back, {{user.first_name}}</h1>
+<p class="text-slate-500 text-base">Here's what's happening with your account today.</p>
+</div>
+
+</header>
+<!-- Quick Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="bg-white p-6 rounded-xl border border-neutral-light shadow-sm flex items-center gap-4">
+<div class="size-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shopping_bag</span>
+</div>
+<div>
+<p class="text-sm text-slate-500 font-medium">Total Orders</p>
+<p class="text-2xl font-bold text-primary">24</p>
+</div>
+<div class="ml-auto bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">
+                        +2
+                    </div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-neutral-light shadow-sm flex items-center gap-4">
+<div class="size-12 bg-secondary/20 rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">stars</span>
+</div>
+<div>
+<p class="text-sm text-slate-500 font-medium">Loyalty Points</p>
+<p class="text-2xl font-bold text-primary">1,250</p>
+</div>
+<div class="ml-auto bg-secondary/10 text-primary text-xs font-bold px-2 py-1 rounded">
+                        Gold
+                    </div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-neutral-light shadow-sm flex items-center gap-4">
+<div class="size-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="text-sm text-slate-500 font-medium">Active Shipments</p>
+<p class="text-2xl font-bold text-primary">2</p>
+</div>
+</div>
+</div>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- My Orders Section (Left Col) -->
+<div class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-primary">Current Orders</h2>
+<a class="text-sm font-semibold text-secondary hover:text-primary transition-colors" href="#">View All</a>
+</div>
+<!-- Active Order Card -->
+<div class="bg-white rounded-xl border border-neutral-light shadow-sm overflow-hidden">
+<div class="p-6 flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-32 h-32 bg-background-light rounded-lg overflow-hidden border border-neutral-light shrink-0">
+<img class="w-full h-full object-cover" data-alt="Red athletic sneaker on a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHIqIHbJiYVlBS6VVz_bAIuRtoDkRVIGKG4MFH9lAoDhg6hF2oGh20qDRykARk3as52IUksGPkAhMqahSdulV23KMjRELBw44qeW5CDljQVsAXmt9H-nQsobQbM6tFKoXEq_THrSC2EwVoNRU7-99q4urvLWCZ45y0I5J0rw6o-6pXg5aF0kYq3o7JQ0Xcv455WOcnFaKoFHj4EArpvIohWTlMROQPRo-GWCDT5p99L21DJ5zkOw--pPD63--iZISWkrXxeNadG4o"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">In Transit</p>
+<h3 class="text-lg font-bold text-primary">EasyRun Performance Sneakers</h3>
+<p class="text-sm text-slate-400">Order #EP-88291 • Placed Oct 20, 2023</p>
+</div>
+<div class="text-right">
+<p class="text-lg font-bold text-primary">$129.00</p>
+<p class="text-xs text-slate-400">Qty: 1</p>
+</div>
+</div>
+<!-- Tracking Progress -->
+<div class="mt-6">
+<div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
+<span>Processing</span>
+<span class="text-primary">Shipped</span>
+<span>Out for Delivery</span>
+<span>Delivered</span>
+</div>
+<div class="h-1.5 w-full bg-neutral-light rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/2 rounded-full"></div>
+</div>
+<p class="text-xs text-slate-500 mt-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                                        Expected delivery: <span class="font-bold text-primary">Oct 24, 2023</span>
+</p>
+</div>
+</div>
+</div>
+<div class="bg-background-light/50 px-6 py-4 flex justify-end gap-3 border-t border-neutral-light">
+<button class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-primary transition-colors">Modify Order</button>
+<button class="bg-primary text-white px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Track Package
+                            </button>
+</div>
+</div>
+<!-- Another Order Row -->
+<div class="bg-white p-4 rounded-xl border border-neutral-light shadow-sm flex items-center gap-4 opacity-75 grayscale-[0.5]">
+<div class="size-16 bg-background-light rounded-lg overflow-hidden shrink-0 border border-neutral-light">
+<img class="w-full h-full object-cover" data-alt="Modern minimalist watch with white dial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvc3FjBMv2fGoW41bBE3kzPQj77IQa8ySG3p15AQaeSgzS_BNPlfP05BrGEwaRavoUV0PbHb0YsM6tZQhNQn28bdNtE8OCZVCuffisgG_on0aGlP31AOQR9Mdpfq6O9oXDJZVATObT2xGWRTNZ-4WnI7zJRKNE4unLeyN-kprZc4NJ5ZOdjmJKce9AB-qpbZjTma_q-ty-HeEhvHRZxKH29MPPsCYW0Tq4jN6j6xWumZS4f1rSHuUiHMqyLwKmZ39FVzm-7AJzcnM"/>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-primary">Minimalist Quartz Watch</h4>
+<p class="text-xs text-slate-400">Order #EP-88120 • Delivered Oct 15</p>
+</div>
+<div class="text-right">
+<button class="text-xs font-bold text-secondary hover:underline">Reorder</button>
+</div>
+</div>
+</div>
+<!-- Right Column (Profile & Recently Viewed) -->
+<div class="space-y-8">
+<!-- Recently Viewed -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold text-primary">Recently Viewed</h2>
+<button class="p-1 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white p-3 rounded-xl border border-neutral-light shadow-sm group cursor-pointer hover:border-secondary transition-colors">
+<div class="aspect-square bg-background-light rounded-lg overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Dark green ceramic coffee mug" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD5jjTm_0i9D5JRdPnDd5X07u3o4mAWq6nthVAqDVFJmi3o3mD6sUK5OFxjepIWclZEfRH6XAQutTlX9HN6beQXXJV2XFodpW9Hs4xx_g-hYzkOfU1Z1xtLGxNWosWqjl-_vCxgoVyv0xlgJHn6mpFu9Ba_HnAku2lbJP83aIDu0dC39c6kV4ySifavAm8t8YHi1ID7O7tUX5wv1iuPN4tk4VKsa9Zm4_X1ETb5SFfYHbbE-5qP3zmL17LdOoJ3SfOdclNAHuilkg"/>
+</div>
+<p class="text-xs font-bold text-primary truncate">Ceramic Brew Mug</p>
+<p class="text-xs text-secondary font-bold">$24.00</p>
+</div>
+<div class="bg-white p-3 rounded-xl border border-neutral-light shadow-sm group cursor-pointer hover:border-secondary transition-colors">
+<div class="aspect-square bg-background-light rounded-lg overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Organic cotton beige tote bag" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABIwWrm7x6DgP192Q4Hsg4lKqZH7j3-CQ9c0YJR2PNRQigRM0dI2QErXjqq6mTHQmO5jxEomuKABBDkDviShRITLsvvPuohDY-o8uFnYvhKsNzn7Qxx4gysGEIUQvt1qN3dTqXEtcrOUVD5A9notk9uYjlynYKArrMJ5HkXssKmC9l5Up8Sagdp_TYWBDBEX2BdEhxrc1Xy1jceE8GBrzieNXN5ta8od9DsSxQ_Ansr64iT6UEFuQlQMc9-DUc1otQT6-EvIkUE5I"/>
+</div>
+<p class="text-xs font-bold text-primary truncate">Organic Cotton Tote</p>
+<p class="text-xs text-secondary font-bold">$18.00</p>
+</div>
+</div>
+</div>
+<!-- Personal Recommendations Section -->
+<div class="bg-secondary/10 rounded-2xl p-6 border border-secondary/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+<h2 class="text-lg font-bold text-primary">Picked for You</h2>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="size-14 rounded-lg overflow-hidden bg-white shrink-0 border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="Minimalist design desk lamp in black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVoIknU7UZy8Ptz4Sx4wjPVJ8j1WXVaeuV5Ln4A3sNFc5GugVpVbRpGfcKCaIlJkdhCPekMCuXtdRB7n2vA1NOFm9oQdaWiktG4leP98fF1DdrPh56r1oK-ouSgo9oHgjvFTUr3vfiR_XuDv1CPxV83CeHfuxNvkaaBSKPFU8WGsB34TYunxPqSIbyU-h3wRT-S_fzfeM_qBzJoYulX0RFLd10fEAAlkM_moX5wdF6R0nOFm-FT8WMNshMJSR4Q0tvvtNfaqyogX4"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold text-primary truncate">Task-Pro Desk Lamp</p>
+<p class="text-xs text-slate-500">Based on your style</p>
+</div>
+<button class="size-8 bg-primary rounded-full flex items-center justify-center text-white hover:bg-primary/90">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-14 rounded-lg overflow-hidden bg-white shrink-0 border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="Natural cork yoga mat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT5TaL45sxdh-SkEPjnSm7FVBbUypafOtO7_4e2M5nE5Ra07jSJ_mpwhSCNxLTR-VSaH5kO3k3q18RtZ7qOWu61CVBrQ8cbDGPmHty4RVOWJ8GoCke3c6js30leiXnCTBHxW9AjI9aK-QS4Z72bteS9hBewbFvbtgQb5FAFG8ySVjVzTxdx8UYkvI8E7PLnzF6OEO7nJE4juB1pPfIELrez2o0EbeL4doAANR29toZdt0o5gzwelvbr_ItQHwEXXkW2hTweSN1op4"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold text-primary truncate">Eco-Cork Yoga Mat</p>
+<p class="text-xs text-slate-500">Matches recent sports buy</p>
+</div>
+<button class="size-8 bg-primary rounded-full flex items-center justify-center text-white hover:bg-primary/90">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-secondary text-secondary font-bold text-sm rounded-lg hover:bg-secondary hover:text-white transition-all">
+                            See More Picks
+                        </button>
+</div>
+</div>
+</div>
+<!-- Profile Summary Links (Bottom Grid) -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<a class="bg-white p-5 rounded-xl border border-neutral-light hover:shadow-md transition-shadow flex flex-col gap-3 group" href="#">
+<span class="material-symbols-outlined text-primary bg-background-light size-10 flex items-center justify-center rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">location_on</span>
+<div>
+<p class="text-sm font-bold text-primary">Address Book</p>
+<p class="text-xs text-slate-400">Manage 2 saved locations</p>
+</div>
+</a>
+<a class="bg-white p-5 rounded-xl border border-neutral-light hover:shadow-md transition-shadow flex flex-col gap-3 group" href="#">
+<span class="material-symbols-outlined text-primary bg-background-light size-10 flex items-center justify-center rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">credit_card</span>
+<div>
+<p class="text-sm font-bold text-primary">Payments</p>
+<p class="text-xs text-slate-400">Visa ending in 4242</p>
+</div>
+</a>
+<a class="bg-white p-5 rounded-xl border border-neutral-light hover:shadow-md transition-shadow flex flex-col gap-3 group" href="#">
+<span class="material-symbols-outlined text-primary bg-background-light size-10 flex items-center justify-center rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">shield</span>
+<div>
+<p class="text-sm font-bold text-primary">Privacy &amp; Security</p>
+<p class="text-xs text-slate-400">Password and TFA</p>
+</div>
+</a>
+<a class="bg-white p-5 rounded-xl border border-neutral-light hover:shadow-md transition-shadow flex flex-col gap-3 group" href="#">
+<span class="material-symbols-outlined text-primary bg-background-light size-10 flex items-center justify-center rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">support_agent</span>
+<div>
+<p class="text-sm font-bold text-primary">Help Center</p>
+<p class="text-xs text-slate-400">24/7 Support access</p>
+</div>
+</a>
+</section>
+</main>
+</div>
+<script>
+    function confirmLogout() {
+        const result = confirm("Are you sure you want to sign out of your account?");
+        if (result) {
+            console.log("User logged out");
+            alert("You have been successfully logged out.");
+            // Add redirection logic here, e.g., window.location.href = "/login";
+            window.location.href = "/logout";
+        }
+    }
+</script>
+</body>
+</html>

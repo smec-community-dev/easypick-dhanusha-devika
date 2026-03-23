@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick - Notification Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "brand": "#4a5d4e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 min-h-screen flex flex-col font-display">
+<!-- Top Navigation Bar - Modified to Dark Tone #4a5d4e -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-brand/20 bg-brand px-10 py-3 sticky top-0 z-50 shadow-sm">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 flex items-center justify-center bg-white/10 rounded-lg">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">shopping_bag</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">EasyPick</h2>
+</div>
+</label>
+
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex justify-center py-8 px-4 sm:px-6 lg:px-8">
+<div class="layout-content-container flex flex-col w-full max-w-[800px]">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div>
+<h1 class="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Notifications</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Stay updated with your orders and account activity.</p>
+</div>
+<button class="text-primary hover:text-primary/80 text-sm font-medium transition-colors flex items-center gap-1 group">
+<span class="material-symbols-outlined" style="font-size: 18px;">done_all</span>
+<span class="group-hover:underline">Mark all as read</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="border-b border-slate-200 dark:border-slate-700 mb-6 sticky top-[72px] bg-background-light dark:bg-background-dark z-40 pt-2">
+<nav aria-label="Tabs" class="-mb-px flex space-x-8">
+<a class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2" href="#">
+                        All
+                        <span class="bg-primary/10 text-primary py-0.5 px-2 rounded-full text-xs font-semibold">3</span>
+</a>
+<a class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" href="#">
+                        Orders
+                    </a>
+<a class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" href="#">
+                        Offers
+                    </a>
+
+</nav>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col gap-3 pb-12">
+<!-- Unread Notification Item: Order Shipped -->
+<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+<!-- Unread Indicator -->
+<div class="absolute top-4 right-4 flex items-center gap-3">
+<span class="size-2.5 rounded-full bg-primary"></span>
+<a href="" class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
+<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
+</a>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-size: 24px;">local_shipping</span>
+</div>
+</div>
+<div class="flex-1 pr-8">
+<div class="flex items-baseline justify-between mb-1">
+<h3 class="text-sm font-semibold text-slate-900 dark:text-white">Your order has been shipped!</h3>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Order <span class="font-medium text-slate-900 dark:text-slate-200">#EP-88291</span> containing your minimalist planter set is on its way. Track your package for real-time updates.
+                        </p>
+<p class="text-xs text-slate-400 mt-2 font-medium">2 hours ago</p>
+</div>
+</div>
+<!-- Unread Notification Item: Flash Sale -->
+<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+<div class="absolute top-4 right-4 flex items-center gap-3">
+<span class="size-2.5 rounded-full bg-primary"></span>
+<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
+<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-size: 24px;">sell</span>
+</div>
+</div>
+<div class="flex-1 pr-8">
+<div class="flex items-baseline justify-between mb-1">
+<h3 class="text-sm font-semibold text-slate-900 dark:text-white">Flash Sale Alert</h3>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Get <span class="font-bold text-emerald-600">20% off</span> all bamboo organizers this weekend only. Don't miss out on refreshing your workspace.
+                        </p>
+<p class="text-xs text-slate-400 mt-2 font-medium">5 hours ago</p>
+</div>
+</div>
+<!-- Unread Notification Item: Account Security -->
+<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+<div class="absolute top-4 right-4 flex items-center gap-3">
+<span class="size-2.5 rounded-full bg-primary"></span>
+<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
+<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-orange-50 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-size: 24px;">shield_person</span>
+</div>
+</div>
+<div class="flex-1 pr-8">
+<div class="flex items-baseline justify-between mb-1">
+<h3 class="text-sm font-semibold text-slate-900 dark:text-white">New Login Detected</h3>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            We noticed a new login to your account from a Chrome device in San Francisco, CA. Was this you?
+                        </p>
+<p class="text-xs text-slate-400 mt-2 font-medium">8 hours ago</p>
+</div>
+</div>
+<!-- Read Notification Item: Order Delivered -->
+<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 border border-transparent hover:bg-white dark:hover:bg-slate-800 hover:border-slate-100 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer">
+<div class="absolute top-4 right-4 flex items-center gap-3">
+<!-- No unread dot -->
+<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
+<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined" style="font-size: 24px;">check_circle</span>
+</div>
+</div>
+<div class="flex-1 pr-8 opacity-75 group-hover:opacity-100 transition-opacity">
+<div class="flex items-baseline justify-between mb-1">
+<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Order Delivered</h3>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                            Your order <span class="font-medium">#EP-88210</span> has been delivered to your front porch. Enjoy your new items!
+                        </p>
+<p class="text-xs text-slate-400 mt-2 font-medium">1 day ago</p>
+</div>
+</div>
+<!-- Read Notification Item: Review Request -->
+<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 border border-transparent hover:bg-white dark:hover:bg-slate-800 hover:border-slate-100 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer">
+<div class="absolute top-4 right-4 flex items-center gap-3">
+<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
+<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined" style="font-size: 24px;">star</span>
+</div>
+</div>
+<div class="flex-1 pr-8 opacity-75 group-hover:opacity-100 transition-opacity">
+<div class="flex items-baseline justify-between mb-1">
+<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rate your purchase</h3>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                            How do you like your Ceramic Vase? Share your thoughts with other EasyPick shoppers.
+                        </p>
+<p class="text-xs text-slate-400 mt-2 font-medium">2 days ago</p>
+</div>
+</div>
+</div>
+<!-- Pagination / Load More -->
+<div class="flex justify-center pb-8">
+<button class="text-sm font-medium text-slate-500 hover:text-primary transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                    Load older notifications
+                    <span class="material-symbols-outlined" style="font-size: 16px;">expand_more</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
+<div class="container mx-auto px-10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="size-6 bg-brand rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-size: 16px;">shopping_bag</span>
+</div>
+<span class="text-slate-900 dark:text-white font-bold text-lg">EasyPick</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                        Curating a minimalist lifestyle with products that bring joy and simplicity to your everyday life.
+                    </p>
+<div class="flex gap-4">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<img alt="Instagram" class="w-5 h-5 dark:invert opacity-70 hover:opacity-100" data-alt="Instagram icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjiGtRZxQsAxH_K2-1gQQlOuubhJJOwNq2eVeAQeTGXbRSvPIdyfeXYRC2vC8HZ1V-6i41QWRd5U_MeKuWyPQeEdKPhHLCrMLmR0rKlw1hnNGrdgVjt4Ce1DSGf62zxSzo1DCgO7cJoAul3-HuiE0r0kgMUxZ35fAxfoQ2xRL40uqVnM0xYjb04hIR1qH_GNwzKYq4hDDx5eqB5jl0Dtl7SbKTdYgWzgvPR6Z7mDtuX6wNveaFPu9Y5Zb8vb7fA1_bA6LkJRwhCSo"/>
+</a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<img alt="Twitter" class="w-5 h-5 dark:invert opacity-70 hover:opacity-100" data-alt="Twitter icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmp_GSSEBFUJoypFJrcj6VhoKwnGmOHCaFrFDknPVW5iS77tuz_AbPtbssrW3fGUg0YNSB04GQb3XUJ123mKuSVScGSp3XtbRiWMIZhcDTVBSPkyKklwPdV3HHjwTeZQ-GYeLlwOb0Ab95tlv8d5cPdJnVok2NC9iCAmIqTVKHPnthbdFBHaAH4EMPJWKcbxVs7uVD9gouMRF6BAaXTllY9dFP3KF0TFoKy0yTarHODviXO8uRUDqsULdzOcX_793S9R5iE6NDgu0"/>
+</a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<img alt="Pinterest" class="w-5 h-5 dark:invert opacity-70 hover:opacity-100" data-alt="Pinterest icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIDOMkJhWqZYaQStoiiZm9cHqUDHRRdVCQiAX4PlLzbBJ-IAdGuAuu1CG38fST1UQovGOccVkcLxLILyKD4U_W5sl1GEf2YOIcxuT4pMD-w80DkDFmoXbsB4iBtOk8k9B3DCBHpSYVzfR7UfhlrMLOacW2mrWyvg8JMIJnO9CbRS36EggZO7bPgIT-xblxGMEfBuSNlvZTwh20GfhXErqAaoE5qym2pcM22HcvtD73OwATFCxDJjUUyIA3b6tkqiDghQACuDX8WoI"/>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold mb-4">Shop</h4>
+<ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">New Arrivals</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Home Decor</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Organization</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Kitchen &amp; Dining</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold mb-4">Support</h4>
+<ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Order Status</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold mb-4">Legal</h4>
+<ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-400 text-sm">© 2023 EasyPick Inc. All rights reserved.</p>
+<div class="flex items-center gap-2">
+<span class="text-slate-400 text-sm">Language:</span>
+<select class="bg-transparent border-none text-sm text-slate-600 dark:text-slate-300 font-medium focus:ring-0 cursor-pointer">
+<option>English (US)</option>
+<option>French</option>
+<option>Spanish</option>
+</select>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

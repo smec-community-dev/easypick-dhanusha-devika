@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick My Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "neutral-light": "#e8eae6",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900">
+<div class="flex min-h-screen">
+<aside class="w-64 bg-primary text-white flex flex-col fixed h-full z-50">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-10">
+<div class="size-8 bg-secondary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold">eco</span>
+</div>
+<span class="text-xl font-bold tracking-tight">EasyPick</span>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white" href="#">
+<span class="material-symbols-outlined">package</span>
+<span class="text-sm font-medium">My Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span class="text-sm font-medium">Recently Viewed</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-sm font-medium">Recommendations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-sm font-medium">Wishlist</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-white/10">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white transition-colors mb-2" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 ml-64 p-8">
+<header class="flex flex-wrap justify-between items-center gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-black text-primary leading-tight tracking-tight">My Orders</h1>
+<p class="text-slate-500 text-base">Track, return, or buy things again.</p>
+</div>
+<div class="flex items-center gap-4 bg-white p-2 rounded-xl border border-neutral-light shadow-sm">
+<div class="flex items-center gap-3 px-4 border-r border-neutral-light">
+<div class="size-10 rounded-full bg-secondary/30 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyxI0kmW5Q95_sRULVpUfb_OAa6M89lAjIOskBzOVPMsobwIKq_i9CXa9JFBFYTyjDjzX5iXx-FR-DXXXu48iuqlCjz3dz6aEIhc1Ouz4J-eyvzEPvamgYTSOgExTjAB3n1xRkciHZg5nX3C_pFWCNZiXe5evfcHtcqN5vrdvUT0ilY0-2IiA5XENe05ZbhogNJJVbcUdtEUftoy2toOREAsYsdFDXAvEMYwGg1xYVUk2jb0lR1ASKzFnpJnbQZIY2pZEP0wKFlVk"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-primary">Alex Design</span>
+<span class="text-xs text-slate-400">Premium Member</span>
+</div>
+</div>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-opacity">
+                        Support
+                    </button>
+</div>
+</header>
+<div class="bg-white rounded-xl border border-neutral-light shadow-sm p-4 mb-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex space-x-1 bg-background-light p-1 rounded-lg w-full md:w-auto overflow-x-auto">
+<button class="px-4 py-2 text-sm font-bold text-primary bg-white shadow-sm rounded-md">All Orders</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-primary hover:bg-white/50 rounded-md transition-all">In Transit</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-primary hover:bg-white/50 rounded-md transition-all">Completed</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-primary hover:bg-white/50 rounded-md transition-all">Cancelled</button>
+</div>
+<div class="relative w-full md:w-80">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background-light border border-neutral-light rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary transition-all placeholder-slate-400" placeholder="Search by Order ID or Product Name" type="text"/>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-white rounded-xl border border-neutral-light shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+<div class="bg-background-light/30 px-6 py-4 border-b border-neutral-light flex flex-wrap gap-6 justify-between items-center">
+<div class="flex flex-wrap gap-6 text-sm">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order Placed</span>
+<span class="font-bold text-primary">October 20, 2023</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Total</span>
+<span class="font-bold text-primary">$129.00</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order #</span>
+<span class="font-bold text-primary">#EP-88291</span>
+</div>
+</div>
+<div class="flex flex-col sm:items-end">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-100">
+<span class="material-symbols-outlined text-[16px]">local_shipping</span>
+                            In Transit
+                        </span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex flex-col lg:flex-row gap-6">
+<div class="flex-1 space-y-4">
+<h3 class="text-lg font-bold text-primary mb-2 flex items-center gap-2">
+                                Arriving Tuesday, Oct 24
+                                <span class="h-2 w-2 rounded-full bg-green-500"></span>
+</h3>
+<div class="flex gap-4 items-start">
+<div class="size-20 bg-background-light rounded-lg border border-neutral-light overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Red athletic sneaker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHIqIHbJiYVlBS6VVz_bAIuRtoDkRVIGKG4MFH9lAoDhg6hF2oGh20qDRykARk3as52IUksGPkAhMqahSdulV23KMjRELBw44qeW5CDljQVsAXmt9H-nQsobQbM6tFKoXEq_THrSC2EwVoNRU7-99q4urvLWCZ45y0I5J0rw6o-6pXg5aF0kYq3o7JQ0Xcv455WOcnFaKoFHj4EArpvIohWTlMROQPRo-GWCDT5p99L21DJ5zkOw--pPD63--iZISWkrXxeNadG4o"/>
+</div>
+<div>
+<a class="text-sm font-bold text-primary hover:underline hover:text-secondary transition-colors" href="#">EasyRun Performance Sneakers</a>
+<p class="text-xs text-slate-500 mt-1">Size: 10.5 • Color: Red/Black</p>
+<p class="text-xs font-bold text-primary mt-1">Qty: 1</p>
+</div>
+</div>
+</div>
+<div class="flex flex-row lg:flex-col gap-3 justify-end lg:w-48 shrink-0">
+<button class="bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Track Package
+                            </button>
+<button class="bg-white border border-neutral-light text-slate-700 px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-background-light hover:text-primary transition-all">
+                                Order Details
+                            </button>
+<button class="text-xs text-secondary font-bold hover:text-primary transition-colors text-center mt-1">
+                                View Invoice
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-neutral-light shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+<div class="bg-background-light/30 px-6 py-4 border-b border-neutral-light flex flex-wrap gap-6 justify-between items-center">
+<div class="flex flex-wrap gap-6 text-sm">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order Placed</span>
+<span class="font-bold text-primary">October 12, 2023</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Total</span>
+<span class="font-bold text-primary">$42.00</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order #</span>
+<span class="font-bold text-primary">#EP-88120</span>
+</div>
+</div>
+<div class="flex flex-col sm:items-end">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-bold border border-green-100">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                            Delivered
+                        </span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex flex-col lg:flex-row gap-6">
+<div class="flex-1 space-y-4">
+<h3 class="text-lg font-bold text-primary mb-2">Delivered Oct 15, 2023</h3>
+<div class="flex gap-4 items-start pb-4 border-b border-dashed border-neutral-light last:border-0 last:pb-0">
+<div class="size-20 bg-background-light rounded-lg border border-neutral-light overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Minimalist watch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvc3FjBMv2fGoW41bBE3kzPQj77IQa8ySG3p15AQaeSgzS_BNPlfP05BrGEwaRavoUV0PbHb0YsM6tZQhNQn28bdNtE8OCZVCuffisgG_on0aGlP31AOQR9Mdpfq6O9oXDJZVATObT2xGWRTNZ-4WnI7zJRKNE4unLeyN-kprZc4NJ5ZOdjmJKce9AB-qpbZjTma_q-ty-HeEhvHRZxKH29MPPsCYW0Tq4jN6j6xWumZS4f1rSHuUiHMqyLwKmZ39FVzm-7AJzcnM"/>
+</div>
+<div>
+<a class="text-sm font-bold text-primary hover:underline hover:text-secondary transition-colors" href="#">Minimalist Quartz Watch</a>
+<p class="text-xs text-slate-500 mt-1">Strap: Leather • Dial: White</p>
+<p class="text-xs font-bold text-primary mt-1">Qty: 1</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="size-20 bg-background-light rounded-lg border border-neutral-light overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Ceramic mug" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD5jjTm_0i9D5JRdPnDd5X07u3o4mAWq6nthVAqDVFJmi3o3mD6sUK5OFxjepIWclZEfRH6XAQutTlX9HN6beQXXJV2XFodpW9Hs4xx_g-hYzkOfU1Z1xtLGxNWosWqjl-_vCxgoVyv0xlgJHn6mpFu9Ba_HnAku2lbJP83aIDu0dC39c6kV4ySifavAm8t8YHi1ID7O7tUX5wv1iuPN4tk4VKsa9Zm4_X1ETb5SFfYHbbE-5qP3zmL17LdOoJ3SfOdclNAHuilkg"/>
+</div>
+<div>
+<a class="text-sm font-bold text-primary hover:underline hover:text-secondary transition-colors" href="#">Ceramic Brew Mug</a>
+<p class="text-xs text-slate-500 mt-1">Color: Deep Green</p>
+<p class="text-xs font-bold text-primary mt-1">Qty: 1</p>
+</div>
+</div>
+</div>
+<div class="flex flex-row lg:flex-col gap-3 justify-end lg:w-48 shrink-0">
+<button class="bg-secondary text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-primary transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                                Reorder All
+                            </button>
+<button class="bg-white border border-neutral-light text-slate-700 px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-background-light hover:text-primary transition-all">
+                                Order Details
+                            </button>
+<button class="text-xs text-slate-500 hover:text-primary transition-colors text-center mt-1 underline">
+                                Write a Review
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-neutral-light shadow-sm overflow-hidden hover:shadow-md transition-shadow grayscale-[0.3] opacity-90">
+<div class="bg-background-light/30 px-6 py-4 border-b border-neutral-light flex flex-wrap gap-6 justify-between items-center">
+<div class="flex flex-wrap gap-6 text-sm">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order Placed</span>
+<span class="font-bold text-primary">September 28, 2023</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Total</span>
+<span class="font-bold text-primary">$210.50</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wide font-medium">Order #</span>
+<span class="font-bold text-primary">#EP-87005</span>
+</div>
+</div>
+<div class="flex flex-col sm:items-end">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+                            Cancelled
+                        </span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex flex-col lg:flex-row gap-6">
+<div class="flex-1 space-y-4">
+<h3 class="text-lg font-bold text-slate-500 mb-2">Order Cancelled on Sep 29</h3>
+<div class="flex gap-4 items-start">
+<div class="size-20 bg-background-light rounded-lg border border-neutral-light overflow-hidden shrink-0 opacity-75">
+<img class="w-full h-full object-cover" data-alt="Desk lamp" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVoIknU7UZy8Ptz4Sx4wjPVJ8j1WXVaeuV5Ln4A3sNFc5GugVpVbRpGfcKCaIlJkdhCPekMCuXtdRB7n2vA1NOFm9oQdaWiktG4leP98fF1DdrPh56r1oK-ouSgo9oHgjvFTUr3vfiR_XuDv1CPxV83CeHfuxNvkaaBSKPFU8WGsB34TYunxPqSIbyU-h3wRT-S_fzfeM_qBzJoYulX0RFLd10fEAAlkM_moX5wdF6R0nOFm-FT8WMNshMJSR4Q0tvvtNfaqyogX4"/>
+</div>
+<div>
+<a class="text-sm font-bold text-slate-600 line-through" href="#">Task-Pro Desk Lamp</a>
+<p class="text-xs text-slate-400 mt-1">Finish: Matte Black</p>
+<p class="text-xs font-bold text-slate-500 mt-1">Qty: 2</p>
+</div>
+</div>
+</div>
+<div class="flex flex-row lg:flex-col gap-3 justify-end lg:w-48 shrink-0">
+<button class="bg-secondary text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm hover:bg-primary transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                                Reorder
+                            </button>
+<button class="bg-white border border-neutral-light text-slate-700 px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-background-light hover:text-primary transition-all">
+                                Order Details
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center gap-2 mt-12">
+<button class="p-2 rounded-lg border border-neutral-light text-slate-400 hover:text-primary hover:border-primary transition-colors disabled:opacity-50">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center">1</button>
+<button class="size-10 rounded-lg border border-neutral-light text-slate-500 text-sm font-bold flex items-center justify-center hover:border-secondary hover:text-primary transition-colors">2</button>
+<button class="size-10 rounded-lg border border-neutral-light text-slate-500 text-sm font-bold flex items-center justify-center hover:border-secondary hover:text-primary transition-colors">3</button>
+<span class="text-slate-400">...</span>
+<button class="size-10 rounded-lg border border-neutral-light text-slate-500 text-sm font-bold flex items-center justify-center hover:border-secondary hover:text-primary transition-colors">12</button>
+<button class="p-2 rounded-lg border border-neutral-light text-slate-400 hover:text-primary hover:border-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+
+</body></html>

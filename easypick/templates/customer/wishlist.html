@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 font-display">
+<div class="relative flex min-h-screen flex-col">
+<!-- Dark-Toned Navbar -->
+<header class="bg-primary text-white px-4 md:px-10 py-4 shadow-md sticky top-0 z-50">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-white/10 p-1.5 rounded-lg">
+<svg class="w-6 h-6 text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Shop</a>
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Categories</a>
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Deals</a>
+<a class="text-white font-bold border-b-2 border-white/40 pb-0.5" href="#">Wishlist</a>
+</nav>
+</div>
+<div class="flex items-center gap-4 flex-1 justify-end max-w-md ml-4">
+<div class="relative w-full max-w-[240px] hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/60 text-xl">search</span>
+<input class="w-full bg-white/10 border-none rounded-lg py-2 pl-10 pr-4 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-white/30" placeholder="Search products..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-white text-primary text-[10px] font-bold px-1 rounded-full min-w-[16px]">3</span>
+</button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-10 py-8">
+<!-- Wishlist Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 tracking-tight">My Wishlist</h2>
+<p class="text-slate-500 mt-1 font-medium">8 items saved for later</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share Wishlist
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-all shadow-sm">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+                        Add All to Cart
+                    </button>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Organic Cotton Tote Bag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cream colored organic cotton tote bag on wooden floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQGFLsDFbx8ewH51Eady0EyvUCbiDDO3S1ToV8_b_SrWxRPlvnnRiPNpeljx62GzN7ALhVZRFlxPWkPVqeuAEdX4NGQYq4xXaC8hA6U-ynqj6E2GxkyjsceysqD2TakFZVT_hqZgdA9ITtR4AH4UseMPOrZS6eRhhTO5bM4Qw4cO5RWAmPw5a41YyD08u9VrXeBytoUv9qAC7e4w7fnR25uyww-GfOLk-6n9cNHs_OK8nM43W4yVWFHSl2hjRlLR825SdzXn4ayG0"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Eco-Friendly</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Organic Cotton Tote</h3>
+<p class="text-primary font-bold text-lg mb-4">$24.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Recycled Glass Vase" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern blue tinted recycled glass vase with flowers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYDhs06A7hEKpvlI8UduBuz_hL2e-HxSl2Wx8QHxMCKlWP1KxzlI_4Ds4hGALKOmvs7UL9TLuH7IH6Lv3eDlpUsVTw3ULjOOTZl313uA9Kxt9cmYVhFYX6vgyQq98WubbcdmmkKwyvld5ESIfcZcNnhnpyERJxBHFYFGSK8RJNomE0DhzJALUh7fGvZbKT5O7TbSLH7keqNzmy_EDPOdv_vTWAtHZImtuuVYwoGX-GQbC76KM69YfZlc6ILYfO4exAJ_gqGo4APAM"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Home Decor</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Recycled Glass Vase</h3>
+<p class="text-primary font-bold text-lg mb-4">$45.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Bamboo Cutlery Set" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Reusable bamboo cutlery set in a fabric wrap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOm_XSv6ZSNIQ2E6nf3vvTSXTuPGn4TWMhv2CLgq7VBq0n4KztxmElwQH2ckks2cEpAlcJQ1KT3m1ZSVgVu2VsXeIhWYryemXTHv_1lUJAXF1oo_gPxEIjZNfe5Kw2DCbJtxQPI7OxVLBztnJnH2igoYGVlVCJ1VHtPiU6mMvHMJ6ZJgRsY4sv5H3o-TLZmPlTiuQcIhTy6jV8EZDg2KuEmhJSp-oMpka3_0Rbf5uVAsikG7w01XtF5BwD0HJmSBXbIBNXB1Q5sqc"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Kitchenware</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Bamboo Cutlery Set</h3>
+<p class="text-primary font-bold text-lg mb-4">$18.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Natural Linen Throw" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Frayed edge natural linen throw blanket on sofa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0E0fo5wWQ2SkBJ3ZJYQJ4aByWEi_k5erj9aXFSVOL8Yh5zmKQXv_f6DdE7lTFgRqjPukj4uBqdPiy3UjhPAg16IDtZhkDxIR1raAL0oF0as-vrqVhGT2NYPfVhO7j2unsc9dpGB1PZesHe9-RK81llgW-uNh8Fw0fhPjZRRiDnon1ToJfARSWs4uKfkiszwsqaI5cXcDGivjzVoRgktuMA7tlt8n-WYftm11bOHhqpL_-UPNZWLmkS6xBPIVadULVtUMNVzX21yE"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Living Room</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Natural Linen Throw</h3>
+<p class="text-primary font-bold text-lg mb-4">$89.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Sustainable Sneakers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Pair of minimalist white sneakers made of sustainable materials" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOn6UphJJtTILWPCGrLZ2-DLzJxtpTy5JHgoSlAEkO_Ndl0c0GiPCbB9Td5QJQGP5o5X3eU4JChih9IdglUxbFwCZOADRUqjuDcHfyjtyZWOMj_CwVLWd-LwPAVK34U3Y09LCqACsNX0uXzJLFrWHVoXi0m503eF7ndWIxidlYx4r8x_29rkDYGNH9WRsn1_TnmBGciZgS2ZFVHFPIR1HDo68zoYaoMM9WJzbZw9_TWvDOLcIZc6-5k7enSpJ6_V-hVA1cR0XLtWg"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Footwear</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Sustainable Sneakers</h3>
+<p class="text-primary font-bold text-lg mb-4">$120.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Wooden Serving Board" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Handcrafted dark wood organic shaped serving board" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1A7du9lVq6_lO4XKIrAbRYxTp5gE7JgsS4LG2mZAWBwDkY8110MnIGIX4GTlNRp-C_0LT-1WWCzbOR8mme5kjN1ucoW32nhzLcvRxypNUqsKsCwWrAP67ohHO_9nLoZtnucrVE3Aq_GLZdAjkiI_xzP76FrzeC0Xb3LQSc_cHK-6yVPwraBnv94i4uEYtm1Z4h4tlDt5R0hm4tCPeuji5qAtrt-puBanWoURa5FevMc82BCXWE9h_Gv-BPWxdpG32Wh_YlCTIbmw"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Kitchen</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Wooden Serving Board</h3>
+<p class="text-primary font-bold text-lg mb-4">$54.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 7 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative">
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100">
+<img alt="Ceramic Coffee Mug" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist matte finish grey ceramic coffee mug" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXLch0ZUpvfjHq1Cn-lqvCoVvT_oSyV8HBCWhpXdhEePenPZ0eRiPvFbk9xdUOWgpwYU6Kb-ckL68lPZDcXvK8DMqXIgXfgCU_Gl30c3oYpTdogAVh_k6SQSb51TbyZwXPly_D16qXF3TSr6bkTUDJF-Hz6bwIKCM6b6VmkGc15HGBIYEm0MUBCooEfhhLLn_pl5nL61cU1t0IblCnYpHVdMvIUjDcAGWaukyPg4p356ix-tu7tQVgqbGRond0bw1S0J0V5VXWqBk"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Kitchen</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Ceramic Coffee Mug</h3>
+<p class="text-primary font-bold text-lg mb-4">$15.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 8 -->
+<div class="group flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden relative opacity-60">
+<div class="absolute top-0 left-0 bg-slate-800/80 text-white text-[10px] font-bold px-3 py-1 z-10 rounded-br-lg">SOLD OUT</div>
+<button class="absolute top-3 right-3 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-full text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl fill-icon text-red-500">favorite</span>
+</button>
+<div class="aspect-square w-full overflow-hidden bg-slate-100 grayscale">
+<img alt="Eco Sunglasses" class="w-full h-full object-cover" data-alt="Retro style brown acetate sunglasses on light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqd0_tLjx1J3nBUerybWlFkQTYxujVeE77EsTb80sQFzSv8Q40ulcZcy9diafIihUzMLbHPwKlw8SQEeVvGhfsAa3UFhfWjzo2ycYxNHuh8OreGT_iJIp_BgVdIoBmg9rJ0rSkOBsUIg33WYLqIL1SgCopfUCFV0muEHK5LJuVbaVr_zNO9IxgFNLJyv93WZGmsdr8z2iwHGHToxr55DS_QUcGZG6B5ILwLNPhzeJXQtLqR_GwBhnriBBVXuwwwbKhcOHapM2CBvw"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Accessories</span>
+<h3 class="text-slate-900 font-semibold text-base mb-1 line-clamp-1">Eco Sunglasses</h3>
+<p class="text-primary font-bold text-lg mb-4">$75.00</p>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-2.5 bg-slate-200 text-slate-500 rounded-lg text-sm font-bold tracking-wide cursor-not-allowed" disabled="">
+                                Out of Stock
+                            </button>
+<button class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors">
+                                Remove from List
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Concept (Hidden by default but following design pattern) -->
+<div class="hidden flex-col items-center justify-center py-24 text-center">
+<div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-5xl">favorite</span>
+</div>
+<h3 class="text-2xl font-bold text-slate-900 mb-2">Your wishlist is empty</h3>
+<p class="text-slate-500 max-w-sm mb-8">Save items you love to keep track of them and buy them later.</p>
+<button class="px-8 py-3 bg-primary text-white rounded-lg font-bold hover:opacity-90 transition-all shadow-md">
+                    Start Shopping
+                </button>
+</div>
+</main>
+<!-- Dark-Toned Footer -->
+<footer class="bg-primary text-white mt-12 py-12 px-4 md:px-10">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<svg class="w-8 h-8 text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+</svg>
+<h2 class="text-2xl font-bold">EasyPick</h2>
+</div>
+<p class="text-white/60 text-sm leading-relaxed">
+                        Curating the best eco-friendly and sustainable products for your daily life. Better for you, better for the planet.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-6">Support</h4>
+<ul class="space-y-3 text-sm text-white/60">
+<li><a class="hover:text-white transition-colors" href="#">Contact Us</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Returns &amp; Exchanges</a></li>
+<li><a class="hover:text-white transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Company</h4>
+<ul class="space-y-3 text-sm text-white/60">
+<li><a class="hover:text-white transition-colors" href="#">Our Story</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Sustainability</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Newsletter</h4>
+<p class="text-sm text-white/60 mb-4">Join our list for exclusive offers and sustainable living tips.</p>
+<div class="flex gap-2">
+<input class="bg-white/10 border-none rounded-lg py-2 px-4 text-sm flex-1" placeholder="Your email" type="email"/>
+<button class="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-white/40 text-xs">© 2024 EasyPick Inc. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-white/40 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined text-xl">social_leaderboard</span></a>
+<a class="text-white/40 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined text-xl">language</span></a>
+<a class="text-white/40 hover:text-white transition-colors" href="#"><span class="material-symbols-outlined text-xl">camera</span></a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

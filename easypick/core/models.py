@@ -7,23 +7,34 @@ class User(AbstractUser):
         ('ADMIN', 'Admin'),
         ('SELLER', 'Seller'),
         ('CUSTOMER', 'Customer'),)
-    phone_number=models.CharField(max_length=11)
-    address=models.CharField(max_length=100)
+    phone_number=models.CharField(max_length=11,null=True)
+    address=models.CharField(max_length=100,null=True)
     profile_image=models.ImageField(upload_to='profile_image',null=True,blank=True)
-    gender=models.CharField(max_length=10)
-    age=models.IntegerField()
-    date_login=models.DateField()
-
+    gender=models.CharField(max_length=10,null=True)
+    age=models.IntegerField(null=True)
+    dob=models.DateField(null=True,blank=True)
+    date_login=models.DateField(null=True)
+    is_email_verified = models.BooleanField(default=False)
+    role = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES,
+        default='CUSTOMER'   # ✅ Default role
+    )
 class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='addresses')
+    full_name=models.CharField(max_length=100,null=True)
+    phone_number=models.CharField(max_length=15,null=True)
+    house_no=models.CharField(max_length=100,null=True)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
+    landmark=models.CharField(max_length=100,null=True)
+    address_type=models.CharField(max_length=12,null=True)
     zip_code = models.CharField(max_length=20)
     is_default = models.BooleanField(default=False)
 
 class Notification(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='notifications')
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='core_notifications')
     title = models.CharField(max_length=255)
     message = models.TextField()
     is_read = models.BooleanField(default=False)

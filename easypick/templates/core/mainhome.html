@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Shop Smarter, Choose Better</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        body { font-family: 'Inter', sans-serif; }
+        .animate-fade-in { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#141514]">
+
+<header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-10">
+        <div class="flex items-center gap-3 shrink-0">
+            <div class="bg-white/10 p-1.5 rounded-lg">
+                <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+            </div>
+            <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
+        </div>
+
+        <div class="flex-1 max-w-3xl flex items-center bg-white/10 rounded-lg px-4 py-2 focus-within:bg-white/20 transition-all">
+            <span class="material-symbols-outlined text-white/70 text-xl">search</span>
+            <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-full text-white ml-2" placeholder="Search products, categories..." type="text"/>
+        </div>
+
+        <div class="relative shrink-0">
+            <button id="accountButton" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 outline-none">
+                <span class="material-symbols-outlined text-white">person</span>
+                <span class="text-sm font-bold uppercase tracking-wider hidden md:inline">Login Options</span>
+                <span class="material-symbols-outlined text-sm text-white">expand_more</span>
+            </button>
+            
+            <div id="userDropdown" class="absolute right-0 top-full pt-2 w-56 hidden z-[100]">
+                <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in text-[#141514]">
+                    <div class="px-4 py-2 border-b border-gray-50">
+                        <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Join EasyPick</p>
+                    </div>
+                    
+                    <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                        <span class="material-symbols-outlined text-primary">shopping_bag</span>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold">Customer Login</span>
+                            <span class="text-[10px] text-gray-500">I want to shop</span>
+                        </div>
+                    </a>
+                    
+                    <div class="my-1 border-t border-gray-100"></div>
+
+                    <a href="{% url 'seller_login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                        <span class="material-symbols-outlined text-orange-600">storefront</span>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold">Seller Login</span>
+                            <span class="text-[10px] text-gray-500">I want to sell</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="w-full">
+    <section class="relative w-full h-[600px] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full bg-cover bg-center" style='background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&q=80&w=2000");'></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+            <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tight mb-6">
+                    Shop Smarter,<br/>Choose Better
+                </h1>
+                <p class="text-lg md:text-xl text-white/90 font-light mb-10 max-w-lg">
+                    Curated lifestyle essentials delivered to your door. Experience the fusion of quality, aesthetics, and sustainability.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-primary text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                        <span>Shop Now</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                    <button class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/30 transition-all flex items-center justify-center">
+                        View Collections
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 bg-white">
+        <div class="flex items-end justify-between mb-12">
+            <div>
+                <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Our Selection</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">Fashion & Apparel</h2>
+            </div>
+            <a class="flex items-center gap-2 text-primary font-bold hover:underline" href="#">
+                View all items
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
+        </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+{% for variant in clothing_products %}
+
+<div class="group">
+
+<div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-[4/5] mb-4">
+
+{% with image=variant.images.first %}
+{% if image %}
+<img src="{{ image.image.url }}" class="w-full h-full object-cover">
+{% endif %}
+{% endwith %}
+
+</div>
+
+<h3 class="text-lg font-semibold">
+{{ variant.product.name }}
+</h3>
+
+<p class="text-sm text-gray-500">
+SKU: {{ variant.sku_code }}
+</p>
+
+<span class="text-xl font-bold">
+₹{{ variant.selling_price }}
+</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+    </section>
+    <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 bg-white">
+    
+<div class="flex items-end justify-between mb-12">
+<div>
+<span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">
+Our Selection
+</span>
+
+<h2 class="text-3xl md:text-4xl font-bold text-[#141514]">
+Electronics
+</h2>
+</div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+{% for variant in electronics_products %}
+
+<div class="group">
+
+<div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-[4/5] mb-4">
+
+{% with image=variant.images.first %}
+{% if image %}
+<img src="{{ image.image.url }}" class="w-full h-full object-cover">
+{% endif %}
+{% endwith %}
+
+</div>
+
+<h3 class="text-lg font-semibold">
+{{ variant.product.name }}
+</h3>
+
+<p class="text-sm text-gray-500">
+SKU: {{ variant.sku_code }}
+</p>
+
+<span class="text-xl font-bold">
+₹{{ variant.selling_price }}
+</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</section>
+<section class="max-w-7xl mx-auto px-6 md:px-12 py-20 bg-white">
+    <div class="flex items-end justify-between mb-12">
+        <div>
+            <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">
+                Our Selection
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">
+                Home Appliances
+            </h2>
+        </div>
+        <a class="flex items-center gap-2 text-primary font-bold hover:underline" href="#">
+            View all items
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        {% for variant in home_appliances_products %}
+
+        <div class="group">
+
+            <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-[4/5] mb-4">
+
+                {% with image=variant.images.first %}
+                {% if image %}
+                <img src="{{ image.image.url }}" class="w-full h-full object-cover">
+                {% else %}
+                <img src="https://via.placeholder.com/300" class="w-full h-full object-cover">
+                {% endif %}
+                {% endwith %}
+
+            </div>
+
+            <h3 class="text-lg font-semibold">
+                {{ variant.product.name }}
+            </h3>
+
+            <p class="text-sm text-gray-500">
+                SKU: {{ variant.sku_code }}
+            </p>
+
+            <span class="text-xl font-bold">
+                ₹{{ variant.selling_price }}
+            </span>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+</section>
+</main>
+<footer class="bg-[#4b5d4f] text-white pt-16 pb-10 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+
+        <!-- About Section -->
+        <div>
+            <h3 class="text-lg font-bold mb-4 uppercase tracking-wider">About EasyPick</h3>
+            <p class="text-sm text-white/80">
+                EasyPick is your go-to platform for curated lifestyle essentials. 
+                Shop smarter, choose better, and enjoy quality products delivered to your doorstep.
+            </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+            <h3 class="text-lg font-bold mb-4 uppercase tracking-wider">Quick Links</h3>
+            <ul class="space-y-2 text-sm text-white/80">
+                <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Shop</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Collections</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Customer Service -->
+        <div>
+            <h3 class="text-lg font-bold mb-4 uppercase tracking-wider">Customer Service</h3>
+            <ul class="space-y-2 text-sm text-white/80">
+                <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Returns</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Shipping</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">FAQs</a></li>
+            </ul>
+        </div>
+
+        <!-- Contact & Social -->
+        <div>
+            <h3 class="text-lg font-bold mb-4 uppercase tracking-wider">Contact</h3>
+            <p class="text-sm text-white/80 mb-3">
+                123 EasyPick Street<br/>
+                Thiruvananthapuram, Kerala, India
+            </p>
+            <p class="text-sm text-white/80 mb-3">
+                Email: support@easypick.com<br/>
+                Phone: +91 98765 43210
+            </p>
+            <div class="flex gap-4 mt-2">
+    <!-- Facebook -->
+    <a href="#" class="hover:text-white transition-colors">
+        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+            <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.877v-6.987H7.898v-2.89h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33V21.877C18.343 21.128 22 16.991 22 12z"/>
+        </svg>
+    </a>
+
+    <!-- Twitter -->
+    <a href="#" class="hover:text-white transition-colors">
+        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 0.86 4.48 4.48 0 0 0 1.98-2.48 9.05 9.05 0 0 1-2.85 1.09A4.52 4.52 0 0 0 16.11 2c-2.48 0-4.49 2-4.49 4.47 0 .35.04.69.11 1.01-3.74-.19-7.06-1.98-9.27-4.71a4.45 4.45 0 0 0-.61 2.25c0 1.55.78 2.92 1.96 3.73a4.5 4.5 0 0 1-2.03-.56v.06c0 2.17 1.55 3.99 3.61 4.41a4.51 4.51 0 0 1-2.02.08c.57 1.78 2.23 3.07 4.19 3.11A9.04 9.04 0 0 1 2 19.54a12.77 12.77 0 0 0 6.92 2.03c8.3 0 12.85-6.88 12.85-12.85 0-.2 0-.42-.01-.62A9.18 9.18 0 0 0 23 3z"/>
+        </svg>
+    </a>
+
+    <!-- Instagram -->
+    <a href="#" class="hover:text-white transition-colors">
+        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+            <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm5 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.5-.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+        </svg>
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="#" class="hover:text-white transition-colors">
+        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+            <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3V9zm7.5 0h3.75v1.71h.05c.52-.98 1.79-2.01 3.68-2.01 3.94 0 4.67 2.6 4.67 5.99V21h-4v-5.44c0-1.3-.03-2.97-1.81-2.97-1.81 0-2.08 1.41-2.08 2.88V21h-4V9z"/>
+        </svg>
+    </a>
+</div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="mt-10 border-t border-white/20 pt-6 text-center text-xs text-white/50">
+        &copy; 2026 EasyPick. Crafted for Better Living.
+    </div>
+</footer>
+
+<script>
+    const btn = document.getElementById('accountButton');
+    const menu = document.getElementById('userDropdown');
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.add('hidden');
+        }
+    });
+</script>
+
+</body>
+</html>

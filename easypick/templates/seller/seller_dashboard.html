@@ -1,0 +1,217 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="p-8 space-y-8">
+<!-- Welcome & Summary -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight">Dashboard Overview</h2>
+<p class="text-primary/60 mt-1">Here is what's happening with your shop today.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-primary/10 rounded-lg text-sm font-medium hover:bg-neutral-bg transition-colors">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                            Last 30 Days
+                        </button>
+<a href="{% url 'add_product' %}" 
+   class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+
+<span class="material-symbols-outlined text-lg">add</span>
+Add Product
+
+</a>
+</div>
+</div>
+<!-- Key Metrics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-sm font-medium text-primary/60 uppercase tracking-wider">Total Products</p>
+<h3 class="text-3xl font-bold mt-2">{{ total_products }}</h3>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="flex items-center text-xs font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                                2
+                            </span>
+<span class="text-xs text-primary/40 italic">vs last month</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-sm font-medium text-primary/60 uppercase tracking-wider">Orders Pending</p>
+<h3 class="text-3xl font-bold mt-2">18</h3>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded">Processing</span>
+<span class="text-xs text-primary/40 italic">Ready for shipment</span>
+</div>
+</div>
+<div class="bg-secondary/10 p-6 rounded-xl border border-secondary/20 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-sm font-medium text-primary/70 uppercase tracking-wider">Low Stock Alert</p>
+<h3 class="text-3xl font-bold mt-2 text-primary">{{ low_stock_count }} items</h3>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-xs text-primary/60 italic underline cursor-pointer">View inventory</span>
+<span class="material-symbols-outlined text-secondary">warning</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Sales Chart Placeholder -->
+<div class="lg:col-span-2 bg-white p-8 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<h4 class="text-lg font-bold">Sales Performance</h4>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-xs font-medium text-primary/60">Revenue</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-secondary"></div>
+<span class="text-xs font-medium text-primary/60">Orders</span>
+</div>
+</div>
+</div>
+<!-- Visual Chart Mockup -->
+<div class="h-64 flex items-end justify-between gap-2">
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[40%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[60%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[45%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[80%]"></div>
+<div class="flex-1 bg-primary rounded-t-lg h-[90%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[70%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[55%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[65%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[50%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[75%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[85%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[60%]"></div>
+</div>
+<div class="flex justify-between mt-4 px-1 text-[10px] font-bold text-primary/40 uppercase tracking-widest">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+</div>
+</div>
+<!-- Right Column: Quick Status -->
+<div class="space-y-6">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm h-full">
+<h4 class="text-lg font-bold mb-4">Store Overview</h4>
+
+<ul class="space-y-4">
+
+<li class="flex items-center justify-between pb-4 border-b border-primary/5">
+<div>
+<p class="text-sm font-bold">Total Orders</p>
+<p class="text-xs text-primary/60">{{ total_orders }}</p>
+</div>
+<span class="text-secondary text-sm font-bold">📦</span>
+</li>
+
+<li class="flex items-center justify-between pb-4 border-b border-primary/5">
+<div>
+<p class="text-sm font-bold">Total Products</p>
+<p class="text-xs text-primary/60">{{ total_products }}</p>
+</div>
+<span class="text-primary text-sm font-bold">🛍️</span>
+</li>
+
+<li class="flex items-center justify-between pb-4 border-b border-primary/5">
+<div>
+<p class="text-sm font-bold">Total Revenue</p>
+<p class="text-xs text-primary/60">₹{{ total_revenue }}</p>
+</div>
+<span class="text-green-600 text-sm font-bold">💰</span>
+</li>
+
+<li class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">Low Stock</p>
+<p class="text-xs text-primary/60">{{ low_stock_count }} items</p>
+</div>
+<span class="text-red-500 text-sm font-bold">⚠️</span>
+</li>
+
+</ul>
+<div class="mt-8 p-4 bg-neutral-bg/50 rounded-lg">
+<p class="text-xs font-medium text-primary/70 leading-relaxed">
+                                    “Great job! Your store is gaining traction this week—keep the momentum going.”
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Orders to Ship Table -->
+<div class="bg-white rounded-xl border border-primary/5 shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-primary/5 flex items-center justify-between">
+<h4 class="text-lg font-bold">Orders to Ship</h4>
+<a class="text-sm font-bold text-secondary hover:underline" href="#">View All Orders</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-neutral-bg/30 text-[11px] font-bold text-primary/50 uppercase tracking-widest">
+<th class="px-8 py-4">Order ID</th>
+<th class="px-8 py-4">Customer</th>
+<th class="px-8 py-4">Items</th>
+<th class="px-8 py-4">Date</th>
+<th class="px-8 py-4">Amount</th>
+<th class="px-8 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+
+{% for order in orders %}
+<tr class="hover:bg-neutral-bg/20 transition-colors">
+
+<td class="px-8 py-4 text-sm font-bold">
+{{order.order_id}}
+</td>
+
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<span class="text-sm font-medium">
+{{ order.customer.first_name }} {{ order.customer.last_name }}
+</span>
+</div>
+</td>
+
+<td class="px-8 py-4 text-sm text-primary/70">
+{{ order.items.count }} item(s)
+</td>
+
+<td class="px-8 py-4 text-sm text-primary/70">
+{{ order.order_date }}
+</td>
+<td class="px-8 py-4 text-sm text-primary/70">
+₹{{ order.total_amount }}
+</td>
+
+<td class="px-8 py-4 text-right">
+<a href="{% url 'order_list' %}" 
+class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg">
+View
+</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+<!-- Empty State (Hidden) -->
+<!-- 
+                    <div class="flex flex-col items-center justify-center p-20 text-center">
+                        <span class="material-symbols-outlined text-secondary text-5xl mb-4">check_circle</span>
+                        <p class="text-lg font-bold">All caught up!</p>
+                        <p class="text-primary/60 text-sm">No new orders waiting to be shipped.</p>
+                    </div>
+                    -->
+</div>
+</div>
+{% endblock %}

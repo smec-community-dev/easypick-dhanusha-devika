@@ -1,0 +1,124 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Seller Profile{% endblock %}
+
+{% block content %}
+<div class="pt-20 text-center">
+    <h1 class="text-2xl font-bold text-primary">
+        Seller Profile
+    </h1>
+</div>
+<!-- Page Title -->
+{% comment %} <h1 class="text-2xl font-bold text-[#4b5d4f]">
+    Seller Profile
+</h1> {% endcomment %}
+<!-- Notification Icon (From Reference) -->
+
+<!-- SIDEBAR -->
+<aside id="sidebar"
+class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-full transform -translate-x-full transition-transform duration-300 fixed top-16 left-0 z-40">
+
+<nav class="py-4">
+<div class="px-3 space-y-1">
+
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-100"
+href="{% url 'seller_dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white"
+href="">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-medium">Profile</span>
+</a>
+
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-100"
+href="{% url 'order_list' %}">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-medium">Orders</span>
+</a>
+
+</div>
+</nav>
+
+</aside>
+<main class="h-[calc(100vh-80px)] flex items-center justify-center px-4">
+
+<div class="bg-white rounded-2xl shadow-md border border-slate-200 w-full max-w-2xl">
+
+<!-- HEADER -->
+<div class="p-5 flex flex-col items-center border-b bg-slate-50">
+
+<div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold">
+    {{ seller.store_name|slice:":1"|upper }}
+</div>
+
+<h2 class="text-lg font-bold text-slate-800 mt-2">
+    {{ seller.store_name }}
+</h2>
+
+<p class="text-xs text-slate-500">Verified Seller</p>
+
+</div>
+
+<!-- DETAILS -->
+<div class="p-4 space-y-4">
+
+<div class="grid grid-cols-2 gap-4">
+
+<div class="bg-slate-50 p-3 rounded-lg border">
+<p class="text-xs text-slate-500">GST</p>
+<p class="font-semibold text-sm">{{ seller.gst_number }}</p>
+</div>
+
+<div class="bg-slate-50 p-3 rounded-lg border">
+<p class="text-xs text-slate-500">PAN</p>
+<p class="font-semibold text-sm">{{ seller.pan_number }}</p>
+</div>
+
+<div class="bg-slate-50 p-3 rounded-lg border">
+<p class="text-xs text-slate-500">Bank</p>
+<p class="font-semibold text-sm">{{ seller.bank_account_number }}</p>
+</div>
+
+<div class="bg-slate-50 p-3 rounded-lg border">
+<p class="text-xs text-slate-500">IFSC</p>
+<p class="font-semibold text-sm">{{ seller.ifsc_code }}</p>
+</div>
+
+</div>
+
+<div class="bg-slate-50 p-3 rounded-lg border">
+<p class="text-xs text-slate-500">Address</p>
+<p class="text-sm">{{ seller.business_address }}</p>
+</div>
+
+<div class="flex justify-center pt-2">
+<a href="{% url 'edit_profile' %}"
+class="bg-primary text-white px-6 py-2 rounded-lg text-sm">
+Edit Profile
+</a>
+</div>
+
+</div>
+
+</div>
+
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomNav -->
+
+<!-- END: BottomNav -->
+<!-- BEGIN: JavaScriptHandlers -->
+<script>
+ const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+});
+</script>
+<!-- END: JavaScriptHandlers -->
+</body></html>
+{% endblock %}

@@ -31,7 +31,7 @@ class CartItems(models.Model):
     )
 
     product = models.ForeignKey(
-        Product,
+        'seller.Product',
         on_delete=models.CASCADE
     )
 
@@ -45,13 +45,13 @@ class CartItems(models.Model):
 class Wishlist(models.Model):
 
     user = models.ForeignKey(
-        User,
+        'core.User',
         on_delete=models.CASCADE,
         related_name="wishlist"
     )
 
     product = models.ForeignKey(
-        Product,
+        'seller.Product',
         on_delete=models.CASCADE
     )
 
@@ -69,7 +69,7 @@ class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
 
     customer = models.ForeignKey(
-        User,
+        'core.User',
         on_delete=models.CASCADE,
         related_name="orders"
     )
@@ -89,6 +89,9 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default='Pending'
     )
+    phone = models.CharField(max_length=15, blank=True, null=True)
+
+    address = models.TextField(blank=True, null=True)
 
     total_amount = models.DecimalField(
         max_digits=10,
@@ -131,7 +134,7 @@ class OrderItem(models.Model):
     )
 
     product = models.ForeignKey(
-        'Product',
+        'seller.Product',
         on_delete=models.CASCADE
     )
 
@@ -159,13 +162,13 @@ class Review(models.Model):
     review_id = models.AutoField(primary_key=True)
 
     product = models.ForeignKey(
-        'Product',
+        'seller.Product',
         on_delete=models.CASCADE,
         related_name="reviews"
     )
 
     user = models.ForeignKey(
-        User,
+        'core.User',
         on_delete=models.CASCADE,
         related_name="user_reviews"
     )
@@ -199,7 +202,7 @@ class ReviewImage(models.Model):
 class OrderHistory(models.Model):
 
     order = models.ForeignKey(
-        'Order',
+        Order,
         on_delete=models.CASCADE,
         related_name="history"
     )
@@ -230,7 +233,7 @@ class OrderNotification(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="notifications"
+        related_name='order_notifications'
     )
 
     order = models.ForeignKey(

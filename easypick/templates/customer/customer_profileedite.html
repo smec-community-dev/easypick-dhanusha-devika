@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "background-light": "#e8eae6",
+                        "background-dark": "#181a18",
+                        "neutral-gray": "#737874",
+                        "border-gray": "#e0e1e0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<title>Edit Profile - EasyPick</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-primary">
+<!-- Top Navigation Bar (Dark Theme) -->
+<header class="bg-primary sticky top-0 z-50 w-full px-6 py-3 shadow-md">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-white p-1 rounded">
+<svg class="size-6 text-primary" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-white text-xl font-bold tracking-tight">EasyPick</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-semibold border-b-2 border-secondary pb-1" href="#">Edit</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-white/80 hover:text-white relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 size-2 bg-secondary rounded-full"></span>
+</button>
+<div class="size-10 rounded-full border-2 border-secondary/50 overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Professional headshot of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx4cQQ2dzx5k0tW_6oHjc3WsiIucXWYW1IeOpj6S9hxGOf7c0M7C9vq3-siVlrO8GBdV3WWbKcfn-BaZxDiPO8hYawhQlDn6-HBvZ6rZNXv-9Ti3b7rU8M7jImWl6Ciz8t8ExVY1cnnbxCiD_11ULocc5y7hbyFEQADLz3Fnq5Pfu1DAu0w8DP31UWf8BvYeh_QYnvK-nrShphqlCj9asA1BMew15JAIMswLXk5wDML2Y0DXjeWkZEnN0QJ1OvuSaHLoSWvQ46cX4"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-8 text-sm font-medium text-neutral-gray">
+<a class="hover:text-primary" href="#">Settings</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-semibold">Edit Profile</span>
+</nav>
+<div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-border-gray/50 overflow-hidden">
+<!-- Header Section -->
+<div class="p-8 border-b border-border-gray/30">
+<h2 class="text-3xl font-black tracking-tight text-primary dark:text-white">Edit Profile</h2>
+<p class="text-neutral-gray mt-2">Manage your public presence and account information.</p>
+</div>
+<div class="p-8">
+<form class="space-y-10">
+<!-- Profile Picture Upload Section -->
+<section class="flex flex-col md:flex-row items-center gap-8 pb-10 border-b border-border-gray/20">
+<div class="relative group">
+<div class="size-32 rounded-full overflow-hidden border-4 border-background-light shadow-inner">
+<img alt="Profile picture preview" class="w-full h-full object-cover" data-alt="User profile picture display for editing" id="profile-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4uCm7QY5f2GU0e6_5X6Wh4oHic-btt68e5jnkaVvOrJ-5b6pGg3ZUtY4b6JrdfMei-IvfZH8Keo4y0aVxpbIdmgqqEHSMzsDyZtjbmdTxRzJQYRqxy8wRQNkkBZgEl0Iplh6ExpkU2XvwqekUU6zturnbd4RejmpGxrkPXXWuyxsiiHfRExY7QBhO_S9GNWyIhK6DvUf1LfoFbWgVfQZ1RfyhT-t4CvQXMmSqqh5-spVOuMTpNsEiGjZ6ZrjyO-JBFEILQxPK7Ps"/>
+</div>
+<label class="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity" for="photo-upload">
+<span class="material-symbols-outlined">photo_camera</span>
+</label>
+<input accept="image/*" class="hidden" id="photo-upload" type="file"/>
+</div>
+<div class="flex-1 text-center md:text-left space-y-3">
+<h3 class="text-lg font-bold text-primary dark:text-white">Profile Photo</h3>
+<p class="text-sm text-neutral-gray max-w-sm">
+                                Recommended: Square JPG or PNG, at least 400x400px. Max size 2MB.
+                            </p>
+<div class="flex flex-wrap justify-center md:justify-start gap-3">
+<button class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm">upload</span>
+                                    Change Photo
+                                </button>
+<button class="px-4 py-2 bg-transparent text-red-600 border border-red-200 text-sm font-bold rounded-lg hover:bg-red-50 transition-all" type="button">
+                                    Remove
+                                </button>
+</div>
+</div>
+</section>
+<!-- Form Fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Full Name -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-primary dark:text-white" for="full-name">Full Name</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-neutral-gray/60 text-xl">person</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-800 border border-border-gray rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" id="full-name" placeholder="Enter your full name" type="text" value="Alex Henderson"/>
+</div>
+</div>
+<!-- Email Address -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-primary dark:text-white" for="email">Email Address</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-neutral-gray/60 text-xl">mail</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-800 border border-border-gray rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" id="email" placeholder="name@company.com" type="email" value="alex.henderson@example.com"/>
+</div>
+</div>
+<!-- Phone Number -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-primary dark:text-white" for="phone">Phone Number</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-neutral-gray/60 text-xl">call</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-800 border border-border-gray rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" id="phone" placeholder="+1 (000) 000-0000" type="tel" value="+1 (555) 000-0000"/>
+</div>
+</div>
+<!-- Location (Optional based on typical profile patterns) -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-primary dark:text-white" for="location">Location</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-neutral-gray/60 text-xl">location_on</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-800 border border-border-gray rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" id="location" placeholder="City, Country" type="text" value="San Francisco, CA"/>
+</div>
+</div>
+<!-- Biography (Full Width) -->
+<div class="md:col-span-2 space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-sm font-bold text-primary dark:text-white" for="bio">Bio</label>
+<span class="text-xs text-neutral-gray">240 characters remaining</span>
+</div>
+<textarea class="w-full px-4 py-3 bg-white dark:bg-neutral-800 border border-border-gray rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none resize-none" id="bio" placeholder="Tell us a little about yourself..." rows="4">Passionate traveler and food enthusiast. Always looking for the next hidden gem and EasyPick makes it effortless to manage my bookings on the go!</textarea>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6 mt-8 border-t border-border-gray/20">
+<button class="w-full sm:w-auto px-8 py-3 bg-white dark:bg-neutral-800 border border-border-gray text-primary dark:text-white font-bold rounded-lg hover:bg-background-light transition-all order-2 sm:order-1" type="button">
+                            Cancel
+                        </button>
+<button class="w-full sm:w-auto px-10 py-3 bg-primary text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 hover:-translate-y-0.5 transition-all order-1 sm:order-2 flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-lg">save</span>
+                            Save Changes
+                        </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="mt-12 p-6 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20">
+<div class="flex items-start gap-4">
+<div class="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+<span class="material-symbols-outlined text-red-600">report_problem</span>
+</div>
+<div class="flex-1">
+<h4 class="text-lg font-bold text-red-800 dark:text-red-400">Danger Zone</h4>
+<p class="text-sm text-red-700 dark:text-red-300/80 mt-1">Once you delete your account, there is no going back. Please be certain.</p>
+</div>
+<button class="px-4 py-2 text-sm font-bold text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition-all" type="button">
+                    Delete Account
+                </button>
+</div>
+</div>
+</main>
+<footer class="mt-12 py-8 border-t border-border-gray/30 bg-white/50 dark:bg-neutral-900/50">
+<div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="text-sm text-neutral-gray">© 2024 EasyPick Inc. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-sm text-neutral-gray hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-sm text-neutral-gray hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-sm text-neutral-gray hover:text-primary transition-colors" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>

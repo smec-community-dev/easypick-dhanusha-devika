@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick Seller Inventory Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#4a5d4e",
+                "muted-green": "#a2b08a",
+                "background-light": "#e8eae6",
+                "background-dark": "#4a5d4e",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }</script>
+<style>body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-item-active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #a2b08a;
+        }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-100 bg-[#e8eae6]">
+<div class="flex h-screen overflow-hidden">
+<!-- Dark Sidebar (Inherited style from SCREEN_23) -->
+<aside class="w-64 bg-[#4a5d4e] text-white flex flex-col shrink-0">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">shopping_basket</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">EasyPick</h1>
+<p class="text-xs text-white/50">Seller Portal</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded sidebar-item-active bg-white/5 text-white transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded hover:bg-white/5 transition-colors text-white/70" href="#">
+<span class="material-symbols-outlined opacity-70">shopping_cart</span>
+<span class="text-sm font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded hover:bg-white/5 transition-colors text-white/70" href="#">
+<span class="material-symbols-outlined opacity-70">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded hover:bg-white/5 transition-colors text-white/70" href="#">
+<span class="material-symbols-outlined opacity-70">payments</span>
+<span class="text-sm font-medium">Payouts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded hover:bg-white/5 transition-colors text-white/70" href="#">
+<span class="material-symbols-outlined opacity-70">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-white/10">
+<div class="flex items-center gap-3 p-2 rounded hover:bg-white/5 transition-colors cursor-pointer">
+<img alt="" class="w-8 h-8 rounded-full" data-alt="Seller profile picture placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1xAh97e3573iSjkRuzPe7FzdcB_KAdbzsO9VQzn-iNd7XAWJ4wDYMzNqcQW95ICDVVtW_m1RznHR6mgG6rYhJEL_6bBwWT-dXQ0hEmVKcQJK4nyNRo8vICTndqetTnUdqolfRBxTiirvs8n3D6EvHsMMcU6m04XE6bCKdLMKBlJ32-EVj9HyK-jSHTn5BVI_jKHRaz5BSsvnzaP8tF7jO-EjJSH8sD0nqLo5Ju0krsPvquiUJl3ez9xKpBTUOefZSsRNwS7NPsSs"/>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-medium truncate">Alexander Green</p>
+<p class="text-[10px] text-white/50 truncate">Shop: EcoLiving Co.</p>
+</div>
+<span class="material-symbols-outlined text-sm opacity-50">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto bg-background-light dark:bg-background-dark">
+<!-- Top Header -->
+<header class="h-20 border-b border-[#a2b08a]/20 px-8 flex items-center justify-between bg-white dark:bg-[#4a5d4e]">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Inventory Management</h2>
+<p class="text-sm text-slate-500">Monitor and update your product listings</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-[#e8eae6] dark:bg-white/10 border-none rounded-lg focus:ring-2 focus:ring-primary/40 text-sm w-80" placeholder="Search SKU, name, or category..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-all font-semibold shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+<span>Add Product</span>
+</button>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Metrics Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-[#a2b08a]/20 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Products</span>
+<span class="material-symbols-outlined text-primary">inventory</span>
+</div>
+<p class="text-3xl font-bold">1,284</p>
+<p class="text-xs text-green-600 mt-2 font-medium">+12 from last month</p>
+</div>
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-[#a2b08a]/20 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400">Low Stock</span>
+<span class="material-symbols-outlined text-amber-500">warning</span>
+</div>
+<p class="text-3xl font-bold">12</p>
+<p class="text-xs text-amber-600 mt-2 font-medium">Requires attention</p>
+</div>
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-[#a2b08a]/20 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400">Out of Stock</span>
+<span class="material-symbols-outlined text-red-500">error</span>
+</div>
+<p class="text-3xl font-bold">4</p>
+<p class="text-xs text-red-600 mt-2 font-medium">Loss in revenue</p>
+</div>
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-[#a2b08a]/20 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400">Inventory Value</span>
+<span class="material-symbols-outlined text-primary">attach_money</span>
+</div>
+<p class="text-3xl font-bold">$42.8k</p>
+<p class="text-xs text-slate-500 mt-2 font-medium">Estimated value</p>
+</div>
+</div>
+<!-- Table Controls Section -->
+<div class="bg-white dark:bg-white/5 rounded-xl shadow-sm border border-[#a2b08a]/20 overflow-hidden">
+<div class="p-4 border-b border-[#a2b08a]/20 flex flex-wrap gap-3 items-center justify-between bg-white/50">
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm bg-white dark:bg-slate-800 hover:bg-slate-50">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm bg-white dark:bg-slate-800 hover:bg-slate-50">
+<span class="material-symbols-outlined text-lg">sort</span>
+<span>Sort: Newest</span>
+</button>
+</div>
+<div class="flex gap-2">
+<span class="text-sm text-slate-500 py-1.5">Showing 1-10 of 1,284 results</span>
+</div>
+</div>
+<!-- Inventory Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#e8eae6] dark:bg-white/5 text-slate-500 uppercase text-[11px] font-bold tracking-widest border-b border-[#a2b08a]/20">
+<th class="px-6 py-4">Product</th>
+<th class="px-6 py-4">Category</th>
+<th class="px-6 py-4">Price</th>
+<th class="px-6 py-4 text-center">Stock</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Updated</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+<!-- Row 1: Normal -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img alt="" class="w-full h-full object-cover" data-alt="Red athletic running shoe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk2Jy89l_PZbwvJda1_vmEO3rxvpgWAPVLDGu7trFnK3-yCyQG-KNoihjyLlSCpRzR7EN9OW6VguyIonml2hAN8LVEGBlmNnM8r-SfCXS5W1CM2LDCE5A4N-4vIFA32e9WlxI2X2DgSzsHfWUIjslMCm6OWWOhYR61VzjBiGuALAbjsAVPsC4Gin8rUEE9e4LJsBnmgxVJRFU1VLDgbvwUUGVqqANmzKkr9GFFVNbt4bSkI113BXP2VtSBeycjPAdMiWzc3Y8EiAE"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Velocity Run X1</p>
+<p class="text-xs text-slate-500 font-mono">SKU: SHO-VRC-001</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-600 dark:text-slate-300">Footwear</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$129.00</td>
+<td class="px-6 py-4 text-center">
+<span class="text-sm font-medium">84</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                            In Stock
+                                        </span>
+</td>
+<td class="px-6 py-4 text-xs text-slate-500">2h ago</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-red-50 text-red-500">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Low Stock -->
+<tr class="bg-amber-50/30 dark:bg-amber-900/5 hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-colors group border-l-4 border-amber-400">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img alt="" class="w-full h-full object-cover" data-alt="Minimalist white wristwatch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX-zVbva5Kp2oae8YaWIG9opGrp4MqvwRfRCsW0M4X5cNa6k7Oc5OEv4Lvz81uPyTtvV_mR5UUDkj2TnO1j6A0oXU_hpKHMMFQTBbjGV29Z0Qecss-M1wyieiMWzUefwQahCJ594amcd-bGno3l_KXOa8lo1_1_1L21QNlgKkKubGb4o_-Z6jQ3-GXbCiTBfDLaH4wKBTEBtXrHNcQ96QnxnbkGAMtDNP5EjJ2hKxr2gZlxVERTkqAT904SWGgboCmiUpEJp3XelM"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">EcoTime Minimalist Watch</p>
+<p class="text-xs text-slate-500 font-mono">SKU: WAT-EMW-12</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-600 dark:text-slate-300">Accessories</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$89.00</td>
+<td class="px-6 py-4 text-center">
+<span class="text-sm font-bold text-amber-600">8</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                                            Low Stock
+                                        </span>
+</td>
+<td class="px-6 py-4 text-xs text-slate-500">5h ago</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-red-50 text-red-500">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Out of Stock -->
+<tr class="bg-red-50/20 dark:bg-red-900/5 hover:bg-red-50/40 dark:hover:bg-red-900/10 transition-colors group border-l-4 border-red-500">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700 opacity-60">
+<img alt="" class="w-full h-full object-cover grayscale" data-alt="Black wireless headphones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdX3vyIgmIff8f2t_HLHaWuwP4PEje5Ot7xhlCZBcxWnkjek_pYVgKyuxIEQemww6asFdi6nhtWrVZTotv4rBh4jZKZAHFkva3s4kVVimtrOj-qWj-OfztcbuhDyC5JxbZlQfpn9TQW9MjcQ6Lwg40lHO2AEXxNJdf5d__jJUA3iNhlCLVB5MQXGGR2_-ANOi5qicE1uxb7PXRE2Rz66LbhLW4AJc1k9_Jit7LRiuiDm6QdP4zwxz31Ce8NwFy-fdjazUuXHo6nRQ"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-400 dark:text-slate-500">SonicMax Pro Headphones</p>
+<p class="text-xs text-slate-400 font-mono">SKU: AUD-SMP-88</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-400">Audio</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm text-slate-400">$199.99</td>
+<td class="px-6 py-4 text-center">
+<span class="text-sm font-bold text-red-600">0</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300">
+                                            Out of Stock
+                                        </span>
+</td>
+<td class="px-6 py-4 text-xs text-slate-400">1d ago</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-red-50 text-red-500">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Normal -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img alt="" class="w-full h-full object-cover" data-alt="Classic aviator sunglasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-GPnB3pV4TISnVnOfTM_9KPOX6poIPWx67waQQPcNjpdFsXM3fAw86uUUb4WC4f7EWhIMBSfaXe3MppQkaZbyYfjJHndUT787YyUjovIasBP5R1Kw9Pw0c692n0JktwkKDm6gAZBq4y1jxgLEKoC-JTVqhHF_nxUaPk51LPN0TPhvWYjKBbVXfDuw1bdu5KZLARerXbMP_13c2coheyVE7i_IyHu7i0oL9Q4fClt8VpIvlW5Gznmxuzxxx1wMzNTcAR6MqWpO3FU"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Aviator Classic Gold</p>
+<p class="text-xs text-slate-500 font-mono">SKU: SUN-ACG-04</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-600 dark:text-slate-300">Eyewear</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$155.00</td>
+<td class="px-6 py-4 text-center">
+<span class="text-sm font-medium">42</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                            In Stock
+                                        </span>
+</td>
+<td class="px-6 py-4 text-xs text-slate-500">3d ago</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-red-50 text-red-500">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- More placeholder rows for visual depth -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
+<img alt="" class="w-full h-full object-cover" data-alt="Polaroid vintage camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0cOtHr1JVHL5wJqIzB-KeQKxHYdBd0LkACOOHN4lUpV4Sbnuwx3Pn9tZcR2rb8KUy8oa0vKH78Jk-Mhg7XNNfKnuy_gYfI5x2CWLhI0EjODcsCPIMfRDKDsNDdJNXrNKfgYR2xTObk56tLb5HFsvdpbUwH3tx9pKeXaRZyJPLpjByd-ouFu82CywQvsl1tpJpms69Z9-3B2KxZnhEr8k4qPEUWAFuv9HXTnjdo4h7gNe26N7dT2wGfR8o33SX58T4KU3P1KGVBgE"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-white">InstaSnap Retro Camera</p>
+<p class="text-xs text-slate-500 font-mono">SKU: CAM-ISR-99</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-600 dark:text-slate-300">Electronics</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$249.50</td>
+<td class="px-6 py-4 text-center">
+<span class="text-sm font-medium">18</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                            In Stock
+                                        </span>
+</td>
+<td class="px-6 py-4 text-xs text-slate-500">1w ago</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-red-50 text-red-500">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-primary/10 flex items-center justify-between bg-slate-50/30 dark:bg-slate-900/30">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-primary text-white font-bold text-sm">1</button>
+<button class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 text-sm">2</button>
+<button class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 text-sm">3</button>
+<span class="px-2 self-center">...</span>
+<button class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 text-sm">129</button>
+<button class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="text-sm text-slate-500">
+                            Items per page: 
+                            <select class="ml-2 bg-transparent border-none text-sm font-semibold focus:ring-0 cursor-pointer">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer-style Help Center Bar -->
+<footer class="mt-auto px-8 py-6 flex items-center justify-between text-slate-400 text-xs border-t border-primary/5">
+<div class="flex items-center gap-6">
+<span>© 2024 EasyPick Marketplace</span>
+<a class="hover:text-primary" href="#">Terms</a>
+<a class="hover:text-primary" href="#">Privacy</a>
+<a class="hover:text-primary" href="#">Support</a>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span>Systems Operational</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

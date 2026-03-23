@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Seller Registration - EasyPick</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "primary-light": "#a2b08a",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                        "surface": "#e8eae6",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+    <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/20 bg-primary px-6 md:px-40 py-4 text-white">
+            <div class="flex items-center gap-4">
+                <div class="size-6 text-primary-light">
+                    <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">EasyPick</h2>
+            </div>
+            <div class="h-10 w-10 rounded-full bg-primary-light/30 border border-white/20 flex items-center justify-center overflow-hidden">
+                <span class="material-symbols-outlined text-white">person</span>
+            </div>
+        </header>
+
+        <main class="px-6 md:px-40 flex flex-1 justify-center py-12">
+            <div class="layout-content-container flex flex-col max-w-[800px] flex-1">
+                <div class="flex flex-col gap-4 mb-8">
+                    <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-[-0.033em]">Seller Registration</h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-lg font-normal">
+                        Create your merchant account and start building your digital storefront today.
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 p-8 shadow-sm">
+                    <form  class="flex flex-col gap-6" method="POST">
+                        {% csrf_token %}
+                        <div class="flex flex-col gap-2">
+                            <span class="text-sm font-semibold text-primary uppercase tracking-wider">Account Information</span>
+                            <div class="h-px bg-slate-100 dark:bg-zinc-800 w-full mb-2"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">First Name</p>
+                                <input name="first_name" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" type="text" required/>
+                            </label>
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Last Name</p>
+                                <input name="last_name" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" type="text" required/>
+                            </label>
+                        </div>
+                        <label class="flex flex-col gap-2">
+                            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Email Address</p>
+                            <input name="email" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" type="email" required/>
+                        </label>
+
+                        <div class="flex flex-col gap-2 mt-4">
+                            <span class="text-sm font-semibold text-primary uppercase tracking-wider">Security</span>
+                            <div class="h-px bg-slate-100 dark:bg-zinc-800 w-full mb-2"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Password</p>
+                                <input name="password" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" type="password" required/>
+                            </label>
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Confirm Password</p>
+                                <input name="confirm_password" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" type="password" required/>
+                            </label>
+                        </div>
+
+                        <div class="flex flex-col gap-2 mt-4">
+                            <span class="text-sm font-semibold text-primary uppercase tracking-wider">Store Details</span>
+                            <div class="h-px bg-slate-100 dark:bg-zinc-800 w-full mb-2"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Store Name</p>
+                                <input id="id_store_name" name="store_name" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" placeholder="e.g. Sunny Seeds" type="text" required/>
+                            </label>
+                            <label class="flex flex-col gap-2">
+                                <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Store Slug (URL)</p>
+                                <input id="id_store_slug" name="store_slug" class="form-input w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 px-4 h-12" placeholder="sunny-seeds" type="text" required/>
+                            </label>
+                        </div>
+
+                        <label class="flex flex-col gap-2 mt-4">
+                            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Business Address</p>
+                            <textarea name="business_address" rows="3" class="form-textarea w-full rounded-lg border-slate-200 dark:border-zinc-700 dark:bg-zinc-800 p-4" placeholder="Full street address, city, state, zip" required></textarea>
+                        </label>
+
+                        <button class="w-full bg-primary hover:bg-primary/90 text-white h-14 rounded-lg font-bold text-lg shadow-md transition-all active:scale-[0.98] mt-4" type="submit">
+                            Register as Seller
+                        </button>
+                    </form>
+                </div>
+
+                <div class="mt-8 flex justify-center items-center gap-2">
+                    <p class="text-slate-600 dark:text-slate-400">Already have a seller account?</p>
+                    <a class="text-primary font-bold hover:underline" href="#">Sign In</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="px-6 md:px-40 py-10 bg-slate-100 dark:bg-zinc-950 border-t border-slate-200 dark:border-zinc-900 mt-12 text-center">
+            <p class="text-xs text-slate-400">© 2026 EasyPick Merchant Inc.</p>
+        </footer>
+    </div>
+</div>
+
+<script>
+    // Logic to update slug as store name is typed
+    const storeNameInput = document.getElementById('id_store_name');
+    const storeSlugInput = document.getElementById('id_store_slug');
+
+    storeNameInput.addEventListener('input', function() {
+        const slug = storeNameInput.value
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        storeSlugInput.value = slug;
+    });
+</script>
+</body>
+</html>
