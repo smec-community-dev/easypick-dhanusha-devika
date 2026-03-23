@@ -31,7 +31,7 @@ class CartItems(models.Model):
     )
 
     product = models.ForeignKey(
-        'seller.Product',
+        'seller.ProductVariant',
         on_delete=models.CASCADE,
         related_name="item"
     )

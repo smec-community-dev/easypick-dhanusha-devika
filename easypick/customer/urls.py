@@ -38,6 +38,10 @@ urlpatterns = [
     path('search/',views.search_view,name='search'),
     path('review',views.review_view,name='review'),
     path('all_category/',views.all_category,name='all_category'),
+    path('place-order/', views.place_order, name='place_order'),
+    path('wishlist/add-to-cart/', views.add_wishlist_to_cart, name='wishlist_to_cart'),
+    path('notifications/', views.notification_view, name='notifications'),
+    path('notification/delete/<int:id>/', views.delete_notification, name='delete_notification'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

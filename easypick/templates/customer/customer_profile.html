@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,41 +42,7 @@
 <body class="bg-background-light dark:bg-background-dark font-display text-primary">
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
         
-        <header class="flex items-center justify-between whitespace-nowrap bg-primary px-6 py-3 md:px-20 lg:px-40 text-white border-b border-primary/20">
-            <div class="flex items-center gap-8">
-                <div class="flex items-center gap-4">
-                    <div class="size-8 bg-white/10 rounded flex items-center justify-center">
-                        <svg class="text-white w-6 h-6" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
-                        </svg>
-                    </div>
-                    <h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">EasyPick</h2>
-                </div>
-                <label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
-                    <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                        <div class="text-white/70 flex border-none bg-white/10 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
-                            <span class="material-symbols-outlined text-xl">search</span>
-                        </div>
-                        <input class="form-input flex w-full min-w-0 flex-1 border-none bg-white/10 text-white focus:ring-0 h-full placeholder:text-white/50 px-4 rounded-r-lg text-sm" placeholder="Search products..." value=""/>
-                    </div>
-                </label>
-            </div>
-            <div class="flex flex-1 justify-end gap-6 items-center">
-                <nav class="hidden lg:flex items-center gap-6">
-                    <a class="text-sm font-medium hover:text-accent transition-colors" href="{% url 'home' %}">Home</a>
-                    <a class="text-sm font-medium hover:text-accent transition-colors" href="#">Shop</a>
-                    <a class="text-sm font-medium hover:text-accent transition-colors" href="#">Categories</a>
-                    <a class="text-sm font-medium hover:text-accent transition-colors" href="#">Deals</a>
-                </nav>
-                <div class="flex gap-2">
-                    <button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white/10 text-white hover:bg-white/20 transition-all">
-                        <span class="material-symbols-outlined text-xl">shopping_cart</span>
-                    </button>
-                    <button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white/10 text-white hover:bg-white/20 transition-all">
-                        <span class="material-symbols-outlined text-xl">notifications</span>
-                    </button>
-              
-        </header>
+{% include "navbar.html" %}
 
         <main class="flex-1 flex flex-col md:flex-row max-w-[1280px] mx-auto w-full px-4 md:px-10 lg:px-20 py-8 gap-8">
             
@@ -202,11 +169,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {% for x in address %}
                         <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border-2 border-accent relative">
+                            {% if x.is_primary %}
                             <span class="absolute top-4 right-4 bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Primary</span>
+                            {% endif %}
                             <div class="flex items-start gap-3 mb-3">
                                 <span class="material-symbols-outlined text-accent">home</span>
                                 <div>
-                                    <h4 class="font-bold">{{x.address_type}}</h4>
+                                    <h4 class="font-bold uppercase tracking-wide text-sm">{{ x.address_type|title }}</h4>
                                     <p class="text-sm text-primary/70 leading-relaxed mt-1">{{x.full_name}},<br>{{x.phone_number}},<br>{{x.house_no  }},<br>{{x.landmark}},<br>{{x.street}},<br>{{x.city}},<br>{{x.state}},<br>{{x.zip_code}}</p>
                                 </div>
                             </div>

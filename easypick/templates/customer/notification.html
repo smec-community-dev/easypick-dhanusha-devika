@@ -92,121 +92,49 @@
 </div>
 <!-- Notification List -->
 <div class="flex flex-col gap-3 pb-12">
-<!-- Unread Notification Item: Order Shipped -->
-<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
-<!-- Unread Indicator -->
-<div class="absolute top-4 right-4 flex items-center gap-3">
-<span class="size-2.5 rounded-full bg-primary"></span>
-<a href="" class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
-<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
-</a>
+
+{% for n in notifications %}
+<div class="group relative flex items-start gap-4 p-4 rounded-xl 
+    {% if not n.is_read %}
+        bg-white border border-slate-100
+    {% else %}
+        bg-slate-50/50 border border-transparent opacity-75
+    {% endif %}
+    shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+
+    <!-- Right side -->
+    <div class="absolute top-4 right-4 flex items-center gap-3">
+        {% if not n.is_read %}
+            <span class="size-2.5 rounded-full bg-primary"></span>
+        {% endif %}
+        
+        <a href="{% url 'delete_notification' n.id %}" 
+           class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100">
+            <span class="material-symbols-outlined">delete</span>
+        </a>
+    </div>
+
+    <!-- Icon -->
+    <div class="flex-shrink-0">
+        <div class="size-12 rounded-full bg-blue-50 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined">notifications</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 pr-8">
+        <h3 class="text-sm font-semibold">{{ n.title }}</h3>
+        <p class="text-sm text-slate-600">{{ n.message }}</p>
+        <p class="text-xs text-slate-400 mt-2">
+            {{ n.created_at|timesince }} ago
+        </p>
+    </div>
+
 </div>
-<div class="flex-shrink-0">
-<div class="size-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary flex items-center justify-center">
-<span class="material-symbols-outlined" style="font-size: 24px;">local_shipping</span>
-</div>
-</div>
-<div class="flex-1 pr-8">
-<div class="flex items-baseline justify-between mb-1">
-<h3 class="text-sm font-semibold text-slate-900 dark:text-white">Your order has been shipped!</h3>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Order <span class="font-medium text-slate-900 dark:text-slate-200">#EP-88291</span> containing your minimalist planter set is on its way. Track your package for real-time updates.
-                        </p>
-<p class="text-xs text-slate-400 mt-2 font-medium">2 hours ago</p>
-</div>
-</div>
-<!-- Unread Notification Item: Flash Sale -->
-<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
-<div class="absolute top-4 right-4 flex items-center gap-3">
-<span class="size-2.5 rounded-full bg-primary"></span>
-<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
-<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
-</button>
-</div>
-<div class="flex-shrink-0">
-<div class="size-12 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center">
-<span class="material-symbols-outlined" style="font-size: 24px;">sell</span>
-</div>
-</div>
-<div class="flex-1 pr-8">
-<div class="flex items-baseline justify-between mb-1">
-<h3 class="text-sm font-semibold text-slate-900 dark:text-white">Flash Sale Alert</h3>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Get <span class="font-bold text-emerald-600">20% off</span> all bamboo organizers this weekend only. Don't miss out on refreshing your workspace.
-                        </p>
-<p class="text-xs text-slate-400 mt-2 font-medium">5 hours ago</p>
-</div>
-</div>
-<!-- Unread Notification Item: Account Security -->
-<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
-<div class="absolute top-4 right-4 flex items-center gap-3">
-<span class="size-2.5 rounded-full bg-primary"></span>
-<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
-<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
-</button>
-</div>
-<div class="flex-shrink-0">
-<div class="size-12 rounded-full bg-orange-50 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center">
-<span class="material-symbols-outlined" style="font-size: 24px;">shield_person</span>
-</div>
-</div>
-<div class="flex-1 pr-8">
-<div class="flex items-baseline justify-between mb-1">
-<h3 class="text-sm font-semibold text-slate-900 dark:text-white">New Login Detected</h3>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            We noticed a new login to your account from a Chrome device in San Francisco, CA. Was this you?
-                        </p>
-<p class="text-xs text-slate-400 mt-2 font-medium">8 hours ago</p>
-</div>
-</div>
-<!-- Read Notification Item: Order Delivered -->
-<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 border border-transparent hover:bg-white dark:hover:bg-slate-800 hover:border-slate-100 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer">
-<div class="absolute top-4 right-4 flex items-center gap-3">
-<!-- No unread dot -->
-<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
-<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
-</button>
-</div>
-<div class="flex-shrink-0">
-<div class="size-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center grayscale">
-<span class="material-symbols-outlined" style="font-size: 24px;">check_circle</span>
-</div>
-</div>
-<div class="flex-1 pr-8 opacity-75 group-hover:opacity-100 transition-opacity">
-<div class="flex items-baseline justify-between mb-1">
-<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Order Delivered</h3>
-</div>
-<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                            Your order <span class="font-medium">#EP-88210</span> has been delivered to your front porch. Enjoy your new items!
-                        </p>
-<p class="text-xs text-slate-400 mt-2 font-medium">1 day ago</p>
-</div>
-</div>
-<!-- Read Notification Item: Review Request -->
-<div class="group relative flex items-start gap-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 border border-transparent hover:bg-white dark:hover:bg-slate-800 hover:border-slate-100 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer">
-<div class="absolute top-4 right-4 flex items-center gap-3">
-<button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Delete notification">
-<span class="material-symbols-outlined block" style="font-size: 18px;">delete</span>
-</button>
-</div>
-<div class="flex-shrink-0">
-<div class="size-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center grayscale">
-<span class="material-symbols-outlined" style="font-size: 24px;">star</span>
-</div>
-</div>
-<div class="flex-1 pr-8 opacity-75 group-hover:opacity-100 transition-opacity">
-<div class="flex items-baseline justify-between mb-1">
-<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rate your purchase</h3>
-</div>
-<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                            How do you like your Ceramic Vase? Share your thoughts with other EasyPick shoppers.
-                        </p>
-<p class="text-xs text-slate-400 mt-2 font-medium">2 days ago</p>
-</div>
-</div>
+{% empty %}
+<p class="text-center text-gray-500">No notifications</p>
+{% endfor %}
+
 </div>
 <!-- Pagination / Load More -->
 <div class="flex justify-center pb-8">

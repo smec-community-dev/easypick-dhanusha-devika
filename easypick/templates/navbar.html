@@ -4,7 +4,7 @@
             <div class="bg-white/10 p-1.5 rounded-lg">
                 <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
             </div>
-            <a href="{% url 'home'%}">
+            <a href="{% url 'home' %}">
             <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
             </a>
         </div>
@@ -33,6 +33,9 @@
                 <a href="{% url 'wishlist' %}" class="inline-block">
                     <button class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">favorite</span>
+                        <span id="cart-count-badge" class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">
+                            {{ wishlist_item|length }}
+                        </span>
                     </button>
                 </a>
                 

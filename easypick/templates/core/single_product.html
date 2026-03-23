@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
@@ -60,70 +61,7 @@
 </head>
 <body class="bg-background-light">
 
-<header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="bg-white/10 p-1.5 rounded-lg">
-                <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
-            </div>
-            <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
-        </div>
-
-        <nav class="hidden md:flex items-center gap-10">
-            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="#">About Us</a>
-            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="#">Contact</a>
-        </nav>
-
-        <div class="flex items-center gap-4">
-            <div class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
-                <span class="material-symbols-outlined text-white/70 text-xl">search</span>
-                <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-48 text-white" placeholder="Search products..." type="text"/>
-            </div>
-            
-            <div class="flex items-center gap-1">
-                <a href="{% url 'cart' %}" class="inline-block">
-                    <button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                        <span class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">3</span>
-                    </button>
-                </a>
-                <a href="/wishlist" class="inline-block">
-                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                </a>
-                
-                <div class="relative inline-block">
-                    <button id="accountButton" class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
-                        <span class="material-symbols-outlined text-white">person</span>
-                        <span class="material-symbols-outlined text-sm hidden md:inline text-white">expand_more</span>
-                    </button>
-                    <div id="userDropdown" class="absolute right-0 top-full pt-2 w-52 hidden z-[100]">
-                        <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in">
-                            <div class="px-4 py-3 border-b border-gray-50">
-                                <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Account</p>
-                                <p class="text-sm font-bold text-gray-900 truncate">{{data.first_name}}</p>
-                            </div>
-                            <a href="{% url 'customer_dashboard' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                <span class="material-symbols-outlined text-lg text-gray-400">dashboard</span>
-                                My Dashboard
-                            </a>
-                            <a href="/customer/profile/" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                <span class="material-symbols-outlined text-lg text-gray-400">account_circle</span>
-                                My Profile
-                            </a>
-                            <div class="my-2 border-t border-gray-100"></div>
-                            <button onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold text-left">
-                                <span class="material-symbols-outlined text-lg">logout</span>
-                                Sign Out
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+{% include "navbar.html" %}
 
 <main class="max-w-7xl mx-auto px-6 py-6">
     <nav class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-8">
@@ -213,6 +151,11 @@
                     </div>
                 </div>
             </div>
+            <div class="flex items-center gap-3 mt-4">
+                <span class="text-sm font-bold">Qty:</span>
+                <input type="number" id="qty" value="1" min="1"
+                    class="w-16 border border-gray-300 rounded px-2 py-1 text-center">
+            </div>
 
             <div class="flex gap-4 pt-4">
                 <a href="{% url 'add_cart' product.id %}" class="flex-1 border-2 border-primary text-primary py-4 rounded-xl font-black text-sm hover:bg-primary/5 transition-all text-center">Add to Cart</a>
@@ -293,48 +236,57 @@ Based on 124 verified reviews
                     </button>
                 </div>
 
-                <div class="space-y-4 pb-8 border-b border-gray-50">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">AM</div>
-                            <div>
-                                <h5 class="text-sm font-bold text-gray-900">{{user.first_name}}</h5>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-[14px] text-green-600 font-fill">verified</span>
-                                    <p class="text-[10px] text-green-600 font-bold uppercase tracking-tighter">Verified Purchase</p>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{review.created_at}}</span>
-                    </div>
-                    <div class="flex text-yellow-400">
-                        <span class="material-symbols-outlined text-lg font-fill">star</span>
-                        <span class="material-symbols-outlined text-lg font-fill">star</span>
-                        <span class="material-symbols-outlined text-lg font-fill">star</span>
-                        <span class="material-symbols-outlined text-lg font-fill">star</span>
-                        <span class="material-symbols-outlined text-lg font-fill">star</span>
-                    </div>
-                    
-                    <p class="text-sm text-gray-600 leading-relaxed">{{review.comment}}</p>
-                    {% if review.images.all %}
-                    <div class="flex flex-wrap gap-3 pt-2">
-                        {% for image in review.images.all %}
-                        <div class="group relative w-20 h-20 rounded-xl overflow-hidden border border-gray-100 cursor-zoom-in">
-                            <img src="{{ image.image.url }}" 
-                                alt="Review photo" 
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                        </div>
-                        {% endfor %}
-                        </div>
-                    {% endif %}
-                    <div class="flex items-center gap-6 pt-2">
-                        <button class="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined text-sm">thumb_up</span> Helpful (24)
-                        </button>
-                        <button class="text-[10px] font-bold text-gray-400 uppercase hover:text-primary transition-colors underline">Report</button>
-                    </div>
-                </div>
+{% for review in reviews %}
+<div class="space-y-4 pb-8 border-b border-gray-50 last:border-b-0">
+  <div class="flex justify-between items-start">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
+        {{ review.user.first_name.0|upper }}{{ review.user.last_name.0|upper }}
+      </div>
+      <div>
+        <h5 class="text-sm font-bold text-gray-900">{{ review.user.first_name }} {{ review.user.last_name }}</h5>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-green-600 font-fill">verified</span>
+          <p class="text-[10px] text-green-600 font-bold uppercase tracking-tighter">Verified Purchase</p>
+        </div>
+      </div>
+    </div>
+    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ review.created_at|date:"M d, Y" }}</span>
+  </div>
+  <div class="flex text-yellow-400">
+    {% for i in "12345"|make_list %}
+      {% if forloop.counter <= review.rating %}
+        <span class="material-symbols-outlined text-lg font-fill">star</span>
+      {% else %}
+        <span class="material-symbols-outlined text-lg">star</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <p class="text-sm text-gray-600 leading-relaxed">{{ review.comments }}</p>
+  {% if review.images.all %}
+  <div class="flex flex-wrap gap-3 pt-2">
+    {% for image in review.images.all %}
+    <div class="group relative w-20 h-20 rounded-xl overflow-hidden border border-gray-100 cursor-zoom-in">
+      <img src="{{ image.image.url }}" alt="Review photo" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+      <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="flex items-center gap-6 pt-2">
+    <button class="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase hover:text-primary transition-colors">
+      <span class="material-symbols-outlined text-sm">thumb_up</span> Helpful (24)
+    </button>
+    <button class="text-[10px] font-bold text-gray-400 uppercase hover:text-primary transition-colors underline">Report</button>
+  </div>
+</div>
+{% empty %}
+<div class="text-center py-12 text-gray-500">
+  <span class="material-symbols-outlined text-4xl block mb-4">reviews</span>
+  <p class="text-lg font-medium">No reviews yet</p>
+  <p class="text-sm">Be the first to write a review</p>
+</div>
+{% endfor %}
 
                 
 
@@ -342,6 +294,62 @@ Based on 124 verified reviews
             </div>
         </div>
     </section>
+    <section id="related-products" class="mt-24 pt-16 border-t border-gray-200">
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h3 class="text-2xl font-black uppercase tracking-tight">You May Also Like</h3>
+            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Discover similar items</p>
+        </div>
+        <a href="#" class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1">
+            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for related in related_products %}
+        <div class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+            <div class="aspect-square bg-gray-50 relative overflow-hidden flex items-center justify-center p-6">
+                {% with related.images.first as related_image %}
+  {% if related_image and related_image.image_url %}
+    <img src="{{ related_image.image_url.url }}" alt="{{ related.name }}" 
+         class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500">
+  {% else %}
+    <div class="w-full h-full bg-gray-100 flex items-center justify-center rounded-lg">
+      <span class="material-symbols-outlined text-gray-400 text-3xl">image_not_supported</span>
+    </div>
+  {% endif %}
+{% endwith %}
+                
+                <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <a href="{% url 'single' related.id %}" class="w-full bg-white/90 backdrop-blur-md py-2.5 rounded-xl text-[10px] font-black uppercase text-center block shadow-sm hover:bg-primary hover:text-white transition-colors">
+                        Quick View
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-5 space-y-2">
+                <div class="flex justify-between items-start gap-2">
+                    <h4 class="text-sm font-bold text-gray-900 truncate flex-1">{{ related.name }}</h4>
+                    <span class="text-xs font-black text-primary">₹{{ related.variants.selling_price }}</span>
+                </div>
+                
+                <div class="flex items-center gap-1 text-yellow-400">
+                    <span class="material-symbols-outlined text-xs font-fill">star</span>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase ml-1">4.5</span>
+                </div>
+
+                <a href="{% url 'single' related.id %}" class="block pt-2">
+                    <button class="w-full py-2 border border-gray-100 rounded-lg text-[9px] font-black uppercase tracking-tighter hover:border-primary hover:text-primary transition-all">
+                        Details
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="col-span-full text-center text-gray-400 text-sm italic">No similar products found.</p>
+        {% endfor %}
+    </div>
+</section>
 </main>
 
 <footer class="mt-20 py-8 bg-white border-t border-gray-100 text-center">

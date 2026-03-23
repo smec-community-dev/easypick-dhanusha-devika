@@ -7,6 +7,8 @@ from .models import (
     Review,
     Order,
     OrderItem,
+    ReviewImage,
+    
 )
 
 admin.site.register(Cart)
@@ -16,3 +18,4 @@ admin.site.register(Review)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(WishlistItems)
+admin.site.register(ReviewImage)

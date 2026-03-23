@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="light" lang="en">
 
@@ -77,86 +78,7 @@
 
 <body class="bg-background-light dark:bg-background-dark text-[#141514]">
 
-    <header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-white/10 p-1.5 rounded-lg">
-                    <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
-                </div>
-                <h2 class="text-xl font-extrabold tracking-tight">EasyPick</h2>
-            </div>
-
-            <nav class="hidden md:flex items-center gap-10">
-                <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider"
-                    href="#">About Us</a>
-                <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider"
-                    href="#">Contact</a>
-            </nav>
-
-            <div class="flex items-center gap-4">
-                <div
-                    class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
-                    <span class="material-symbols-outlined text-white/70 text-xl">search</span>
-                    <input
-                        class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-48 text-white"
-                        placeholder="Search products..." type="text" />
-                </div>
-
-                <div class="flex items-center gap-1">
-                    <a href="{% url 'cart' %}" class="inline-block">
-                        <button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
-                            <span class="material-symbols-outlined">shopping_cart</span>
-                            <span
-                                class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">3</span>
-                        </button>
-                    </a>
-                    <a href="{% url 'wishlist' %}" class="inline-block">
-                        <button
-                            class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
-                            <span class="material-symbols-outlined">favorite</span>
-                        </button>
-                    </a>
-
-                    <div class="relative inline-block">
-                        <button id="accountButton"
-                            class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
-                            <span class="material-symbols-outlined text-white">person</span>
-                            <span
-                                class="material-symbols-outlined text-sm hidden md:inline text-white">expand_more</span>
-                        </button>
-                        <div id="userDropdown" class="absolute right-0 top-full pt-2 w-52 hidden z-[100]">
-                            <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in">
-                                <div class="px-4 py-3 border-b border-gray-50">
-                                    <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Account</p>
-                                    <p class="text-sm font-bold text-gray-900 truncate">{{data.first_name}}</p>
-                                </div>
-                                <a href="{% url 'customer_dashboard' %}"
-                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                    <span class="material-symbols-outlined text-lg text-gray-400">dashboard</span>
-                                    My Dashboard
-                                </a>
-                                <a href="/customer/profile/"
-                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
-                                    <span class="material-symbols-outlined text-lg text-gray-400">account_circle</span>
-                                    My Profile
-                                </a>
-                                <div class="my-2 border-t border-gray-100"></div>
-                                <button onclick="confirmLogout()"
-                                    class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold">
-                                    <span class="material-symbols-outlined text-lg">logout</span>
-                                    Sign Out
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="p-2 md:hidden hover:bg-white/10 rounded-full transition-colors">
-                        <span class="material-symbols-outlined">menu</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
+{% include "navbar.html" %}
 
     <main class="w-full">
         <section class="bg-white border-b border-[#f2f3f2]">

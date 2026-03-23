@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
 from django.core.mail import send_mail
+import random
 
 
 
@@ -74,7 +75,7 @@ def customer_profile_update_view(request):
         return redirect('customer_profile')
 
     return render(request, 'customer/customer_profile.html', {'user_data': user_data,'address':address})
-
+@login_required(login_url="/login")
 def add_address_view(request):
     if request.method=="POST":
         address_obj=Address()
@@ -116,12 +117,12 @@ def update_address(request,id):
         address_data.save()
         return redirect('customer_profile')
     return render(request,'customer/customer_address_add.html',{'address_data':address_data})
-
+@login_required(login_url="/login")
 def address_list(request):
     address = Address.objects.filter(user=request.user)
     return render(request,'customer/address_list.html',{'address':address})
 
-
+@login_required(login_url="/login")
 def select_order_address(request, product_id, address_id):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
@@ -139,7 +140,7 @@ def select_order_address(request, product_id, address_id):
         'phone': getattr(request.user, 'phone_number', ''),
         'reload_url': f"/customer/order_confirm/{product_id}/"
     })
-
+@login_required(login_url="/login")
 def account_security_view(request):
     user=request.user
     if request.method=="POST":
@@ -183,7 +184,7 @@ def wishlist(request):
     return render(request,'customer/customer_wishlist.html',{
         'wishlist_items': wishlist_items
     })
-
+@login_required(login_url="/login")
 def wishlist_remove(request, id): 
     wishlist_item = get_object_or_404(WishlistItems, id=id)
     wishlist_item.delete()
@@ -282,13 +283,23 @@ def shop_view(request):
         "min_price": min_price,
         "max_price": max_price,
     })
-
+@login_required(login_url="/login")
 def delete_account(request):
-    if request.method=="POST":
-        user=User
-        password=request.POST.get('password_confirm')
-    return render(request,'core/account_deletion_confirmation.html')
-
+    if request.method == "GET":
+        return render(request, 'core/account_deletion_confirmation.html')
+    
+    if request.method == "POST":
+        password_confirm = request.POST.get('password_confirm')
+        user = request.user
+        
+        if not user.check_password(password_confirm):
+            messages.error(request, "Password does not match.")
+            return render(request, 'core/account_deletion_confirmation.html')
+        
+        user.delete()
+        messages.success(request, "Account deleted successfully.")
+        return redirect('home')
+@login_required(login_url="/login")
 def delete_account_confirmation(request):
     user=request.user
     user.delete()
@@ -321,23 +332,25 @@ def subcategory_view(request,id):
     product=ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
     return render(request,'core/subcategory.html',{'product':product})
 
-def single_view(request,id):
-    product=ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
-    
-   
-    
+def single_view(request, id):
+  
+    product = ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
+
+    reviews = Review.objects.filter(product=product.product).select_related('user').prefetch_related('images').order_by('-created_at')
+    subcategory = product.product.subcategory
+    related_products=Product.objects.filter(subcategory=subcategory).prefetch_related("variants")
+    print(related_products)
     in_wishlist = False
     if request.user.is_authenticated:
         wishlist = Wishlist.objects.filter(customer=request.user).first()
         if wishlist:
             in_wishlist = WishlistItems.objects.filter(
-                wishlist=wishlist, product=product
+                wishlist=wishlist,
+                product=product
             ).exists()
-    
-    return render(request,'core/single_product.html',{
-        'product':product, 
-        'in_wishlist': in_wishlist
-    })
+
+
+    return render(request, 'core/single_product.html', {'product': product,'reviews': reviews,'in_wishlist': in_wishlist,'related_products':related_products,})
 
 @login_required(login_url="/login")
 def add_cart(request, id):
@@ -348,7 +361,7 @@ def add_cart(request, id):
     cart, created = Cart.objects.get_or_create(customer=user)
 
     try:
-        cart_item = CartItems.objects.get(cart=cart, product=variant.product)
+        cart_item = CartItems.objects.get(cart=cart, product=variant)
         cart_item.quantity += 1
         cart_item.save()
 
@@ -356,7 +369,7 @@ def add_cart(request, id):
 
         CartItems.objects.create(
             cart=cart,
-            product=variant.product,
+            product=variant,
             quantity=1
         )
 
@@ -375,26 +388,24 @@ def cart_view(request):
     cart_item = CartItems.objects.filter(cart=cart_user).select_related('product')
         
    
-    subtotal = 0
+    subtotal = Decimal('0')
     for item in cart_item:
-        variant = item.product.variants.first()
-        if variant:
-            subtotal += variant.selling_price * item.quantity
+        subtotal += (item.product.selling_price * item.quantity)
     return render(request,'customer/cart.html',{'cart_item':cart_item, 'subtotal': subtotal,'cart':cart})   
    
 @login_required
 def cart_order(request,id):
-    cart=Cart.objects.get(customer=request.user)
-    cart_item=CartItems.objects.filter(cart=cart).select_related('product')
+    # cart=Cart.objects.get(customer=request.user)
+    # cart_item=CartItems.objects.filter(cart=cart).select_related('product')
+    cart_item=CartItems.objects.filter(cart__customer=request.user).select_related('product')
     address=Address.objects.filter(user=request.user).first()
     subtotal=0
     for item in cart_item:
-        variant = item.product.variants.first()
-        if variant:
-            subtotal += variant.selling_price * item.quantity
+        subtotal += item.product.selling_price * item.quantity
+        total=subtotal+5
             
     addresses = Address.objects.filter(user=request.user)
-    return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'addresses':addresses,'subtotal':subtotal})
+    return render(request,'customer/cart_orderconfirm.html',{'cart_item':cart_item,'address':address,'addresses':addresses,'subtotal':subtotal,"total":total})
 
 @login_required(login_url="/login")
 def order_confirm_view(request, id):
@@ -417,10 +428,14 @@ def order_confirm_view(request, id):
         'selling_price': selling_price,
     }
     return render(request, 'customer/order_confirm.html', context)
-
+@login_required(login_url="/login")
 def payment_view(request):
-    
-    return render(request,'customer/payment.html')
+    cart_item=CartItems.objects.filter(cart__customer=request.user).select_related('product')
+    subtotal=0
+    for item in cart_item:
+        subtotal += item.product.selling_price * item.quantity
+            
+    return render(request,'customer/payment.html',{"subtotal":subtotal})
 
 def search_view(request):
     search_product=request.GET.get('search')
@@ -434,29 +449,39 @@ def search_view(request):
     return render(request,'customer/search_result.html',{'product':product, 'query': search_product})
 @login_required(login_url="/login")
 def review_view(request, id):
-    product = get_object_or_404(Product, id=id)
+    variant = get_object_or_404(ProductVariant, id=id)
+    product = variant.product
     product_reviews = Review.objects.filter(product=product).prefetch_related('images')
     if request.method == "POST":
-        rating = request.POST.get('rating')
-        comments = request.POST.get('comments')
+        rating = int(request.POST.get('rating') or 0)
+        comments = request.POST.get('comments', '')
         images = request.FILES.getlist('images')
-        review = Review.objects.create(product=product,user=request.user,rating=rating,comments=comments)
+        review = Review.objects.create(product=product, user=request.user, rating=rating, comments=comments)
         for img in images:
-            ReviewImage.objects.create(review=review,image=img)
-        return redirect('single', id=product.id)
+            ReviewImage.objects.create(review=review, image=img)
+        return redirect('single', id=variant.id)
 
+    in_wishlist = False
+    if request.user.is_authenticated:
+        wishlist = Wishlist.objects.filter(customer=request.user).first()
+        if wishlist:
+            in_wishlist = WishlistItems.objects.filter(
+                wishlist=wishlist, product=variant
+            ).exists()
+    
     context = {
-        'product': product,
+        'product': variant,
         'reviews': product_reviews,
-        'user':request.user
+        'user': request.user,
+        'in_wishlist': in_wishlist
     }
 
-    return render(request, 'customer/single.html', context)
+    return render(request, 'core/single_product.html', context)
 
 
 
 
-
+@login_required(login_url="/login")
 @receiver(user_logged_in)
 def register_mail(sender, request, user, **kwargs):
     subject = "Welcome to EasyPick 🎉"
@@ -492,3 +517,88 @@ def register_mail(sender, request, user, **kwargs):
 def all_category(request):
     category=Category.objects.all()
     return render(request,'core/all_category.html',{"catgeory":category})
+
+@login_required(login_url="/login")
+def place_order(request):
+
+    
+    cart_items = CartItems.objects.filter(cart__customer=request.user)
+
+    total = 0
+
+   
+    order_number = f"ORD{random.randint(1000,9999)}"
+
+    
+    order = Order.objects.create(
+        customer=request.user,
+        order_number=order_number,
+        total_amount=0,
+        payment_method='COD',   
+        payment_status='Pending'
+    )
+
+    
+    for item in cart_items:
+        variant = item.product
+        product = variant.product
+        
+        OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=item.quantity,
+            price=variant.selling_price
+        )
+
+        total += variant.selling_price * item.quantity
+
+   
+    order.total_amount = total
+    order.save()
+
+    
+    cart_items.delete()
+    print("hlooo")
+
+    return redirect('payment')
+
+@login_required(login_url="/login")
+def add_wishlist_to_cart(request):
+
+    wishlist_items = WishlistItems.objects.filter(wishlist__customer=request.user)
+
+    cart, created = Cart.objects.get_or_create(customer=request.user)
+
+    for item in wishlist_items:
+
+        variant = item.product.product
+
+        try:
+            cart_item = CartItems.objects.get(cart=cart, product=variant)
+            cart_item.quantity += 1
+            cart_item.save()
+
+        except CartItems.DoesNotExist:
+            CartItems.objects.create(
+                cart=cart,
+                product=variant,
+                quantity=1
+            )
+
+    return redirect('cart')
+
+@login_required(login_url="/login")
+def notification_view(request):
+    notifications = request.user.core_notifications.all().order_by('-created_at')
+
+    notifications.update(is_read=True)
+
+    return render(request, 'customer/notifications.html', {
+        'notifications': notifications
+    })
+
+@login_required(login_url="/login")
+def delete_notification(request, id):
+    notification = Notification.objects.get(id=id, user=request.user)
+    notification.delete()
+    return redirect('notifications')

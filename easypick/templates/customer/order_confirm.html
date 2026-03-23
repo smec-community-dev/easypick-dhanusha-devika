@@ -232,9 +232,12 @@
                             <span class="text-[10px] text-gray-400 line-through">₹{{ product.mrp }}</span>
                             <span class="text-lg font-black">₹{{ subtotal }}</span>
                         </div>
-                        <a href="{% url 'payment' %}" class="flex-grow bg-[#fb641b] hover:bg-[#e65a17] text-white font-bold py-3 px-8 rounded shadow-md uppercase text-sm transition-all text-center">
-                            Continue
-                        </a>
+                        <form method="POST" action="{% url 'place_order' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="flex-grow bg-[#fb641b] text-white py-3 rounded">
+                                Continue
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
