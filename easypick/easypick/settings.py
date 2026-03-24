@@ -39,13 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # # REQUIRED for allauth
-    # 'django.contrib.sites',
+    # REQUIRED for allauth
+    'django.contrib.sites',
 
-    # # allauth apps
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
+    # allauth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     # Google provider
     'allauth.socialaccount.providers.google',
@@ -56,18 +56,20 @@ INSTALLED_APPS = [
     'customer',
     'seller',
 ]
-# SITE_ID = 1
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
 
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# ]
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 AUTH_USER_MODEL = 'core.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -159,3 +161,16 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'dhanushasuresh2026@gmail.com'
 EMAIL_HOST_PASSWORD = 'tymt xhie buxj rwqg'
 DEFAULT_FROM_EMAIL = ' dhanushasuresh2026@gmail.com '
+
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'mainlogin'
+
+
+
+# django-allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'optional'

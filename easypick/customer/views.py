@@ -29,19 +29,19 @@ def customer_register_view(request):
     return render(request,'core/customer_registartion.html')
 
 
-def login_view(request):
-    if request.method=="POST":
-        email=request.POST.get('email')
-        password=request.POST.get('password')
-        user=authenticate(request,password=password,username=email)
-        if user is not None:
-            login(request,user)
-            messages.success(request,'Login Successfully')
-            return redirect('home')
-        else:
-            messages.error(request,"invalid email  or password")
-            return redirect('login')
-    return render(request,'core/login.html')
+# def login_view(request):
+#     if request.method=="POST":
+#         email=request.POST.get('email')
+#         password=request.POST.get('password')
+#         user=authenticate(request,password=password,username=email)
+#         if user is not None:
+#             login(request,user)
+#             messages.success(request,'Login Successfully')
+#             return redirect('home')
+#         else:
+#             messages.error(request,"invalid email  or password")
+#             return redirect('login')
+#     return render(request,'core/login.html')
 
 @login_required
 def home_view(request):

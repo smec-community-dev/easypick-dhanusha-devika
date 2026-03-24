@@ -46,38 +46,97 @@
             <span class="material-symbols-outlined text-white/70 text-xl">search</span>
             <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-white/50 w-full text-white ml-2" placeholder="Search products, categories..." type="text"/>
         </div>
+<div class="relative shrink-0">
 
-        <div class="relative shrink-0">
-            <button id="accountButton" class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 outline-none">
-                <span class="material-symbols-outlined text-white">person</span>
-                <span class="text-sm font-bold uppercase tracking-wider hidden md:inline">Login Options</span>
-                <span class="material-symbols-outlined text-sm text-white">expand_more</span>
-            </button>
-            
+    <!-- ✅ Signup Button -->
+    <button id="signupButton"
+        class="p-2 hover:bg-white/10 rounded-lg flex items-center gap-2 text-white">
+
+        <span class="material-symbols-outlined">person_add</span>
+
+        <span class="text-sm font-bold hidden md:inline">
+            Sign Up
+        </span>
+
+        <span class="material-symbols-outlined text-sm">expand_more</span>
+    </button>
+
+    <!-- ✅ Dropdown (ONLY ONE) -->
+    <div id="signupDropdown"
+         class="absolute right-0 top-full pt-2 w-64 hidden z-[100]">
+
+        <div class="bg-white rounded-xl shadow-2xl border p-4 space-y-3 animate-fade-in">
+
+            <!-- Customer -->
+            <a href="{% url 'customer_register' %}"
+               class="block bg-primary text-white rounded-xl p-4 hover:scale-105 transition transform">
+
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-2xl">shopping_bag</span>
+                    <div>
+                        <p class="font-bold text-sm">I want to shop</p>
+                        <p class="text-xs opacity-80">Join as a customer</p>
+                    </div>
+                </div>
+
+            </a>
+
+            <!-- Seller -->
+            <a href="{% url 'seller_register' %}"
+               class="block bg-primary text-white rounded-xl p-4 hover:scale-105 transition transform">
+
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-2xl">storefront</span>
+                    <div>
+                        <p class="font-bold text-sm">I want to sell</p>
+                        <p class="text-xs opacity-80">Start selling products</p>
+                    </div>
+                </div>
+
+            </a>
+
+        </div>
+    </div>
+
+</div>
+        
+<div class="relative shrink-0">
+    <a href="{% url 'login' %}" 
+       class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2">
+        
+        <span class="material-symbols-outlined text-white">person</span>
+        
+        <span class="text-sm font-bold uppercase tracking-wider hidden md:inline">
+            Login
+        </span>
+        
+    </a>
+</div>
+{% comment %}             
             <div id="userDropdown" class="absolute right-0 top-full pt-2 w-56 hidden z-[100]">
                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in text-[#141514]">
                     <div class="px-4 py-2 border-b border-gray-50">
                         <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Join EasyPick</p>
                     </div>
-                    
-                    <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                     {% endcomment %}
+                    {% comment %} <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                         <span class="material-symbols-outlined text-primary">shopping_bag</span>
                         <div class="flex flex-col">
                             <span class="text-sm font-bold">Customer Login</span>
                             <span class="text-[10px] text-gray-500">I want to shop</span>
                         </div>
-                    </a>
-                    
+                    </a> {% endcomment %}
+{% comment %}                     
                     <div class="my-1 border-t border-gray-100"></div>
 
-                    <a href="{% url 'seller_login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                    <a href="{% url 'login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                         <span class="material-symbols-outlined text-orange-600">storefront</span>
                         <div class="flex flex-col">
                             <span class="text-sm font-bold">Seller Login</span>
                             <span class="text-[10px] text-gray-500">I want to sell</span>
                         </div>
                     </a>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </div>
@@ -342,10 +401,9 @@ SKU: {{ variant.sku_code }}
         &copy; 2026 EasyPick. Crafted for Better Living.
     </div>
 </footer>
-
 <script>
-    const btn = document.getElementById('accountButton');
-    const menu = document.getElementById('userDropdown');
+    const btn = document.getElementById('signupButton');
+    const menu = document.getElementById('signupDropdown');
 
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -358,6 +416,5 @@ SKU: {{ variant.sku_code }}
         }
     });
 </script>
-
 </body>
 </html>

@@ -41,7 +41,7 @@ def seller_register(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        password2 = request.POST.get("password2")  # Add confirm password field in your template
+        password2 = request.POST.get("password2")  
 
         store_name = request.POST.get("store_name")
         gst_number = request.POST.get("gst_number")
@@ -50,14 +50,14 @@ def seller_register(request):
         ifsc_code = request.POST.get("ifsc_code")
         business_address = request.POST.get("business_address")
 
-        # ----- Email Validation -----
+        
         try:
             validate_email(email)
         except ValidationError:
             messages.error(request, "Invalid email format")
             return redirect("seller_register")
 
-        # ----- Duplicate Checks -----
+       
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered")
             return redirect("seller_register")
@@ -66,13 +66,13 @@ def seller_register(request):
             messages.error(request, "Username already exists")
             return redirect("seller_register")
 
-        # ----- Password Validation -----
+        
         if password != password2:
             messages.error(request, "Passwords do not match")
             return redirect("seller_register")
 
         try:
-            validate_password(password)  # Uses built-in Django validators
+            validate_password(password)  
         except ValidationError as e:
             for error in e:
                 messages.error(request, error)
@@ -83,10 +83,10 @@ def seller_register(request):
         email=email,
         password=password,
         )
-        user.is_active = False      # user cannot login before OTP verification
-        user.role = "SELLER"        # important! mark user as seller
+        user.is_active = False      
+        user.role = "SELLER"       
         user.save()
-        # ----- Create Seller Profile -----
+      
         seller = SellerProfile.objects.create(
             user=user,
             store_name=store_name,
@@ -98,12 +98,12 @@ def seller_register(request):
             business_address=business_address
         )
 
-        # ----- Generate OTP -----
+      
         otp = str(random.randint(100000, 999999))
         request.session['otp'] = otp
         request.session['email'] = email
 
-        # ----- Send OTP Email -----
+        
         send_mail(
             "EasyPick OTP Verification",
             f"Hello {store_name},\n\nYour OTP is: {otp}\n\nPlease enter this code to verify your account.\n\nRegards,\nEasyPick Team",
@@ -138,12 +138,12 @@ def verify_otp(request):
                     user.is_active = True
                     user.save()
 
-                    # Clear session
+                   
                     request.session.pop('otp', None)
                     request.session.pop('email', None)
 
                     messages.success(request, "OTP verified. Please login now.")
-                    return redirect("seller_login")  # ✅ redirect to login page
+                    return redirect("login") 
                 except User.DoesNotExist:
                     messages.error(request, "User not found. Please register again.")
                     return redirect("seller_register")
@@ -152,9 +152,9 @@ def verify_otp(request):
                 return redirect("seller_register")
         else:
             messages.error(request, "Invalid OTP")
-            return redirect("verify_otp")  # stay on OTP page for retry
+            return redirect("verify_otp") 
 
-    # If GET request, show OTP form
+   
     return render(request, "seller/otpverification.html")
 
 def resend_otp(request):
@@ -163,11 +163,11 @@ def resend_otp(request):
         messages.error(request, "Session expired. Please register again.")
         return redirect("seller_register")
     
-    # Generate new 6-digit OTP
+   
     otp = str(random.randint(100000, 999999))
     request.session['otp'] = otp
 
-    # Send email
+  
     send_mail(
         "EasyPick OTP Verification",
         f"Your OTP for EasyPick verification is: {otp}",
@@ -179,21 +179,21 @@ def resend_otp(request):
     messages.success(request, "A new OTP has been sent to your email.")
     return redirect("verify_otp")
 
-def seller_login(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+# def seller_login(request):
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
 
-        user = authenticate( request,username=username,password=password)
+#         user = authenticate( request,username=username,password=password)
 
-        if user :
-            login(request, user)
-            messages.success(request, "Login successful")
-            return redirect("seller_dashboard")
-        else:
-            messages.error(request, "Invalid credentials")
+#         if user :
+#             login(request, user)
+#             messages.success(request, "Login successful")
+#             return redirect("seller_dashboard")
+#         else:
+#             messages.error(request, "Invalid credentials")
 
-    return render(request, "seller/sellerlogin.html")
+#     return render(request, "seller/sellerlogin.html")
 
 
 # def seller_google_login(request):
@@ -240,22 +240,30 @@ def editprofile_view(request):
 @role_required("SELLER")
 @login_required
 def seller_dashboard(request):
-
-    query = request.GET.get("q")
-
     seller_profile = getattr(request.user, "seller_profile", None)
 
+   
     if not seller_profile:
         return redirect("seller_register") 
+
+
+    if seller_profile.status != "APPROVED":
+        return redirect("seller_pending")
+
+   
+    query = request.GET.get("q")
+
 
     seller_products = Product.objects.filter(
         seller=seller_profile
     ).order_by('-created_at')
 
+   
     orders = Order.objects.filter(
         items__product__seller=seller_profile
     ).distinct().order_by('-order_date')
 
+   
     if query:
         seller_products = seller_products.filter(
             Q(name__icontains=query) |
@@ -268,22 +276,20 @@ def seller_dashboard(request):
             Q(customer__last_name__icontains=query)
         )
 
-    # ✅ EXISTING
+    
     total_products = seller_products.count()
-
-    # ✅ ADD THIS
     total_orders = orders.count()
-
     total_revenue = Order.objects.filter(
         items__product__seller=seller_profile,
         status="DELIVERED"
     ).aggregate(total=Sum('total_amount'))['total'] or 0
 
     low_stock_count = ProductVariant.objects.filter(
-    product__seller=seller_profile,
-    stock_quantity__lt=5
-).count()
+        product__seller=seller_profile,
+        stock_quantity__lt=5
+    ).count()
 
+    
     orders = orders[:5]
 
     data = {
@@ -291,14 +297,48 @@ def seller_dashboard(request):
         "total_products": total_products,
         "seller": seller_profile,
         "orders": orders,
-
-        # ✅ ADD THESE
         "total_orders": total_orders,
         "total_revenue": total_revenue,
         "low_stock_count": low_stock_count,
     }
 
     return render(request, "seller/seller_dashboard.html", data)
+
+@login_required
+def seller_pending(request):
+    seller_profile = getattr(request.user, 'seller_profile', None)
+
+    if not seller_profile:
+        return redirect('seller_register')
+
+   
+    if seller_profile.status == "APPROVED":
+        return redirect('seller_dashboard')  
+
+    return render(request, 'seller/pending.html')
+def generate_unique_sku():
+    while True:
+        sku = "SKU-" + str(uuid.uuid4())[:8]
+        if not ProductVariant.objects.filter(sku_code=sku).exists():
+            return sku
+
+import uuid
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from .models import (
+    Product, ProductVariant, ProductImage, InventoryLog,
+    VariantAttributeBridge, Category, SubCategory, Attribute
+)
+
+# --- Helper to generate unique SKU ---
+def generate_unique_sku():
+    while True:
+        sku = "SKU-" + str(uuid.uuid4())[:8]
+        if not ProductVariant.objects.filter(sku_code=sku).exists():
+            return sku
 
 @login_required
 def addproduct_view(request):
@@ -308,7 +348,7 @@ def addproduct_view(request):
     attributes = Attribute.objects.prefetch_related("options").all()
 
     if request.method == "POST":
-
+        # --- Category & Subcategory ---
         category_id = request.POST.get("category")
         subcategory_id = request.POST.get("subcategory")
 
@@ -317,11 +357,9 @@ def addproduct_view(request):
             return redirect("add_product")
 
         category = Category.objects.get(id=category_id)
-        subcategory = None
+        subcategory = SubCategory.objects.get(id=subcategory_id) if subcategory_id else None
 
-        if subcategory_id:
-            subcategory = SubCategory.objects.get(id=subcategory_id)
-
+        # --- Product Info ---
         name = request.POST.get("name")
         brand = request.POST.get("brand")
         description = request.POST.get("description")
@@ -335,52 +373,50 @@ def addproduct_view(request):
             description=description,
             approval_status="PENDING"
         )
-        sku_code = request.POST.get("sku_code")
-        if not sku_code:
-            sku_code = "SKU-" + str(uuid.uuid4())[:8]
-            if ProductVariant.objects.filter(sku_code=sku_code).exists():
-                messages.error(request, "SKU already exists! Try another.")
-                return redirect("add_product")
 
-        
-        variant = ProductVariant.objects.create(
-            product=product,
-            sku_code=sku_code,
+        # --- SKU Handling (always generate unique SKU) ---
+        sku_code = generate_unique_sku()
 
-            mrp=float(request.POST.get("mrp") or 0),
-            selling_price=float(request.POST.get("selling_price") or 0),
-            cost_price=float(request.POST.get("cost_price") or 0),
+        # --- Product Variant Creation with IntegrityError catch ---
+        try:
+            variant = ProductVariant.objects.create(
+                product=product,
+                sku_code=sku_code,
+                mrp=float(request.POST.get("mrp") or 0),
+                selling_price=float(request.POST.get("selling_price") or 0),
+                cost_price=float(request.POST.get("cost_price") or 0),
+                stock_quantity=int(request.POST.get("stock_quantity") or 0),
+                weight=float(request.POST.get("weight") or 0),
+                length=float(request.POST.get("length") or 0),
+                width=float(request.POST.get("width") or 0),
+                height=float(request.POST.get("height") or 0),
+                tax_percentage=float(request.POST.get("tax_percentage") or 0),
+            )
+        except IntegrityError:
+            messages.error(request, "SKU collision occurred! Try again.")
+            product.delete()  # remove product if variant fails
+            return redirect("add_product")
 
-            stock_quantity=int(request.POST.get("stock_quantity") or 0),
-
-            weight=float(request.POST.get("weight") or 0),
-            length=float(request.POST.get("length") or 0),
-            width=float(request.POST.get("width") or 0),
-            height=float(request.POST.get("height") or 0),
-
-            tax_percentage=float(request.POST.get("tax_percentage") or 0),
-        )
-
-    
+        # --- Inventory Log ---
         initial_stock = variant.stock_quantity
-
         if initial_stock > 0:
             InventoryLog.objects.create(
-        variant=variant,
-        change_amount=initial_stock,             
-        reason="Intial stock",                  
-        performed_by=request.user              
-    )
+                variant=variant,
+                change_amount=initial_stock,
+                reason="Initial stock",
+                performed_by=request.user
+            )
 
-        selected_options = request.POST.getlist("attribute_options")    
-
+        # --- Variant Attributes ---
+        selected_options = request.POST.getlist("attribute_options")
         for option_id in selected_options:
             VariantAttributeBridge.objects.create(
                 variant=variant,
                 option_id=option_id
             )
 
-        image = request.FILES.get("images")
+        # --- Product Image ---
+        image = request.FILES.get("images")  # ensure your HTML input name="images"
         if image:
             ProductImage.objects.create(
                 variant=variant,
@@ -392,12 +428,12 @@ def addproduct_view(request):
         messages.success(request, "Product added successfully!")
         return redirect("product_list")
 
+    # --- GET Request ---
     data = {
         "categories": categories,
         "subcategories": subcategories,
         "attributes": attributes
     }
-
     return render(request, "seller/addprod.html", data)
 
 
@@ -746,40 +782,40 @@ def seller_reviews(request):
     if not seller:
         return redirect('home')
 
-    # ⭐ All products of this seller
+
     products = Product.objects.filter(seller=seller)
 
-    # ⭐ All reviews for percentage calculation (not filtered)
+    
     all_reviews = Review.objects.filter(product__in=products)
 
-    # Optional filter for table / display
+ 
     rating_filter = request.GET.get('rating')
     reviews = all_reviews
     if rating_filter:
         reviews = all_reviews.filter(rating=int(rating_filter))
 
-    # ⭐ Total reviews
-    total_reviews = all_reviews.count()  # ✅ Important: use all_reviews here
+   
+    total_reviews = all_reviews.count()  
 
-    # ⭐ Average rating
+  
     avg_rating = all_reviews.aggregate(avg=Avg('rating'))['avg'] or 0
 
-    # ⭐ Rating counts per star
+  
     rating_counts = all_reviews.values('rating').annotate(count=Count('rating'))
 
-    # Initialize dict
+  
     rating_dict = {i: 0 for i in range(1, 6)}
     for item in rating_counts:
         rating_dict[item['rating']] = item['count']
 
-    # ⭐ Percentage per star
+  
     rating_percentage = {
         i: round((rating_dict[i] / total_reviews) * 100) if total_reviews else 0
         for i in range(1, 6)
     }
 
     context = {
-        'reviews': reviews,  # filtered if rating_filter
+        'reviews': reviews,  
         'avg_rating': round(avg_rating, 1),
         'total_reviews': total_reviews,
         'rating_percentage': rating_percentage,

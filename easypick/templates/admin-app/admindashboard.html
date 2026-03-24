@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "admin-app/base.html" %}
 
 {% block title %}Dashboard | EasyPick Admin{% endblock %}
 
@@ -46,10 +46,9 @@
     <h2 class="text-2xl font-bold text-primary">Dashboard Overview</h2>
     <p class="text-primary/60 text-sm">Welcome back, here's what's happening today.</p>
 </div>
-
-<!-- Metric Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <!-- Total Sales Card -->
+
+    <!-- Total Sales -->
     <div class="bg-white p-6 rounded-xl border border-secondary/20 shadow-sm">
         <div class="flex justify-between items-start mb-4">
             <div class="p-2 bg-primary/10 rounded-lg">
@@ -62,9 +61,69 @@
         <p class="text-primary/60 text-sm font-medium">Total Sales</p>
         <h3 class="text-2xl font-bold text-primary mt-1">$128,430.00</h3>
     </div>
-    <!-- Repeat for New Users and Sellers -->
-</div>
 
+    <!-- Total Sellers -->
+    <div class="bg-white p-6 rounded-xl border border-secondary/20 shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <div class="p-2 bg-blue-100 rounded-lg">
+                <span class="material-symbols-outlined text-blue-600">storefront</span>
+            </div>
+        </div>
+        <p class="text-primary/60 text-sm font-medium">Total Sellers</p>
+        <h3 class="text-2xl font-bold text-primary mt-1">
+            {{ total_sellers }}
+        </h3>
+    </div>
+
+    <!-- Total Products -->
+    <div class="bg-white p-6 rounded-xl border border-secondary/20 shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <div class="p-2 bg-green-100 rounded-lg">
+                <span class="material-symbols-outlined text-green-600">inventory_2</span>
+            </div>
+        </div>
+        <p class="text-primary/60 text-sm font-medium">Total Products</p>
+        <h3 class="text-2xl font-bold text-primary mt-1">
+            {{ total_products }}
+        </h3>
+    </div>
+
+</div>
+<!-- Sales Chart Placeholder -->
+<div class="lg:col-span-2 bg-white p-8 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<h4 class="text-lg font-bold">Sales Performance</h4>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-xs font-medium text-primary/60">Revenue</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-secondary"></div>
+<span class="text-xs font-medium text-primary/60">Orders</span>
+</div>
+</div>
+</div>
+<!-- Visual Chart Mockup -->
+<div class="h-64 flex items-end justify-between gap-2">
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[40%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[60%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[45%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[80%]"></div>
+<div class="flex-1 bg-primary rounded-t-lg h-[90%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[70%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[55%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[65%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[50%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[75%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[85%]"></div>
+<div class="flex-1 bg-secondary/20 rounded-t-lg h-[60%]"></div>
+</div>
+<div class="flex justify-between mt-4 px-1 text-[10px] font-bold text-primary/40 uppercase tracking-widest">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+</div>
+</div>
+<br>
 <!-- Recent Orders Table -->
 <div class="lg:col-span-2 bg-white rounded-xl border border-secondary/20 shadow-sm overflow-hidden">
     <div class="p-6 border-b border-secondary/10 flex justify-between items-center">
@@ -105,4 +164,5 @@
         </table>
     </div>
 </div>
+
 {% endblock %}

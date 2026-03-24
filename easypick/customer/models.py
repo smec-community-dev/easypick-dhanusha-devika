@@ -31,8 +31,9 @@ class CartItems(models.Model):
     )
 
     product = models.ForeignKey(
-        'seller.Product',
-        on_delete=models.CASCADE
+        'seller.ProductVariant',
+        on_delete=models.CASCADE,
+        related_name="item"
     )
 
     quantity = models.PositiveIntegerField(default=1)
@@ -44,25 +45,39 @@ class CartItems(models.Model):
     
 class Wishlist(models.Model):
 
-    user = models.ForeignKey(
-        'core.User',
+    wishlist_id = models.AutoField(primary_key=True)
+
+    customer = models.OneToOneField(
+        User,
         on_delete=models.CASCADE,
         related_name="wishlist"
     )
 
-    product = models.ForeignKey(
-        'seller.Product',
-        on_delete=models.CASCADE
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Wishlist - {self.customer}"
+
+class WishlistItems(models.Model):
+
+    wishlist = models.ForeignKey(
+        Wishlist,
+        on_delete=models.CASCADE,
+        related_name="items"
     )
 
-    slug = models.SlugField(unique=True)
+    product = models.ForeignKey(
+        'seller.ProductVariant',
+        on_delete=models.CASCADE,
+        related_name="wishlist_items"
+    )
 
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} - {self.product}"
-    
-
+        return f"{self.product.name}"
 
 class Order(models.Model):
 
@@ -90,9 +105,7 @@ class Order(models.Model):
         default='Pending'
     )
     phone = models.CharField(max_length=15, blank=True, null=True)
-
     address = models.TextField(blank=True, null=True)
-
     total_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2

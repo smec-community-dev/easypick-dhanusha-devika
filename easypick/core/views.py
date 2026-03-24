@@ -2,22 +2,46 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from seller.models import ProductVariant
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import redirect, render
 
 def login_view(request):
-    if request.method=="POST":
-        email=request.POST.get('email')
-        password=request.POST.get('password')
-        user=authenticate(request,password=password,username=email)
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
         if user is not None:
-            login(request,user)
-            messages.success(request,'Login Successfully')
-            return redirect('home')
+            login(request, user)  # log the user in
+
+            # Admin / superuser
+            if user.is_superuser or user.role == "ADMIN":
+                return redirect("admin_dashboard")
+
+            # Seller → dashboard view will handle pending check
+            elif user.role == "SELLER":
+                return redirect("seller_dashboard")
+
+            # Customer
+            elif user.role == "CUSTOMER":
+                return redirect("home")
+
+            # Fallback
+            messages.success(request, "Login Successfully")
+            return redirect("mainhome")
+
         else:
-            messages.error(request,"invalid email  or password")
-            return redirect('login')
-    return render(request,'core/login.html')
-def shop_view(request):
-    return render(request,'core/shop.html')
+            messages.error(request, "Invalid username or password")
+            return redirect("login")
+
+    # GET → just render login page
+    return render(request, "core/login.html")
+
 def logout_view(request):
     logout(request)
     messages.success(request,"Logout")
@@ -52,16 +76,16 @@ def main_home(request):
 
     return render(request, "core/mainhome.html", context)
 
-def admin_view(request):
-    if request.method=="POST":
-        username=request.POST.get('email')
-        password=request.POST.get('password')
-        user=authenticate(request,password=password,username=username)
-        if user is not None and user.is_superuser:
-            login(request,user)
-            messages.success(request,'Login Successfully')
-            return redirect('admin_dashboard')
-        else:
-            messages.error(request,"You are not authorized as admin")
-            return redirect('mainhome')
-    return render(request,'admin/admin_login.html')
+# def admin_view(request):
+#     if request.method=="POST":
+#         username=request.POST.get('email')
+#         password=request.POST.get('password')
+#         user=authenticate(request,password=password,username=username)
+#         if user is not None and user.is_superuser:
+#             login(request,user)
+#             messages.success(request,'Login Successfully')
+#             return redirect('admin_dashboard')
+#         else:
+#             messages.error(request,"You are not authorized as admin")
+#             return redirect('mainhome')
+#     return render(request,'core/login.html')

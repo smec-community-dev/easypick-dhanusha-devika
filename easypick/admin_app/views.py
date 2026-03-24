@@ -6,13 +6,17 @@ from django.db.models import Q
 from django.http import JsonResponse
 
 
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
+@login_required
 def admin_dashboard_view(request):
 
-    query = request.GET.get("q")
+    # 🔒 Restrict access
+    if not (request.user.is_superuser or request.user.role == "ADMIN"):
+        return redirect("mainhome")   # NOT login
 
-    if request.user.role == "ADMIN":
-        return redirect("admin_dashboard")
+    query = request.GET.get("q")
 
     total_sellers = SellerProfile.objects.count()
     total_products = Product.objects.count()
@@ -31,6 +35,7 @@ def admin_dashboard_view(request):
             Q(user__first_name__icontains=query) |
             Q(user__username__icontains=query)
         )
+
     orders = orders[:10]
 
     data = {
@@ -40,7 +45,7 @@ def admin_dashboard_view(request):
         "sellers": sellers,
     }
 
-    return render(request, "admin/admindashboard.html", data)
+    return render(request, "admin-app/admindashboard.html", data)
 
 def seller_management(request):
     status = request.GET.get("status", "PENDING")
@@ -72,7 +77,7 @@ def seller_management(request):
         "status_tabs": status_tabs,
     }
 
-    return render(request, "admin/sellermanage.html", context)
+    return render(request, "admin-app/sellermanage.html", context)
 
 
 def approve_seller(request, seller_id):
@@ -136,7 +141,7 @@ def product_management(request):
         "status_tabs": status_tabs,
     }
 
-    return render(request, "admin/productsmanagement.html", context)
+    return render(request, "admin-app/productsmanagement.html", context)
 
 
 def approve_product(request, product_id):
@@ -189,7 +194,7 @@ def order_management(request):
         # "status_tabs": status_tabs,
     }
 
-    return render(request, "admin/ordermanagement.html", context)
+    return render(request, "admin-app/ordermanagement.html", context)
 def ship_order(request, order_id):
 
     order = Order.objects.get(id=order_id)
