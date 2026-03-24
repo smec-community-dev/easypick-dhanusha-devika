@@ -20,15 +20,17 @@ def login_view(request):
         password=request.POST.get('password')
         user=authenticate(request,password=password,username=email)
         if user is not None:
-            if user.role=="ADMIN":
-                return redirect("admin_dashboard")
-            elif user.role=="SELLER":
-                return redirect("seller_dashboard")
-            elif user.role=="CUSTOMER":
-                return redirect("home")          
+            # if user.role=="ADMIN":
+            #     return redirect("admin_dashboard")
+            # elif user.role=="SELLER":
+            #     return redirect("seller_dashboard")
+            # elif user.role=="CUSTOMER":
+            #     return redirect("home")          
+            # login(request,user)
+            # messages.success(request,'Login Successfully')
+            # return redirect('home')
             login(request,user)
-            messages.success(request,'Login Successfully')
-            return redirect('home')
+            return redirect("home")
         else:
             messages.error(request,"invalid email  or password")
             return redirect('login')

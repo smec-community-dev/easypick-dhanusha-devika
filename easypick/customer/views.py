@@ -245,7 +245,7 @@ def customer_recently_viewd(request):
 def customer_recommentation(request):
     return render(request,'customer/customer_recommentation.html')
 
-@login_required
+
 def shop_view(request):
     products = ProductVariant.objects.all().select_related('product').prefetch_related('images')
 
@@ -337,22 +337,35 @@ def single_view(request, id):
     product = get_object_or_404(ProductVariant.objects.select_related('product').prefetch_related('images'),id=id)
 
     if request.method == "POST":
-        comment = request.POST.get('comment')
-        rating = request.POST.get('rating')
-
         if request.user.is_authenticated:
-            Review.objects.create(
-                product=product.product,
-                user=request.user,
-                comments='comment',
-                rating='rating' if rating else 5
-            )
+            comment = request.POST.get('comment', '').strip()
+            rating_str = request.POST.get('rating', '5')
+            
+            try:
+                rating = int(rating_str)
+                if 1 <= rating <= 5:
+                    Review.objects.create(
+                        product=product.product,
+                        user=request.user,
+                        comments=comment,
+                        rating=rating
+                    )
+                    messages.success(request, "Review submitted successfully!")
+                    return redirect('single', id=id)
+                else:
+                    messages.error(request, "Rating must be between 1 and 5.")
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid rating. Please select 1-5 stars.")
+        else:
+            messages.error(request, "Please log in to submit a review.")
     reviews = Review.objects.filter(
         product=product.product
     ).select_related('user').prefetch_related('images').order_by('-created_at')
     
     subcategory = product.product.subcategory
-    related_products = Product.objects.filter(subcategory=subcategory).exclude(id=product.product.id).prefetch_related("variants")
+    related_products = ProductVariant.objects.filter(
+        product__subcategory=subcategory
+    ).exclude(product=product.product).select_related('product').prefetch_related('images')[:8]
     in_wishlist = False
     if request.user.is_authenticated:
         wishlist = Wishlist.objects.filter(customer=request.user).first()
@@ -460,36 +473,36 @@ def search_view(request):
     else:
         product=ProductVariant.objects.none()
     return render(request,'customer/search_result.html',{'product':product, 'query': search_product})
-@login_required(login_url="/login")
-def review_view(request, id):
-    variant = get_object_or_404(ProductVariant, id=id)
-    product = variant.product
-    product_reviews = Review.objects.filter(product=product).prefetch_related('images')
-    if request.method == "POST":
-        rating = int(request.POST.get('rating') or 0)
-        comments = request.POST.get('comments', '')
-        images = request.FILES.getlist('images')
-        review = Review.objects.create(product=product, user=request.user, rating=rating, comments=comments)
-        for img in images:
-            ReviewImage.objects.create(review=review, image=img)
-        return redirect('single', id=variant.id)
+# @login_required(login_url="/login")
+# def review_view(request, id):
+#     variant = get_object_or_404(ProductVariant, id=id)
+#     product = variant.product
+#     product_reviews = Review.objects.filter(product=product).prefetch_related('images')
+#     if request.method == "POST":
+#         rating = int(request.POST.get('rating') or 0)
+#         comments = request.POST.get('comments', '')
+#         images = request.FILES.getlist('images')
+#         review = Review.objects.create(product=product, user=request.user, rating=rating, comments=comments)
+#         for img in images:
+#             ReviewImage.objects.create(review=review, image=img)
+#         return redirect('single', id=variant.id)
 
-    in_wishlist = False
-    if request.user.is_authenticated:
-        wishlist = Wishlist.objects.filter(customer=request.user).first()
-        if wishlist:
-            in_wishlist = WishlistItems.objects.filter(
-                wishlist=wishlist, product=variant
-            ).exists()
+#     in_wishlist = False
+#     if request.user.is_authenticated:
+#         wishlist = Wishlist.objects.filter(customer=request.user).first()
+#         if wishlist:
+#             in_wishlist = WishlistItems.objects.filter(
+#                 wishlist=wishlist, product=variant
+#             ).exists()
     
-    context = {
-        'product': variant,
-        'reviews': product_reviews,
-        'user': request.user,
-        'in_wishlist': in_wishlist
-    }
+#     context = {
+#         'product': variant,
+#         'reviews': product_reviews,
+#         'user': request.user,
+#         'in_wishlist': in_wishlist
+#     }
 
-    return render(request, 'core/single_product.html', context)
+#     return render(request, 'core/single_product.html', context)
 
 
 

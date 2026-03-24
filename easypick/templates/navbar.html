@@ -38,7 +38,7 @@
                         </span>
                     </button>
                 </a>
-                
+                {% if request.user.is_authenticated%}
                 <div class="relative inline-block">
                     <button id="accountButton" class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
                         <span class="material-symbols-outlined text-white">person</span>
@@ -66,7 +66,37 @@
                         </div>
                     </div>
                 </div>
-                
+                {% else %}
+                <div class="relative inline-block group">
+                    <button id="loginDropdownButton" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all text-sm font-bold border border-white/10">
+                        <span class="material-symbols-outlined text-lg">login</span>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="loginDropdown" class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block z-[100]">
+                        <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+                            <a href="{% url 'login' %}" class="flex items-center justify-between px-4 py-4 text-sm font-bold text-white bg-[#4a5d4e] hover:bg-[#3d4d40] transition-colors">
+                                Log In to Account
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </a>
+                            
+                            <div class="p-2">
+                                <p class="px-3 py-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">New here? Register</p>
+                                
+                                <a href="{% url 'customer_register' %}" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                                    <span class="material-symbols-outlined text-gray-400">person_add</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold">Customer</span>
+                                        <span class="text-[10px] text-gray-500">I want to shop</span>
+                                    </div>
+                                </a>
+
+          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
                 <button class="p-2 md:hidden hover:bg-white/10 rounded-full transition-colors">
                     <span class="material-symbols-outlined">menu</span>
