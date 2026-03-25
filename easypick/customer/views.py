@@ -340,16 +340,22 @@ def single_view(request, id):
         if request.user.is_authenticated:
             comment = request.POST.get('comment', '').strip()
             rating_str = request.POST.get('rating', '5')
+            images = request.FILES.getlist('images')
             
             try:
                 rating = int(rating_str)
                 if 1 <= rating <= 5:
-                    Review.objects.create(
+                    review = Review.objects.create(
                         product=product.product,
                         user=request.user,
                         comments=comment,
                         rating=rating
                     )
+                    for img in images:
+                        ReviewImage.objects.create(
+                            review=review,
+                            image=img
+                        )
                     messages.success(request, "Review submitted successfully!")
                     return redirect('single', id=id)
                 else:
@@ -455,13 +461,37 @@ def order_confirm_view(request, id):
     }
     return render(request, 'customer/order_confirm.html', context)
 @login_required(login_url="/login")
-def payment_view(request):
-    cart_item=CartItems.objects.filter(cart__customer=request.user).select_related('product')
-    subtotal=0
-    for item in cart_item:
-        subtotal += item.product.selling_price * item.quantity
-            
-    return render(request,'customer/payment.html',{"subtotal":subtotal})
+def single_payment_view(request,id):
+   product = ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
+   address = Address.objects.filter(user=request.user)
+        
+   quantity = request.GET.get('qty', 1)
+   quantity = int(quantity)
+        
+   selling_price = product.selling_price
+   subtotal = selling_price * quantity
+   order_number = f"ORD{random.randint(1000,9999)}"
+        
+   order = Order.objects.create(
+         customer=request.user,
+         order_number=order_number,
+         total_amount=subtotal,
+         payment_method='COD',   
+         payment_status='Pending'
+     )
+   
+   
+        
+        
+   context = {
+            'product': product,
+            'address': address,
+            'quantity': quantity,
+            'subtotal': subtotal,
+            'selling_price': selling_price,
+    }
+        
+   return render(request, 'customer/payment.html', context)
 
 def search_view(request):
     search_product=request.GET.get('search')
@@ -473,36 +503,36 @@ def search_view(request):
     else:
         product=ProductVariant.objects.none()
     return render(request,'customer/search_result.html',{'product':product, 'query': search_product})
-# @login_required(login_url="/login")
-# def review_view(request, id):
-#     variant = get_object_or_404(ProductVariant, id=id)
-#     product = variant.product
-#     product_reviews = Review.objects.filter(product=product).prefetch_related('images')
-#     if request.method == "POST":
-#         rating = int(request.POST.get('rating') or 0)
-#         comments = request.POST.get('comments', '')
-#         images = request.FILES.getlist('images')
-#         review = Review.objects.create(product=product, user=request.user, rating=rating, comments=comments)
-#         for img in images:
-#             ReviewImage.objects.create(review=review, image=img)
-#         return redirect('single', id=variant.id)
+@login_required(login_url="/login")
+def review_view(request, id):
+    variant = get_object_or_404(ProductVariant, id=id)
+    product = variant.product
+    product_reviews = Review.objects.filter(product=product).prefetch_related('images')
+    if request.method == "POST":
+        rating = int(request.POST.get('rating') or 0)
+        comments = request.POST.get('comments', '')
+        images = request.FILES.getlist('images')
+        review = Review.objects.create(product=product, user=request.user, rating=rating, comments=comments)
+        for img in images:
+            ReviewImage.objects.create(review=review, image=img)
+        return redirect('single', id=variant.id)
 
-#     in_wishlist = False
-#     if request.user.is_authenticated:
-#         wishlist = Wishlist.objects.filter(customer=request.user).first()
-#         if wishlist:
-#             in_wishlist = WishlistItems.objects.filter(
-#                 wishlist=wishlist, product=variant
-#             ).exists()
+    in_wishlist = False
+    if request.user.is_authenticated:
+        wishlist = Wishlist.objects.filter(customer=request.user).first()
+        if wishlist:
+            in_wishlist = WishlistItems.objects.filter(
+                wishlist=wishlist, product=variant
+            ).exists()
     
-#     context = {
-#         'product': variant,
-#         'reviews': product_reviews,
-#         'user': request.user,
-#         'in_wishlist': in_wishlist
-#     }
+    context = {
+        'product': variant,
+        'reviews': product_reviews,
+        'user': request.user,
+        'in_wishlist': in_wishlist
+    }
 
-#     return render(request, 'core/single_product.html', context)
+    return render(request, 'core/single_product.html', context)
 
 
 
@@ -544,49 +574,49 @@ def all_category(request):
     category=Category.objects.all()
     return render(request,'core/all_category.html',{"catgeory":category})
 
-@login_required(login_url="/login")
-def place_order(request):
+# @login_required(login_url="/login")
+# def place_order(request):
 
     
-    cart_items = CartItems.objects.filter(cart__customer=request.user)
+#     cart_items = CartItems.objects.filter(cart__customer=request.user)
 
-    total = 0
+#     total = 0
 
    
-    order_number = f"ORD{random.randint(1000,9999)}"
+#     order_number = f"ORD{random.randint(1000,9999)}"
 
     
-    order = Order.objects.create(
-        customer=request.user,
-        order_number=order_number,
-        total_amount=0,
-        payment_method='COD',   
-        payment_status='Pending'
-    )
+#     order = Order.objects.create(
+#         customer=request.user,
+#         order_number=order_number,
+#         total_amount=0,
+#         payment_method='COD',   
+#         payment_status='Pending'
+#     )
 
     
-    for item in cart_items:
-        variant = item.product
-        product = variant.product
+#     for item in cart_items:
+#         variant = item.product
+#         product = variant.product
         
-        OrderItem.objects.create(
-            order=order,
-            product=product,
-            quantity=item.quantity,
-            price=variant.selling_price
-        )
+#         OrderItem.objects.create(
+#             order=order,
+#             product=product,
+#             quantity=item.quantity,
+#             price=variant.selling_price
+#         )
 
-        total += variant.selling_price * item.quantity
+#         total += variant.selling_price * item.quantity
 
    
-    order.total_amount = total
-    order.save()
+#     order.total_amount = total
+#     order.save()
 
     
-    cart_items.delete()
-    print("hlooo")
+#     cart_items.delete()
+#     print("hlooo")
 
-    return redirect('payment')
+#     return redirect('single_payment', id=order.order_id)
 
 @login_required(login_url="/login")
 def add_wishlist_to_cart(request):
