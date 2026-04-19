@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Order Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .material-symbols-outlined { vertical-align: middle; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+{% include "includes/navbar.html" %}
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-center items-center mb-10 space-x-6">
+        <div class="flex items-center text-[#4a5d4e]">
+            <span class="w-8 h-8 rounded-full bg-[#4a5d4e] text-white flex items-center justify-center text-sm font-bold mr-3 shadow-md">✓</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Cart</span>
+        </div>
+        <div class="h-[2px] w-16 bg-[#4a5d4e]"></div>
+        <div class="flex items-center text-[#4a5d4e]">
+            <span class="w-8 h-8 rounded-full bg-[#4a5d4e] text-white flex items-center justify-center text-sm font-bold mr-3 shadow-md">2</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Confirmation</span>
+        </div>
+        <div class="h-[2px] w-16 bg-gray-200"></div>
+        <div class="flex items-center text-gray-400">
+            <span class="w-8 h-8 rounded-full border-2 border-gray-200 flex items-center justify-center text-sm font-bold mr-3">3</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Payment</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex justify-between items-start" id="mainAddressDisplay">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Shipping to:</h3>
+                        <span id="display-address-type" class="bg-blue-50 text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-bold">{{ address.address_type|upper|default:"HOME" }}</span>
+                    </div>
+                    <p id="display-fullname" class="font-bold text-gray-900 text-lg">{{ address.full_name }}</p>
+                    <p id="display-address-str" class="text-sm text-gray-600 mt-1 leading-relaxed">
+                        {{ address.house_no }}, {{ address.street }}, {{ address.landmark }},<br>
+                        {{ address.city }}, {{ address.state }} - {{ address.zip_code }}
+                    </p>
+                    <p id="display-phone" class="text-xs text-gray-500 mt-2 font-medium">{{ address.phone_number }}</p>
+                </div>
+                <button onclick="togglePanel(true)" class="text-[#4a5d4e] font-bold text-sm px-5 py-2.5 border-2 border-gray-100 rounded-lg hover:border-[#4a5d4e] hover:bg-gray-50 transition-all">
+                    Change
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                {% for item in cart_item %}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="w-28 h-28 flex-shrink-0 mx-auto md:mx-0 bg-gray-50 rounded-lg p-2">
+                            {% with item.product.images.all|first as primary_image %}
+                            <img src="{{ primary_image.image_url.url }}" alt="{{ item.product.product.name }}" class="w-full h-full object-contain">
+                            {% endwith %}
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <h2 class="text-lg font-semibold text-gray-900 leading-tight">{{ item.product.product.name }}</h2>
+                                <span class="text-[#4a5d4e] font-black text-[10px] italic tracking-tighter border-2 border-[#4a5d4e] px-2 py-0.5 rounded">ASSURED</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1 line-clamp-1">{{ item.product.product.description }}</p>
+                            
+                            <div class="flex items-baseline gap-2 mt-3">
+                                <span class="text-xl font-bold text-gray-900">₹{{ item.product.selling_price }}</span>
+                                <span class="text-gray-400 line-through text-xs">₹{{ item.product.mrp }}</span>
+                                <span class="text-xs text-gray-500 font-medium">Qty: {{ item.quantity }}</span>
+                            </div>
+                            
+                            <div class="mt-4 flex items-center gap-4 text-[11px] font-bold uppercase tracking-wider">
+                                <span class="text-green-600 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">local_shipping</span> Free Delivery
+                                </span>
+                                <span class="text-gray-400">|</span>
+                                <span class="text-gray-600">Arriving by Sunday</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-lg border border-gray-100 sticky top-28 overflow-hidden">
+                <h3 class="p-5 border-b border-gray-50 font-black text-gray-400 uppercase text-xs tracking-[0.2em]">Price Details</h3>
+                <div class="p-6 space-y-5">
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Price ({{ cart_item|length }} items)</span>
+                        <span>₹{{ subtotal }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Delivery Charges</span>
+                        <span class="text-green-600 font-bold uppercase">Free</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>Platform Fee</span>
+                        <span>₹5</span>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
+                        <span class="text-lg font-bold text-gray-900">Total Amount</span>
+                        <span class="text-xl font-black text-gray-900">₹{{ subtotal|add:5 }}</span>
+                    </div>
+
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                        <p class="text-green-700 text-xs font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">verified_user</span>
+                            Safe and Secure Payments
+                        </p>
+                    </div>
+
+                    <a href="{% url 'cart_payment' cart.cart_id  %}" class="block w-full">
+                        <button class="w-full bg-[#fb641b] hover:bg-[#e65a17] text-white font-bold py-4 rounded-xl shadow-lg transition-all uppercase tracking-widest text-sm">
+                            Proceed to Payment
+                        </button>
+                    </a>
+                    
+                    <a href="{% url 'cart' %}" class="block text-center text-xs font-bold text-gray-400 uppercase hover:text-[#4a5d4e] transition-colors py-2">
+                        ← Back to Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="sidePanel" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-500 z-[100]">
+    <div class="h-full flex flex-col">
+        <div class="p-6 border-b flex items-center justify-between">
+            <h2 class="text-xl font-black text-gray-900">Select Delivery Address</h2>
+            <button onclick="togglePanel(false)" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <span class="material-symbols-outlined text-gray-500">close</span>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="addressList">
+            {% for addr in addresses %}
+            <div class="address-item p-4 border rounded-xl hover:shadow-md transition-all cursor-pointer {% if addr.id == address.id %}ring-2 ring-[#4a5d4e] bg-blue-50/50{% endif %}" 
+                 onclick="updateSelection(this)"
+                 data-id="{{ addr.id }}"
+                 data-type="{{ addr.address_type }}"
+                 data-name="{{ addr.full_name }}"
+                 data-phone="{{ addr.phone_number }}"
+                 data-details="{{ addr.house_no }}, {{ addr.street }}, {{ addr.landmark }}, {{ addr.city }}, {{ addr.state }} - {{ addr.zip_code }}">
+                
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-5 h-5 border-2 rounded-full flex items-center justify-center text-[10px] font-bold radio-visual {% if addr.id == address.id %}bg-[#4a5d4e] text-white border-[#4a5d4e]{% else %}border-gray-300 text-transparent{% endif %}">
+                        ✓
+                    </div>
+                    <span class="text-sm font-bold text-gray-900">{{ addr.address_type|capfirst }}</span>
+                </div>
+                <p class="font-semibold text-gray-900 mb-1">{{ addr.full_name }}</p>
+                <p class="text-sm text-gray-600 leading-relaxed">{{ addr.house_no }}, {{ addr.street }}, {{ addr.city }}</p>
+                <p class="text-xs text-gray-500 mt-2">{{ addr.phone_number }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="p-6 border-t">
+            <button onclick="useSelectedAddress()" class="w-full bg-[#4a5d4e] hover:bg-[#3a4b3e] text-white font-bold py-4 rounded-xl transition-all shadow-md uppercase tracking-wide text-sm">
+                Confirm Selection
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="overlay" onclick="togglePanel(false)" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-[90]"></div>
+
+<script>
+    let tempSelectedAddress = null;
+
+    function togglePanel(open) {
+        const panel = document.getElementById('sidePanel');
+        const overlay = document.getElementById('overlay');
+        panel.classList.toggle('translate-x-full', !open);
+        overlay.classList.toggle('hidden', !open);
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    function updateSelection(element) {
+        // Style update
+        document.querySelectorAll('.address-item').forEach(item => {
+            item.classList.remove('ring-2', 'ring-[#4a5d4e]', 'bg-blue-50/50');
+            item.querySelector('.radio-visual').className = 'w-5 h-5 border-2 rounded-full flex items-center justify-center text-[10px] font-bold radio-visual border-gray-300 text-transparent';
+        });
+        
+        element.classList.add('ring-2', 'ring-[#4a5d4e]', 'bg-blue-50/50');
+        element.querySelector('.radio-visual').className = 'w-5 h-5 border-2 rounded-full flex items-center justify-center text-[10px] font-bold radio-visual bg-[#4a5d4e] text-white border-[#4a5d4e]';
+        
+        // Data capture
+        tempSelectedAddress = element.dataset;
+    }
+
+    function useSelectedAddress() {
+        if (!tempSelectedAddress) return togglePanel(false);
+
+        // Update Main UI
+        document.getElementById('display-address-type').textContent = tempSelectedAddress.type.toUpperCase();
+        document.getElementById('display-fullname').textContent = tempSelectedAddress.name;
+        document.getElementById('display-address-str').textContent = tempSelectedAddress.details;
+        document.getElementById('display-phone').textContent = tempSelectedAddress.phone;
+
+        togglePanel(false);
+        // Add your AJAX call here to update the session/database address if needed
+    }
+</script>
+</body>
+</html>

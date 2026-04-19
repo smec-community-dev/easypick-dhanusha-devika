@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}EasyPick{% endblock %}</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4b5d4f",
+                        secondary: "#a2b08a",
+                        "neutral-bg": "#e8eae6",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400;
+        }
+
+        .active-nav {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #a2b08a;
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-bg font-display text-primary">
+
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 bg-primary text-white flex flex-col shrink-0">
+    
+    <div class="p-6 flex items-center gap-3">
+        <div class="size-8 bg-secondary rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary font-bold">shopping_basket</span>
+        </div>
+        <h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
+    </div>
+
+    <nav class="flex-1 mt-4 px-3 space-y-1">
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'seller_dashboard' %}">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-sm font-medium">Overview</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'inventory_log' %}">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="text-sm font-medium">Inventory</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'order_list' %}">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span class="text-sm font-medium">Orders</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'product_list' %}">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="text-sm font-medium">Products</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'seller_profile' %}">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-sm font-medium">Profile</span>
+        </a>
+
+        {% comment %} <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+           href="{% url 'variant_discount_list' %}">
+            <span class="material-symbols-outlined">local_offer</span>
+            <span class="text-sm font-medium">Discounts</span>
+        </a> {% endcomment %}
+
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+   href="{% url 'seller_reviews' %}">
+    <span class="material-symbols-outlined">star</span>
+    <span class="text-sm font-medium">Reviews</span>
+</a>
+
+    </nav>
+
+    <div class="p-4 border-t border-white/10">
+        <a href="{% url 'logout' %}" class="flex items-center gap-2 text-white/70 hover:text-white">
+            <span class="material-symbols-outlined">logout</span>
+            Logout
+        </a>
+    </div>
+
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+
+    <!-- Header -->
+<header class="h-16 bg-primary text-white flex items-center justify-between px-8 shrink-0">
+
+    <div class="flex items-center gap-4">
+        <h2 class="font-bold text-white">
+            Hi {{ request.user.username }}!
+        </h2>
+
+    </div>
+  <div class="flex items-center gap-4">
+ 
+        <!-- Home Icon -->
+        <a href="{% url 'seller_dashboard' %}" 
+           class="flex items-center gap-1 hover:text-secondary transition">
+
+          
+        </a>
+
+    </div>
+</header>
+
+    <!-- ✅ IMPORTANT WRAPPER -->
+    <div class="flex-1 overflow-y-auto">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</main>
+</div>
+
+</body>
+</html>

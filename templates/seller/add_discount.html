@@ -1,0 +1,89 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Add Discount{% endblock %}
+
+{% block content %}
+
+<main class="min-h-[calc(100vh-80px)] flex items-center justify-center bg-slate-50 px-4">
+
+    <div class="w-full max-w-2xl">  <!-- increased width -->
+
+        <!-- CARD -->
+        <div class="bg-white rounded-2xl shadow-md border p-8 space-y-6">
+
+            <h2 class="text-2xl font-bold text-center text-primary">
+                Add Discount
+            </h2>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- VARIANT -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-700">
+                        Product Variant
+                    </label>
+
+                    <select name="variant" required
+                        class="w-full mt-2 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary">
+
+                        <option disabled selected>Select product</option>
+
+                        {% for variant in variants %}
+                        <option value="{{ variant.id }}">
+                            {{ variant.product.name }} - {{ variant.sku_code }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- DISCOUNT -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-700">
+                        Discount %
+                    </label>
+
+                    <input type="number" name="discount_percent" min="1" max="90" required
+                        class="w-full mt-2 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary"
+                        placeholder="Enter discount percentage">
+                </div>
+
+                <!-- DATES -->
+                <div class="grid grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="text-sm font-semibold text-slate-700">
+                            Start Date
+                        </label>
+
+                        <input type="date" name="start_date" required
+                            class="w-full mt-2 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary">
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-semibold text-slate-700">
+                            End Date
+                        </label>
+
+                        <input type="date" name="end_date" required
+                            class="w-full mt-2 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary">
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+                <button type="submit"
+                    class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition">
+                    Create Discount
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "admin-app/base.html" %}
+
+{% block title %}Add Category | EasyPick Admin{% endblock %}
+
+{% block header %}
+<header class="h-16 bg-white border-b flex items-center justify-between px-8">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'admin_category' %}" class="flex items-center justify-center size-8 rounded-full hover:bg-gray-100">
+            <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </a>
+        <h1 class="text-lg font-bold text-primary">Add Category</h1>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <form method="POST" enctype="multipart/form-data"
+          class="bg-white rounded-lg border shadow-lg overflow-hidden">
+
+        {% csrf_token %}
+
+        <div class="p-8 space-y-6">
+
+            <!-- Name -->
+            <div>
+                <label class="text-sm font-semibold text-primary">Category Name</label>
+                <input type="text" name="category_name" id="id_category_name" required
+                       class="w-full mt-2 border rounded-lg p-2"
+                       placeholder="e.g. Electronics">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="text-sm font-semibold text-primary">Description</label>
+                <textarea name="category_description" rows="3" required
+                          class="w-full mt-2 border rounded-lg p-2"></textarea>
+            </div>
+
+            <!-- Image -->
+            <div>
+                <label class="text-sm font-semibold text-primary">Category Image</label>
+                <input type="file" name="category_image"
+                       class="mt-2 text-sm">
+            </div>
+
+            <!-- Date -->
+            <div class="flex items-center gap-3">
+                <input type="date" name="created_at" id="id_created_at"
+                       class="border rounded-lg p-2">
+                <button type="button" onclick="setToday()" class="text-sm text-blue-500 font-bold">
+                    Today
+                </button>
+            </div>
+
+            <!-- Active -->
+            <div class="flex items-center gap-2">
+                <input type="checkbox" name="is_active" checked>
+                <label class="text-sm font-semibold text-primary">Active</label>
+            </div>
+
+            <!-- Slug -->
+            <div>
+                <label class="text-sm font-semibold text-primary">Slug</label>
+                <input type="text" name="slug" id="id_slug" required
+                       class="w-full mt-2 border rounded-lg p-2 bg-gray-50">
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+
+            <button type="submit"
+                    class="bg-primary text-white px-6 py-2 rounded font-bold">
+                Save Category
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- Scripts -->
+<script>
+const nameInput = document.getElementById('id_category_name');
+const slugInput = document.getElementById('id_slug');
+
+nameInput.addEventListener('input', function () {
+    let slug = nameInput.value
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    slugInput.value = slug;
+});
+
+function setToday() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('id_created_at').value = today;
+}
+</script>
+
+{% endblock %}

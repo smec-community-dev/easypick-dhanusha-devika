@@ -1,0 +1,150 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Inventory Log{% endblock %}
+
+{% block content %}
+
+<div class="p-6">
+
+<h2 class="text-xl font-bold mb-4">Inventory Log</h2>
+
+<!-- SEARCH -->
+<form method="GET" class="mb-4">
+    <input 
+        type="text"
+        name="q"
+        value="{{ request.GET.q }}"
+        placeholder="Search by SKU or Product"
+        class="w-full px-4 py-2 border rounded-lg"
+    />
+</form>
+
+<!-- TABLE -->
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-left border-collapse">
+
+<thead class="bg-gray-100 text-sm uppercase text-gray-600">
+<tr>
+    <th class="px-4 py-3">Product</th>
+    <th class="px-4 py-3">SKU</th>
+    <th class="px-4 py-3">Change</th>
+    <th class="px-4 py-3">Reason</th>
+    <th class="px-4 py-3">Seller</th>
+    <th class="px-4 py-3 text-right">Actions</th>
+</tr>
+</thead>
+
+<tbody class="divide-y">
+
+{% for log in logs %}
+<tr class="hover:bg-gray-50">
+
+   <td class="px-4 py-3">
+    <div class="flex items-center gap-3">
+
+        <!-- IMAGE -->
+        <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+            {% with image=log.variant.images.first %}
+                {% if image and image.image %}
+                    <img src="{{ image.image.url }}" 
+                         class="w-full h-full object-cover">
+                {% else %}
+                    <span class="material-symbols-outlined text-primary">
+                        inventory_2
+                    </span>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- NAME + SKU -->
+        <div>
+            <p class="font-semibold text-slate-800">
+                {{ log.variant.product.name }}
+            </p>
+            <p class="text-xs text-gray-500">
+                SKU: {{ log.variant.sku_code }}
+            </p>
+        </div>
+
+    </div>
+</td>
+    <!-- SKU -->
+    <td class="px-4 py-3 text-sm text-gray-500">
+        {{ log.variant.sku_code }}
+    </td>
+
+    <!-- CHANGE -->
+    <td class="px-4 py-3">
+        <span class="{% if log.change_amount > 0 %}text-green-600{% else %}text-red-600{% endif %} font-bold">
+            {{ log.change_amount }}
+        </span>
+    </td>
+
+    <!-- REASON -->
+    <td class="px-4 py-3 text-sm">
+        {{ log.reason }}
+    </td>
+
+    <!-- SELLER -->
+    <td class="px-4 py-3 text-sm">
+        {% if log.variant.product.seller %}
+            {{ log.variant.product.seller.user.username }}
+        {% else %}
+            Unknown
+        {% endif %}
+    </td>
+
+    <!-- ACTIONS -->
+    <td class="px-4 py-3 text-right space-x-2">
+
+    <!-- RESTOCK -->
+    <a href="{% url 'restockform' log.variant.id %}" 
+       class="px-3 py-1 text-xs rounded font-medium 
+              bg-[#4b5d4f] text-white hover:bg-[#3e4a3e] transition">
+        Restock
+    </a>
+
+    <!-- ADJUST -->
+    <a href="{% url 'adjustmentform' log.variant.id %}" 
+       class="px-3 py-1 text-xs rounded font-medium 
+              bg-[#4b5d4f] text-white hover:bg-[#3e4a3e] transition">
+        Adjust
+    </a>
+
+</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" class="text-center py-4 text-gray-500">
+        No inventory logs found.
+    </td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <script>
+const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+});
+</script>
+</body></html>  
+
+{% endblock %}  

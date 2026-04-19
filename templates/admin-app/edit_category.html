@@ -1,0 +1,106 @@
+{% extends "admin-app/base.html" %}
+
+{% block title %}Edit Category | EasyPick Admin{% endblock %}
+
+{% block header %}
+<header class="h-16 bg-white border-b flex items-center justify-between px-8">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'admin_category' %}" class="flex items-center justify-center size-8 rounded-full hover:bg-gray-100 transition-colors">
+            <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </a>
+        <h1 class="text-lg font-bold text-primary">Edit Category: <span class="text-gray-500 font-medium">{{ category.category_name }}</span></h1>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+
+    <form method="POST" enctype="multipart/form-data" 
+          class="bg-white rounded-xl border shadow-lg overflow-hidden">
+        
+        {% csrf_token %}
+
+        <div class="p-8 space-y-6">
+            
+            <div>
+                <label class="text-sm font-semibold text-primary">Category Name</label>
+                <input type="text" name="category_name" id="id_category_name" 
+                       value="{{ category.category_name }}" required
+                       class="w-full mt-2 border rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                       placeholder="e.g. Electronics">
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-primary">Description</label>
+                <textarea name="category_description" rows="4" required
+                          class="w-full mt-2 border rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">{{ category.category_description }}</textarea>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-primary block mb-2">Category Image</label>
+                <div class="flex items-start gap-6">
+                    {% if category.category_image %}
+                    <div class="shrink-0">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold mb-1">Current Image</p>
+                        <img src="{{ category.category_image.url }}" alt="{{ category.category_name }}" 
+                             class="size-24 object-cover rounded-lg border">
+                    </div>
+                    {% endif %}
+                    
+                    <div class="flex-grow">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold mb-1">Upload New</p>
+                        <input type="file" name="category_image"
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-primary">Slug</label>
+                <input type="text" name="slug" id="id_slug" value="{{ category.slug }}" required
+                       class="w-full mt-2 border rounded-lg p-2.5 bg-gray-50 text-gray-500 font-mono text-sm focus:outline-none cursor-not-allowed" 
+                       readonly>
+                <p class="text-[10px] text-gray-400 mt-1">Slug is automatically updated based on the name.</p>
+            </div>
+
+            <div class="pt-4 border-t flex items-center gap-3">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="is_active" class="sr-only peer" {% if category.is_active %}checked{% endif %}>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <span class="ml-3 text-sm font-semibold text-primary">Active Status</span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="bg-gray-50 px-8 py-4 flex justify-end items-center gap-4">
+            <a href="{% url 'admin_category' %}" class="text-sm font-bold text-gray-500 hover:text-gray-700">
+                Cancel
+            </a>
+            <button type="submit"
+                    class="bg-primary hover:bg-[#3d4c40] text-white px-8 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Update Category
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    const nameInput = document.getElementById('id_category_name');
+    const slugInput = document.getElementById('id_slug');
+
+    nameInput.addEventListener('input', function () {
+        let slug = nameInput.value
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        slugInput.value = slug;
+    });
+</script>
+{% endblock %}

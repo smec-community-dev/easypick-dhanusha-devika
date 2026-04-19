@@ -1,0 +1,176 @@
+{% extends "admin-app/base.html" %}
+
+{% block title %}Categories - EasyPick Admin{% endblock %}
+
+{% block header %}
+<header class="h-16 bg-white border-b flex items-center justify-between px-8">
+    <form method="GET" class="flex items-center bg-neutral-bg rounded-lg px-3 py-1.5 w-96">
+        <span class="material-symbols-outlined text-primary/60">search</span>
+        <input name="q" class="bg-transparent border-none focus:ring-0 text-sm w-full"
+               placeholder="Search categories..." type="text" value="{{ request.GET.q|default:'' }}">
+    </form>
+
+    <a href="{% url 'add_category' %}">
+        <button class="bg-primary hover:bg-[#3d4c40] text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all shadow-md">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Add Category
+        </button>
+    </a>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-6 flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-primary">Category Management</h2>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <table class="w-full text-left">
+        <thead class="bg-neutral-bg">
+            <tr>
+                <th class="px-6 py-4 text-xs font-bold uppercase text-primary/70">Name</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase text-primary/70">Slug</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase text-primary/70">Status</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase text-primary/70">Subcategories</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase text-primary/70 text-right">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y">
+            {% for category in categories %}
+            <tr class="hover:bg-gray-50 transition-colors {% if request.GET.category_id|add:0 == category.id %}bg-blue-50/40{% endif %}">
+                
+                <td class="px-6 py-4">
+                    <span class="font-semibold text-gray-800">{{ category.category_name }}</span>
+                </td>
+
+                <td class="px-6 py-4 text-gray-500 font-mono text-xs">
+                    {{ category.slug }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {% if category.is_active %}
+                        <span class="px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">Active</span>
+                    {% else %}
+                        <span class="px-2.5 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">Inactive</span>
+                    {% endif %}
+                </td>
+
+                <td class="px-6 py-4">
+                    <a href="?category_id={{ category.id }}" class="group text-primary hover:text-blue-700 text-sm flex items-center gap-1 font-medium transition-colors">
+                        <span class="material-symbols-outlined text-sm group-hover:scale-110 transition-transform">visibility</span>
+                        View Subcategories
+                    </a>
+                </td>
+
+                <td class="px-6 py-4 text-right">
+                    <div class="flex justify-end items-center gap-3">
+                        <a href="{% url 'edit_category' category.id %}" class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg transition-colors" title="Edit">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </a>
+                        <a href="{% url 'delete_category' category.id %}" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors" title="Delete">
+                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-12 text-gray-400">
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-4xl mb-2">inventory_2</span>
+                        <p>No categories available yet.</p>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if subcategories %}
+<div class="mt-12 animate-fade-in border-t pt-8">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+            <h3 class="text-xl font-bold text-primary">
+                Subcategories for <span class="text-gray-500">"{{ selected_category.category_name }}"</span>
+            </h3>
+            
+            <a href="{% url 'add_subcategory' %}?category_id={{ selected_category.id }}">
+                <button class="bg-primary hover:bg-[#3d4c40] text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    Add Subcategory
+                </button>
+            </a>
+        </div>
+
+        <a href="?" class="text-sm font-semibold text-gray-400 hover:text-red-500 flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-sm">close</span> Clear Selection
+        </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-primary/10 overflow-hidden">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500">Subcategory Name</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500">Slug</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for sub in subcategories %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 text-sm font-semibold text-gray-700">{{ sub.subcategory_name }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 font-mono">{{ sub.slug }}</td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex justify-end gap-2">
+                            <a href="{% url 'edit_subcategory' sub.id %}" class="text-gray-400 hover:text-blue-500 transition-colors">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                            </a>
+                            <a href="{% url 'delete_subcategory' sub.id %}" class="text-gray-400 hover:text-red-500 transition-colors">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% elif request.GET.category_id %}
+<div class="mt-12 p-12 bg-white rounded-xl border border-dashed border-gray-300 text-center animate-fade-in">
+    <div class="max-w-xs mx-auto">
+        <span class="material-symbols-outlined text-gray-300 text-6xl mb-4">folder_open</span>
+        <h4 class="text-lg font-bold text-primary mb-1">No Subcategories Yet</h4>
+        <p class="text-gray-400 text-sm mb-6">Start building your catalog by adding a subcategory to "{{ selected_category.category_name }}".</p>
+        
+        <a href="{% url 'add_subcategory' %}?category_id={{ selected_category.id }}" 
+           class="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:scale-105 transition-transform shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Create First Subcategory
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="mt-8 flex items-center justify-between">
+    <p class="text-sm text-gray-400">
+        Showing <span class="font-bold">{{ categories|length }}</span> main categories
+    </p>
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+</style>
+
+{% endblock %}

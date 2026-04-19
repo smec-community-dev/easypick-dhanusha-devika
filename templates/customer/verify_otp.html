@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "accent": "#e8eae6",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <title>EasyPick - Verify Email</title>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+    <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            
+            <header class="flex items-center justify-between whitespace-nowrap bg-primary px-6 md:px-20 py-4 shadow-md">
+                <div class="flex items-center gap-3 text-white">
+                    <div class="size-6">
+                        <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-white text-xl font-bold leading-tight tracking-tight">EasyPick</h2>
+                </div>
+                <div class="flex flex-1 justify-end gap-6 md:gap-10">
+                    <nav class="hidden md:flex items-center gap-8">
+                        <a class="text-white/90 hover:text-white text-sm font-medium transition-colors" href="{% url 'about' %}">About</a>
+                        <a class="text-white/90 hover:text-white text-sm font-medium transition-colors" href="{% url 'contact' %}">Contact</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="flex flex-1 justify-center items-center py-12 px-4 md:px-10">
+                <div class="layout-content-container flex flex-col max-w-[520px] w-full bg-white dark:bg-slate-900 p-8 md:p-12 rounded-xl shadow-sm border border-accent dark:border-slate-800">
+                    
+                    <div class="flex flex-col gap-2 mb-8 text-center">
+                        <div class="mx-auto mb-4 flex items-center justify-center size-16 rounded-full bg-accent dark:bg-slate-800 text-primary dark:text-secondary">
+                            <span class="material-symbols-outlined text-[32px]">mark_email_read</span>
+                        </div>
+                        <h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Verify Your Email</h1>
+                        <p class="text-slate-500 dark:text-slate-400 text-base font-normal">
+                            Enter the 6-digit code sent to <br>
+                            <strong class="text-slate-700 dark:text-slate-200">{{ email }}</strong>
+                        </p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="mb-6 px-4 py-3 rounded-lg text-sm font-medium border
+                                {% if message.tags == 'error' %}
+                                    bg-red-50 text-red-700 border-red-200
+                                {% elif message.tags == 'success' %}
+                                    bg-green-50 text-green-700 border-green-200
+                                {% endif %}
+                            ">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" class="flex flex-col gap-6">
+                        {% csrf_token %}
+                        <input type="hidden" name="email" value="{{ email }}">
+                        
+                        <div class="flex flex-col w-full">
+                            <label class="text-slate-800 dark:text-slate-200 text-sm font-semibold pb-3 text-center">Verification Code</label>
+                            <input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-16 px-4 text-center text-3xl font-bold tracking-[0.75em] transition-all placeholder:text-slate-300 dark:placeholder:text-slate-600" 
+                                   name="otp" 
+                                   placeholder="000000" 
+                                   maxlength="6" 
+                                   pattern="[0-9]{6}"
+                                   type="text" 
+                                   inputmode="numeric"
+                                   required/>
+                            <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-3">Please check your inbox or spam folder.</p>
+                        </div>
+
+                        <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-14 bg-primary text-white text-base font-bold tracking-wide shadow-lg hover:bg-opacity-90 transition-all active:scale-[0.98]" type="submit">
+                            Verify OTP
+                        </button>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-sm text-slate-500 dark:text-slate-400">
+                            Didn't receive the code? <br class="sm:hidden">
+                            <a href="#" class="text-primary dark:text-secondary font-bold hover:underline ml-1">Resend OTP</a>
+                        </p>
+                        
+                        <a href="{% url 'customer_register' %}" class="inline-flex items-center gap-2 mt-6 text-xs text-slate-400 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-sm">arrow_back</span>
+                            Back to Registration
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="mt-auto py-8 text-center border-t border-accent dark:border-slate-800">
+                <p class="text-slate-400 text-xs">© 2024 EasyPick Inc. All rights reserved. Privacy Policy • Terms of Service</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

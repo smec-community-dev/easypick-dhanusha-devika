@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick - Admin Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4b5d4f",
+              "background-light": "#f7f7f7",
+              "background-dark": "#181a18",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-[#e8eae6] dark:bg-background-dark min-h-screen flex flex-col font-display">
+
+<header class="bg-primary text-white px-6 md:px-20 py-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-2">
+        <div class="bg-white p-1 rounded">
+            <svg class="w-6 h-6 text-primary" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+            </svg>
+        </div>
+        <span class="text-xl font-bold tracking-tight">EasyPick </span>
+    </div>
+    
+</header>
+
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-[480px] bg-white dark:bg-[#222] rounded-xl shadow-xl p-8 md:p-10">
+        
+        <div class="text-center mb-8">
+            
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Admin Login</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">Authorized personnel only</p>
+        </div>
+
+        
+
+        <form method="POST" class="space-y-5">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" for="username">Username</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+                    <input class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary/50 focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all outline-none" 
+                           id="username" name="email" placeholder="Enter admin username" type="text" required/>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between mb-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300" for="password">Password</label>
+                </div>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+                    <input class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary/50 focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all outline-none" 
+                           id="password" name="password" placeholder="••••••••" type="password" required/>
+                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" type="button" onclick="const p = document.getElementById('password'); p.type = p.type === 'password' ? 'text' : 'password';">
+                        <span class="material-symbols-outlined text-xl"></span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="w-full bg-primary hover:bg-[#3d4c40] text-white font-bold py-3 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2" type="submit">
+                
+                <span class="material-symbols-outlined text-lg">login</span>
+            </button>
+        </form>
+
+        <!-- <div class="mt-8 text-center text-sm text-gray-500 border-t border-gray-100 dark:border-gray-800 pt-6">
+            <p>Return to <a class="text-primary font-bold hover:underline" href="/">Main Website</a></p>
+        </div> -->
+    </div>
+</main>
+
+<footer class="py-6 text-center text-gray-500 text-sm border-t border-gray-200 dark:border-gray-800">
+    <p>© 2024 EasyPick Inc. Secure Admin Gateway.</p>
+</footer>
+
+</body>
+</html>

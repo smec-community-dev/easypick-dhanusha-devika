@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | My Orders</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,line-clamp"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "accent": "#f3f5f0",
+                        "delivered": "#10b981",
+                        "pending": "#f59e0b",
+                        "shipped": "#3b82f6",
+                        "cancelled": "#ef4444",
+                    },
+                    fontFamily: {
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { background-color: #fafaf9; }
+        .order-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="text-slate-900">
+
+{% include "includes/navbar.html" %}
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {% if orders %}
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+            
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Purchase History</h1>
+            <p class="text-slate-500 mt-1">Manage and track your recent orders with EasyPick.</p>
+        </div>
+        
+        <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+            <button class="px-5 py-2.5 bg-primary text-white rounded-full text-sm font-semibold shadow-sm whitespace-nowrap">All Orders</button>
+            <button class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-semibold hover:bg-slate-50 transition-all whitespace-nowrap">Pending</button>
+            <button class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-semibold hover:bg-slate-50 transition-all whitespace-nowrap">Delivered</button>
+        </div>
+    </div>
+
+    <div class="space-y-8">
+        {% for order in orders %}
+        <div class="order-card bg-white rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-xl hover:scale-[1.005] overflow-hidden">
+            <div class="bg-slate-50/50 px-6 py-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-6">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Order Placed</p>
+                        <p class="text-sm font-semibold text-slate-700">{{ order.order_date|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="hidden sm:block w-px h-8 bg-slate-200"></div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Total Amount</p>
+                        <p class="text-sm font-bold text-primary">₹{{ order.total_amount }}</p>
+                    </div>
+                    <div class="hidden sm:block w-px h-8 bg-slate-200"></div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Order ID</p>
+                        <p class="text-sm font-semibold text-slate-700">#{{ order.order_number }}</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold 
+                        {% if order.status == 'Delivered' %} bg-emerald-100 text-emerald-700
+                        {% elif order.status == 'Cancelled' %} bg-red-100 text-red-700
+                        {% else %} bg-amber-100 text-amber-700 {% endif %}">
+                        <span class="w-1.5 h-1.5 rounded-full animate-pulse 
+                            {% if order.status == 'Delivered' %} bg-emerald-500
+                            {% elif order.status == 'Cancelled' %} bg-red-500
+                            {% else %} bg-amber-500 {% endif %}"></span>
+                        {{ order.status }}
+                    </span>
+                    <!-- <a href="{% url 'track_order' order.order_id %}" class="flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+                        View Details
+                        <span class="material-symbols-rounded text-base">arrow_right_alt</span>
+                    </a> -->
+                </div>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-4">
+                        {% for item in order.items.all|slice:":2" %}
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0 border border-slate-100">
+                                {% with item.product.variants.all|first as variant %}
+                                    {% with variant.images.all|first as primary_image %}
+                                        <img src="{% if primary_image %}{{ primary_image.image.url }}{% else %}{% static 'placeholder.png' %}{% endif %}"
+                                             class="w-full h-full object-cover" alt="{{ item.product.name }}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-slate-800 truncate">{{ item.product.name }}</h4>
+                                <p class="text-xs text-slate-500 mt-1">Quantity: {{ item.quantity }} • Price: ₹{{ item.price }}</p>
+                                <!-- <a href="#" class="text-xs font-bold text-secondary mt-2 inline-block hover:text-primary">Buy it again</a> -->
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        {% if order.items.count > 2 %}
+                        <p class="text-xs font-medium text-slate-400 pl-2">
+                            + {{ order.items.count|add:"-2" }} more items in this order
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="lg:col-span-4 flex lg:justify-end gap-3">
+                        <a href="{% url 'track_order' order.order_id %}">
+                        <button class="flex-1 lg:flex-none px-6 py-3 bg-white border-2 border-primary text-primary rounded-2xl text-sm font-bold hover:bg-primary hover:text-white transition-all">
+                            Track Order
+                        </button>
+                        </a>
+                        <!-- <button class="p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-all">
+                            <span class="material-symbols-rounded block">more_vert</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="py-24 text-center">
+        <div class="relative inline-block mb-8">
+            <div class="absolute inset-0 bg-secondary/20 blur-3xl rounded-full"></div>
+            <div class="relative w-40 h-40 bg-white rounded-full flex items-center justify-center shadow-2xl border border-slate-100">
+                <span class="material-symbols-rounded text-6xl text-slate-300">orders</span>
+            </div>
+        </div>
+        <h2 class="text-3xl font-black text-slate-900 mb-3">No orders found</h2>
+        <p class="text-slate-500 mb-10 max-w-sm mx-auto font-medium">Looks like you haven't made your choice yet. Explore our latest collection!</p>
+        <a href="{% url 'home' %}" class="inline-flex items-center gap-3 px-10 py-4 bg-primary text-white rounded-full font-bold text-lg shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-1 transition-all">
+            Start Shopping
+            <span class="material-symbols-rounded">arrow_forward</span>
+        </a>
+    </div>
+    {% endif %}
+</main>
+
+<footer class="mt-20 py-10 border-t border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+        <p class="text-slate-400 text-sm">© 2026 EasyPick. Crafted for better shopping.</p>
+    </div>
+</footer>
+
+</body>
+</html>

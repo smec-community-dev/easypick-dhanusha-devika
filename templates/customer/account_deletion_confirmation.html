@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Delete Account | EasyPick</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "accent": "#a2b08a",
+                        "neutral-light": "#e8eae6",
+                        "background-light": "#f7f7f7",
+                        "danger": "#dc2626",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-primary">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center px-4 py-12">
+        
+        <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+            <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 48 48">
+                <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
+            </svg>
+        </div>
+
+        <div class="relative z-10 w-full max-w-[500px]">
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-neutral-light dark:border-zinc-800 overflow-hidden">
+                
+                <div class="p-8 text-center border-b border-neutral-light/50">
+                    <div class="size-16 bg-danger/10 text-danger rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">warning</span>
+                    </div>
+                    <h2 class="text-2xl font-black text-primary mb-2">Delete your account?</h2>
+                    <p class="text-sm text-primary/60 leading-relaxed">
+                        This action is <strong>permanent</strong>. All your order history, saved addresses, and wishlist items will be wiped from our servers forever.
+                    </p>
+                </div>
+
+                <div class="p-8">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-8">
+                            <label class="text-xs font-bold uppercase text-primary/50 block mb-2 text-center">
+                                To confirm, type your password below
+                            </label>
+                            <input type="password" name="password_confirm" required 
+                                   placeholder="Enter password"
+                                   class="form-input rounded-lg border-neutral-light bg-background-light px-4 py-3 focus:border-danger focus:ring-0 text-primary w-full transition-all text-center">
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <button type="submit" 
+                                    class="w-full bg-danger text-white py-3.5 rounded-xl font-bold hover:bg-danger/90 transition-all shadow-lg active:scale-95">
+                                Permanent Delete Account
+                            </button>
+                            
+                            <a href="{% url 'customer_profile'%}" 
+                               class="w-full text-center py-3.5 rounded-xl font-bold text-primary/60 hover:text-primary hover:bg-neutral-light/30 transition-all">
+                                Cancel, I want to stay
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-neutral-light/20 p-4 text-center">
+                    <p class="text-[10px] text-primary/40 uppercase tracking-[0.2em] font-bold">
+                        EasyPick Secure Verification
+                    </p>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</body>
+</html>

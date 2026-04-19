@@ -1,0 +1,88 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<a href="{% url 'inventory_log' %}"
+           class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100">
+
+            <span class="material-symbols-outlined text-primary">
+                arrow_back
+            </span>
+
+        </a>
+<main class="flex-1 w-full max-w-2xl mx-auto px-4 py-6 space-y-6">
+
+ <h1 class="text-2xl font-bold text-primary mb-6 text-center">
+        Restock Form
+    </h1>
+<!-- Product Info Card -->
+<div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-primary/10 shadow-sm flex items-center gap-4">
+<div class="size-16 rounded-lg bg-primary/5 flex items-center justify-center overflow-hidden">
+{% if variant.images.first %}
+    <img src="{{ variant.images.first.image.url }}" alt="{{ variant.product.name }}" class="w-full h-full object-cover">
+{% else %}
+    <img src="https://via.placeholder.com/150" alt="No image available" class="w-full h-full object-cover">
+{% endif %}
+</div>
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400">Selected Product</p>
+<h2 class="font-semibold text-primary dark:text-slate-100 text-lg">{{ variant.product.name }} - {{ variant.name }}</h2>
+<span class="text-slate-600 dark:text-slate-300 font-medium">
+    {{ current_stock }} units available
+</span>
+</div>
+</div>
+
+<!-- Restock Form -->
+<form method="POST" class="space-y-5">
+{% csrf_token %}
+
+<!-- Restock Quantity -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Restock Quantity</label>
+<div class="relative">
+<input name="quantity" class="form-input w-full rounded-xl border-primary/20 dark:border-slate-700 bg-white dark:bg-slate-800 py-3.5 px-4 focus:ring-primary focus:border-primary transition-all" placeholder="0" type="number" required/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Units</span>
+</div>
+</div>
+
+<!-- Reason -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Reason for Restock</label>
+<select name="reason" class="form-select w-full rounded-xl border-primary/20 dark:border-slate-700 bg-white dark:bg-slate-800 py-3.5 px-4 focus:ring-primary focus:border-primary appearance-none transition-all" required>
+<option value="shipment">New Shipment Received</option>
+<option value="return">Customer Return</option>
+<option value="correction">Inventory Correction</option>
+<option value="other">Other</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
+</div>
+
+<!-- Performed By -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Performed By</label>
+<input name="performed_by" class="form-input w-full rounded-xl border-primary/20 dark:border-slate-700 bg-white dark:bg-slate-800 py-3.5 px-4 focus:ring-primary focus:border-primary transition-all" type="text" value="{{ request.user.username }}" required/>
+</div>
+
+<!-- Note -->
+<div class="flex flex-col gap-2 pt-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Additional Notes</label>
+<textarea name="note" class="form-textarea w-full rounded-xl border-primary/20 dark:border-slate-700 bg-white dark:bg-slate-800 py-3.5 px-4 focus:ring-primary focus:border-primary transition-all" placeholder="Add any specific details about this restock..." rows="3"></textarea>
+</div>
+
+<!-- Submit Button -->
+<div class="pt-6">
+<button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+Save Restock
+</button>
+</div>
+
+</form>
+
+</main>
+</body>
+</html>
+{% endblock %} 
+

@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Shop Smarter, Choose Better</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,line-clamp"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+   <meta name="csrf-token" content="{{ csrf_token }}">
+
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#4b5d4f",
+                    "background-light": "#f7f7f7",
+                    "background-dark": "#181a18",
+                },
+                fontFamily: {
+                    "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fav-btn-active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+            color: #ef4444;
+        }
+        /* Ensures text doesn't break the uniform height even if back-end data is long */
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+        /* Hide scrollbar for Webkit browsers */
+        #categoryCarousel .flex::-webkit-scrollbar {
+            display: none;
+        }
+        #categoryCarousel .flex {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#141514]">
+{% include "includes/navbar.html" %}
+
+
+<main class="w-full">
+    <section class="relative w-full h-[600px] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full bg-cover bg-center" style='background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&q=80&w=2000");'></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+            <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tight mb-6">
+                    Shop Smarter,<br/>Choose Better option
+                </h1>
+                <p class="text-lg md:text-xl text-white/90 font-light mb-10 max-w-lg">
+                    Curated lifestyle essentials delivered to your door. Experience the fusion of quality, aesthetics, and sustainability.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{% url 'shop' %}" class="bg-primary text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                        <span>Shop Now</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a href="{% url 'shop' %}" >
+                    <button class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/30 transition-all flex items-center justify-center">
+                        View Collections
+                    </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 bg-white">
+        <div class="flex items-end justify-between mb-12">
+            <div>
+                <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Our Selection</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">Featured Products</h2>
+            </div>
+            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'all_category' %}">
+                View all
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
+        </div>
+
+        <style>
+            #categoryTrack, #productTrack { scrollbar-width: none; -ms-overflow-style: none; }
+            #categoryTrack::-webkit-scrollbar, #productTrack::-webkit-scrollbar { display: none; }
+        </style>
+        <div id="categoryCarousel" class="relative w-full">
+            <button id="prevBtn" class="absolute left-0 z-10 w-12 h-12 bg-white/80 hover:bg-white shadow-lg rounded-full flex items-center justify-center text-primary text-xl -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <div id="categoryTrack" class="flex gap-6 pb-4 px-12 overflow-x-auto snap-x snap-mandatory">
+                {% for x in category %}
+                <a href="{% url 'category_view' x.id %}" class="group flex flex-col h-[300px] w-[220px] flex-shrink-0 snap-center">
+                    <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-square mb-3 flex-shrink-0">
+                        <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" 
+                             style='background-image: url("{{x.category_image.url}}");'>
+                        </div>
+                    </div>
+                    <div class="flex flex-col flex-grow px-2">
+                        <h3 class="text-sm font-semibold text-[#141514] group-hover:text-primary transition-colors line-clamp-1 text-center leading-tight">{{x.category_description}}</h3>
+                        <p class="text-[#737874] text-xs mb-2 text-center font-bold">{{x.category_name}}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <button id="nextBtn" class="absolute right-0 z-10 w-12 h-12 bg-white/80 hover:bg-white shadow-lg rounded-full flex items-center justify-center text-primary text-xl -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 border-t border-gray-100">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+            <div>
+                <span class="text-primary font-bold tracking-widest uppercase text-sm block mb-2">Full Collection</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#141514]">All Products</h2>
+            </div>
+            <a class="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline" href="{% url 'shop' %}">
+                View all item
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
+        </div>
+
+        <div id="productCarousel" class="relative w-full">
+            <button id="productPrevBtn" class="absolute left-0 z-10 w-12 h-12 bg-white hover:bg-gray-50 shadow-lg rounded-full flex items-center justify-center text-primary -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <div id="productTrack" class="flex gap-6 pb-4 px-12 overflow-x-auto snap-x snap-mandatory">
+                {% for x in products %}
+                <div class="product-card group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-500 flex-shrink-0 w-[220px] snap-center">
+                    <div class="absolute top-3 left-0 right-0 z-10 px-3 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="wishlist-btn p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:text-red-500 transition-colors {% if x.id in in_wishlist_ids %}fav-active{% endif %}" data-variant-id="{{ x.id }}">
+                            <span class="material-symbols-outlined text-[18px]">favorite</span>
+                        </button>
+                        <!-- <label class="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm cursor-pointer">
+                            <input type="checkbox" class="w-3 h-3 rounded border-gray-300 text-primary focus:ring-primary">
+                            <span class="text-[9px] font-bold text-gray-700 uppercase">Compare</span>
+                        </label> -->
+                    </div>
+                    <a href="{% url 'single' x.id %}" class="block">
+                        <div class="aspect-square w-full bg-[#f8f9fa] flex items-center justify-center p-6 overflow-hidden">
+                            {% with x.images.all|first as primary_image %}
+                            {% if primary_image %}
+                                <img src="{{ primary_image.image.url }}" class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110" alt="{{x.product.name}}">
+                            {% else %}
+                                <img src="{% static 'placeholder.png' %}" class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110" alt="{{x.product.name}}">
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <h3 class="text-xs md:text-sm font-bold text-[#141514] line-clamp-2 min-h-[36px] leading-snug group-hover:text-primary transition-colors">{{x.product.name}}</h3>
+                            <div class="flex items-center gap-1.5">
+                                <div class="flex items-center text-primary font-black text-[10px]">4.9 <span class="material-symbols-outlined text-[10px] ml-0.5" style="font-variation-settings: 'FILL' 1;">star</span></div>
+                                <span class="text-[9px] font-bold text-gray-400">(86)</span>
+                            </div>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="text-base font-black text-[#141514]">₹{{x.selling_price}}</span>
+                                <span class="text-[10px] text-gray-400 line-through">₹{{x.mrp_price}}</span>
+                                <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1 py-0.5 rounded">14% Off</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-xs text-gray-400">local_shipping</span>
+                                <p class="text-[10px] text-gray-500">Delivery by <span class="text-gray-900 font-bold">Mon, 9th</span></p>
+                            </div>
+                            <div class="pt-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <a href="{% url 'add_cart' x.id %}" class="w-full bg-primary text-white py-2 rounded-lg text-[10px] font-bold hover:bg-[#3a493d] flex items-center justify-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                                    Add to Cart
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <button id="productNextBtn" class="absolute right-0 z-10 w-12 h-12 bg-white hover:bg-gray-50 shadow-lg rounded-full flex items-center justify-center text-primary -translate-y-1/2 top-1/2 transition-all hidden md:flex">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="bg-primary/5 py-20 px-6 md:px-12 border-t border-primary/10">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="material-symbols-outlined text-primary text-5xl mb-6">mail</span>
+            <h2 class="text-3xl font-bold mb-4">Join the Inner Circle</h2>
+            <p class="text-[#737874] mb-8">Get exclusive access to new arrivals, seasonal sales, and curated style tips.</p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                {% csrf_token %}
+                <input class="flex-1 rounded-lg border-none bg-white shadow-sm px-4 py-3 focus:ring-2 focus:ring-primary/20" placeholder="Enter your email" type="email"/>
+                <button class="bg-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors" type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-white border-t border-[#f2f3f2] pt-20 pb-10 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-primary p-1.5 rounded-lg">
+                        <span class="material-symbols-outlined text-white text-2xl">grid_view</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold tracking-tight text-[#141514]">EasyPick</h2>
+                </div>
+                <p class="text-[#737874] text-sm leading-relaxed">
+                    We curate only the finest lifestyle products that balance aesthetic appeal with long-term functionality.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-[#141514] mb-6">Company</h4>
+                <ul class="space-y-4">
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">About Us</a></li>
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">Sustainability</a></li>
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-[#141514] mb-6">Support</h4>
+                <ul class="space-y-4">
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">Contact Us</a></li>
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">Shipping & Returns</a></li>
+                    <li><a class="text-[#737874] hover:text-primary text-sm transition-colors" href="#">FAQs</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-[#141514] mb-6">Studio</h4>
+                <p class="text-[#737874] text-sm leading-relaxed">
+                    123 Minimalist Avenue<br/>
+                    Creative Quarter, NY 10012<br/>
+                    hello@easypick.com
+                </p>
+            </div>
+        </div>
+        
+        <div class="border-t border-[#f2f3f2] pt-10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[#737874] text-xs uppercase tracking-widest font-bold">© 2026 EasyPick. Crafted for Better Living.</p>
+            <div class="flex gap-6">
+                <span class="text-[#737874] text-[10px] font-bold">VISA</span>
+                <span class="text-[#737874] text-[10px] font-bold">MASTERCARD</span>
+                <span class="text-[#737874] text-[10px] font-bold">APPLE PAY</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function confirmLogout() {
+        const result = confirm("Are you sure you want to sign out of your account?");
+        if (result) {
+            window.location.href = "/logout";
+        }
+    }
+   
+    const btn = document.getElementById('accountButton');
+    const menu = document.getElementById('userDropdown');
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.add('hidden');
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('click', function (e) {
+        const wishBtn = e.target.closest('.wishlist-btn');
+        if (wishBtn) {
+            e.preventDefault();
+            const variantId = wishBtn.getAttribute('data-variant-id');
+            const url = `/toggle_wishlist/${variantId}/`;
+            const csrftoken = getCookie('csrftoken');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.in_wishlist) {
+                    wishBtn.classList.add('fav-btn-active');
+                } else {
+                    wishBtn.classList.remove('fav-btn-active');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+
+    function initCarousel(trackId, prevId, nextId) {
+        const track = document.getElementById(trackId);
+        const prevBtn = document.getElementById(prevId);
+        const nextBtn = document.getElementById(nextId);
+        if (!track || !prevBtn || !nextBtn) return;
+        const scrollAmount = 244;
+        nextBtn.addEventListener('click', () => track.scrollBy({ left: scrollAmount, behavior: 'smooth' }));
+        prevBtn.addEventListener('click', () => track.scrollBy({ left: -scrollAmount, behavior: 'smooth' }));
+        track.addEventListener('scroll', () => {
+            const atStart = track.scrollLeft <= 0;
+            const atEnd = track.scrollLeft + track.offsetWidth >= track.scrollWidth - 10;
+            prevBtn.style.opacity = atStart ? '0.3' : '1';
+            prevBtn.style.pointerEvents = atStart ? 'none' : 'auto';
+            nextBtn.style.opacity = atEnd ? '0.3' : '1';
+            nextBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+        });
+    }
+    initCarousel('categoryTrack', 'prevBtn', 'nextBtn');
+    initCarousel('productTrack', 'productPrevBtn', 'productNextBtn');
+    
+</script>
+
+</body>
+</html>

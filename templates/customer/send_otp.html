@@ -1,0 +1,19 @@
+<div class="text-center p-8">
+    <h2 class="text-2xl font-bold mb-4">Check Your Email</h2>
+    <p class="mb-6">We've sent a 6-digit verification code to:</p>
+    <div class="bg-gray-100 p-4 rounded-lg mb-6">
+        <strong>{{ email }}</strong>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 p-4 rounded-lg bg-blue-100 text-blue-700">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <a href="{% url 'verify_otp' %}" class="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90">
+        Continue to Verify OTP
+    </a>
+    <p class="mt-4 text-sm text-gray-600">
+        Didn't receive? <a href="{% url 'customer_register' %}" class="text-primary font-semibold">Resend</a>
+    </p>
+</div>
+

@@ -1,0 +1,127 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Products</h2>
+        <a href="{% url 'add_product' %}" 
+           class="bg-primary text-white px-4 py-2 rounded-lg">
+           + Add Product
+        </a>
+    </div>
+
+    <!-- SEARCH -->
+    <form method="GET">
+        <input type="text" name="q"
+               value="{{ request.GET.q }}"
+               placeholder="Search products..."
+               class="w-full border px-4 py-2 rounded-lg">
+    </form>
+
+    <!-- FILTER -->
+    <div class="flex gap-2">
+        <a href="?stock=all" class="px-3 py-1 bg-primary text-white rounded">All</a>
+        <a href="?stock=in" class="px-3 py-1 border rounded">In Stock</a>
+        <a href="?stock=out" class="px-3 py-1 border rounded">Out of Stock</a>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+        <table class="w-full text-left">
+            <thead class="bg-gray-100 text-sm">
+                <tr>
+                    <th class="p-4">ID</th>
+                    <th class="p-4">Product</th>
+                    <th class="p-4">Price</th>
+                    <th class="p-4">Stock</th>
+                    <th class="p-4">Status</th>
+                    <th class="p-4 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    {% for variant in product.variants.all %}
+                        <tr class="border-t">
+                            <td class="p-4">{{ product.id }}</td>
+                            <td class="p-4">
+                                <div class="flex items-center gap-3">
+                                    <!-- IMAGE -->
+                                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                                        {% with image=variant.images.first %}
+                                            {% if image and image.image %}
+                                                <img src="{{ image.image.url }}" 
+                                                     class="w-full h-full object-cover">
+                                            {% else %}
+                                                <span class="material-symbols-outlined text-primary">
+                                                    inventory_2
+                                                </span>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                    <!-- NAME + SKU -->
+                                    <div>
+                                        <p class="font-semibold text-slate-800">
+                                            {{ product.name }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            SKU: {{ variant.sku_code }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                ₹{{ variant.selling_price }}
+                            </td>
+                            <td class="p-4">
+                                {% if variant.stock_quantity > 0 %}
+                                    <span class="text-green-600">In Stock</span>
+                                {% else %}
+                                    <span class="text-red-600">Out of Stock</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- STATUS BADGE -->
+                            <td class="p-4">
+    {% if product.status == "APPROVED" %}
+        <span class="bg-green-50 text-green-600 ...">Approved</span>
+    {% elif product.status == "PENDING" %}
+        <span class="bg-yellow-50 text-yellow-600 ...">Pending</span>
+    {% elif product.status == "REJECTED" %}
+        <span class="bg-red-50 text-red-600 ...">Rejected</span>
+    {% endif %}
+</td>
+                            <!-- ACTIONS -->
+                            <td class="p-4 text-right">
+                                <div class="flex justify-end gap-3">
+                                    <!-- EDIT -->
+                                    <a href="{% url 'edit_product' product.id variant.id %}"
+                                       class="text-primary hover:bg-primary/10 p-2 rounded-lg transition"
+                                       title="Edit">
+                                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                                    </a>
+
+                                    <!-- DELETE -->
+                                    <form action="{% url 'delete_product' product.id %}"
+                                          method="POST"
+                                          onsubmit="return confirm('Are you sure?');">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition"
+                                                title="Delete">
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

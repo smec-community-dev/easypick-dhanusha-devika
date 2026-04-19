@@ -1,0 +1,220 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<!-- Scrollable Area -->
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Title & Stats Summary -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h2 class="text-3xl font-bold tracking-tight text-slate-900">Orders</h2>
+<p class="text-slate-500">Manage and track your customer shipments</p>
+</div>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<p class="text-sm font-medium text-slate-500">Total Orders</p>
+<div class="flex items-center justify-between mt-2">
+<p class="text-2xl font-bold text-slate-900">{{ total_orders }}</p>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full bg-secondary/20 text-primary">+12.5%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<p class="text-sm font-medium text-slate-500">Pending Orders</p>
+<div class="flex items-center justify-between mt-2">
+<p class="text-2xl font-bold text-slate-900">{{ pending_orders }}</p>
+<span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Action Needed</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<p class="text-sm font-medium text-slate-500">Revenue Today</p>
+<div class="flex items-center justify-between mt-2">
+<p class="text-2xl font-bold text-slate-900">
+    ₹{{ revenue_today|floatformat:2 }}
+
+</p>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full bg-secondary/20 text-primary">+8.2%</span>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<!-- Filters Bar -->
+<div class="p-4 border-b border-slate-100 flex flex-col lg:flex-row gap-4 justify-between items-center">
+<div class="flex flex-wrap gap-2">
+
+<a href="{% url 'order_list' %}" class="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white">
+All Orders
+</a>
+
+<a href="{% url 'order_list' %}?status=pending" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50">
+Pending
+</a>
+
+<a href="{% url 'order_list' %}?status=Confirmed" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50">
+Processing
+</a>
+
+<a href="{% url 'order_list' %}?status=Shipped" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50">
+Shipped
+</a>
+
+<a href="{% url 'order_list' %}?status=Delivered" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50">
+Delivered
+</a>
+
+<a href="{% url 'order_list' %}?status=Cancelled" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50">
+Cancelled
+</a>
+
+</div>
+<div class="relative w-full lg:w-72">
+<form method="GET" class="relative w-full lg:w-72">
+
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">
+search
+</span>
+
+<input 
+name="q"
+value="{{ request.GET.q }}"
+class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 rounded-lg text-sm"
+placeholder="Search Order ID, Customer..."
+type="text"
+/>
+
+</form>
+</div>
+</div>
+<!-- The Table -->
+<div class="w-full overflow-x-auto">
+<table class="min-w-full text-left border-separate border-spacing-y-2">
+
+<thead>
+<tr class="text-xs uppercase text-slate-500 tracking-wider">
+<th class="px-6 py-3">Order ID</th>
+<th class="px-6 py-3">Customer</th>
+<th class="px-6 py-3">Address</th>
+<th class="px-6 py-3">Phone</th>
+<th class="px-6 py-3">Date</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3">Total</th>
+<th class="px-6 py-3 text-right">Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for order in orders %}
+<tr class="bg-white shadow-sm rounded-lg hover:shadow-md transition">
+
+<!-- Order ID -->
+<td class="px-6 py-4 font-semibold text-primary">
+    {{ order.order_id }}
+</td>
+
+<!-- Customer -->
+<td class="px-6 py-4">
+    <p class="font-medium text-slate-800">
+        {{ order.customer.first_name }} {{ order.customer.last_name }}
+    </p>
+</td>
+
+<!-- Address -->
+<td>{{ order.customer.address|default:"No Address" }}</td>
+
+<!-- Phone -->
+<td>{{ order.customer.phone_number|default:"No Phone" }}</td>
+
+<!-- Date -->
+<td class="px-6 py-4 text-sm text-slate-500">
+    {{ order.order_date|date:"M d, Y" }}
+</td>
+
+<!-- Status -->
+<td class="px-6 py-4">
+    {% if order.status == "Pending" %}
+        <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-medium">Pending</span>
+    {% elif order.status == "Confirmed" %}
+        <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">Processing</span>
+    {% elif order.status == "Shipped" %}
+        <span class="px-3 py-1 text-xs rounded-full bg-purple-100 text-purple-700 font-medium">Shipped</span>
+    {% elif order.status == "Delivered" %}
+        <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700 font-medium">Delivered</span>
+    {% elif order.status == "Cancelled" %}
+        <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 font-medium">Cancelled</span>
+    {% endif %}
+</td>
+
+<!-- Amount -->
+<td class="px-6 py-4 font-semibold text-slate-900">
+    ₹{{ order.total_amount }}
+</td>
+
+<!-- Action -->
+<td class="px-6 py-4 text-right">
+
+<form method="POST" action="{% url 'update_order_status' order.order_id %}">
+{% csrf_token %}
+
+<select name="status"
+        onchange="this.form.submit()"
+        class="px-3 py-1.5 border border-primary/20 rounded-lg text-sm focus:ring-2 focus:ring-primary outline-none">
+
+<option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+
+<option value="Confirmed" {% if order.status == "Processing" %}selected{% endif %}>Processing</option>
+
+<option value="Shipped" {% if order.status == "Shipped" %}selected{% endif %}>Shipped</option>
+
+<option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+
+<option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+</select>
+
+</form>
+
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+{% comment %} <p class="text-sm text-slate-500">Showing 1 to 10 of 1,284 orders</p> {% endcomment %}
+{% comment %} <div class="flex gap-1">
+<button class="size-9 flex items-center justify-center rounded border border-slate-200 text-slate-400 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button> {% endcomment %}
+{% comment %} <button class="size-9 flex items-center justify-center rounded border border-primary bg-primary text-white font-medium">1</button>
+<button class="size-9 flex items-center justify-center rounded border border-slate-200 hover:bg-slate-50 transition-colors">2</button>
+<button class="size-9 flex items-center justify-center rounded border border-slate-200 hover:bg-slate-50 transition-colors">3</button>
+<span class="px-2 self-end pb-2">...</span> {% endcomment %}
+
+{% comment %} <button class="size-9 flex items-center justify-center rounded border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button> {% endcomment %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</div>
+<script>
+const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+});
+</script>
+</body></html>
+{% endblock %} 

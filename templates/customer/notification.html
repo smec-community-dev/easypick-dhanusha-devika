@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EasyPick - Notification Center</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+}
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+</style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<!-- HEADER -->
+<header class="bg-[#4a5d4e] text-white px-10 py-3 shadow">
+    <h2 class="text-xl font-bold">EasyPick</h2>
+</header>
+
+<!-- MAIN -->
+<main class="flex-1 flex justify-center py-8 px-4">
+<div class="w-full max-w-[800px]">
+
+<h1 class="text-3xl font-bold mb-6">Notifications 🔔</h1>
+
+<!-- NOTIFICATION LIST -->
+<div id="notification-container" class="flex flex-col gap-3">
+
+{% for n in notifications %}
+<div class="relative flex gap-4 p-4 rounded-xl 
+    {% if not n.is_read %}
+        bg-white border
+    {% else %}
+        bg-gray-100 opacity-70
+    {% endif %}
+    shadow">
+
+    <!-- unread dot -->
+    {% if not n.is_read %}
+    <span class="absolute right-4 top-4 w-2 h-2 bg-blue-500 rounded-full"></span>
+    {% endif %}
+
+    <!-- icon -->
+    <div class="w-10 h-10 bg-blue-100 flex items-center justify-center rounded-full">
+        <span class="material-symbols-outlined">notifications</span>
+    </div>
+
+    <!-- content -->
+    <div>
+        <h3 class="font-semibold text-sm">{{ n.title }}</h3>
+        <p class="text-sm text-gray-600">{{ n.message }}</p>
+        <p class="text-xs text-gray-400 mt-1">
+            {{ n.created_at|timesince }} ago
+        </p>
+    </div>
+</div>
+
+{% empty %}
+<p class="text-center text-gray-500">No notifications</p>
+{% endfor %}
+
+</div>
+
+</div>
+</main>
+
+<!-- ✅ WEBSOCKET SCRIPT (REAL-TIME) -->
+<script>
+const socket = new WebSocket(
+    'ws://' + window.location.host + '/ws/notifications/'
+);
+
+socket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const container = document.getElementById("notification-container");
+
+    const newNotification = `
+    <div class="relative flex gap-4 p-4 rounded-xl bg-white border shadow">
+
+        <span class="absolute right-4 top-4 w-2 h-2 bg-blue-500 rounded-full"></span>
+
+        <div class="w-10 h-10 bg-blue-100 flex items-center justify-center rounded-full">
+            <span class="material-symbols-outlined">notifications</span>
+        </div>
+
+        <div>
+            <h3 class="font-semibold text-sm">New Notification</h3>
+            <p class="text-sm text-gray-600">${data.message}</p>
+            <p class="text-xs text-gray-400 mt-1">just now</p>
+        </div>
+    </div>
+    `;
+
+    container.insertAdjacentHTML("afterbegin", newNotification);
+};
+
+socket.onclose = function(e) {
+    console.log("WebSocket closed");
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick - Verification</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Public Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          primary: "#344538",
+          "primary-container": "#4b5d4f",
+          "on-primary": "#ffffff",
+          surface: "#fbf9f9",
+          "surface-container-low": "#f5f3f3",
+          "surface-container-lowest": "#ffffff",
+          "on-surface": "#1b1c1c",
+          "on-surface-variant": "#434843",
+          outline: "#737873",
+          secondary: "#566342",
+          "secondary-fixed": "#d9e8bf",
+        },
+        fontFamily: {
+          "headline": ["Public Sans"],
+          "body": ["Public Sans"],
+          "label": ["Public Sans"]
+        },
+        borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+body {
+  font-family: 'Public Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: max(884px, 100dvh);
+}
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+.otp-box {
+  width: 3rem;
+  height: 3.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid #c3c8c1;
+  background-color: #f5f3f3;
+}
+.otp-box:focus {
+  outline: none;
+  border-color: #344538;
+  ring: 2px;
+}
+</style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 bg-surface z-50">
+  <div class="flex items-center justify-between px-6 py-4">
+    <a href="{% url 'seller_register' %}" class="p-2 rounded-full hover:bg-gray-200">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    {% comment %} <h1 class="text-lg font-medium tracking-tight">Verification</h1> {% endcomment %}
+    <div class="text-xl font-bold">EasyPick</div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-1 flex flex-col px-6 pt-12 pb-24 max-w-md mx-auto w-full">
+
+  <!-- Hero Section -->
+  <div class="mb-12 text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-xl bg-surface-container-low mb-6">
+      <span class="material-symbols-outlined text-primary text-4xl">mark_email_read</span>
+    </div>
+    <h2 class="text-3xl font-extrabold mb-3">Check your mail</h2>
+    <p class="text-on-surface-variant leading-relaxed px-4">
+      We've sent a 6-digit code to your email. Enter it below to verify your account.
+    </p>
+  </div>
+
+  <!-- OTP Input Form -->
+  <div class="bg-surface-container-lowest rounded-xl p-8 mb-8 border border-outline/15">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="flex justify-between gap-2 mb-8">
+        <input name="d1" maxlength="1" class="otp-box" type="text">
+        <input name="d2" maxlength="1" class="otp-box" type="text">
+        <input name="d3" maxlength="1" class="otp-box" type="text">
+        <input name="d4" maxlength="1" class="otp-box" type="text">
+        <input name="d5" maxlength="1" class="otp-box" type="text">
+        <input name="d6" maxlength="1" class="otp-box" type="text">
+      </div>
+      <button type="submit" class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold py-4 rounded-xl">
+        Verify
+      </button>
+    </form>
+  </div>
+
+  <!-- Secondary Actions -->
+  <div class="space-y-6 text-center">
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-on-surface-variant text-sm uppercase font-medium tracking-[0.05em]">Haven't received it?</span>
+      <a href="{% url 'resend_otp' %}" class="text-primary font-bold hover:underline">Resend Code</a>
+    </div>
+    <div class="pt-8">
+      <p class="text-on-surface-variant text-xs opacity-60">
+        By verifying, you agree to our Terms of Service and Privacy Policy. Security is our top priority.
+      </p>
+    </div>
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary-fixed opacity-10 rounded-full blur-3xl -z-10"></div>
+  <div class="absolute top-40 -left-10 w-48 h-48 bg-primary-container opacity-10 rounded-full blur-3xl -z-10"></div>
+</main>
+
+<!-- OTP Auto-Focus JS -->
+<script>
+const inputs = document.querySelectorAll(".otp-box");
+inputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    if (input.value.length === 1 && index < inputs.length - 1) {
+      inputs[index + 1].focus();
+    }
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !input.value && index > 0) {
+      inputs[index - 1].focus();
+    }
+  });
+});
+</script>
+
+</body>
+</html>

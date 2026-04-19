@@ -1,0 +1,130 @@
+{% extends "admin-app/base.html" %}
+
+{% block title %}Product Management | EasyPick Admin{% endblock %}
+
+{% block header %}
+<header class="h-16 bg-primary border-b border-secondary/50 flex items-center justify-between px-8 shrink-0">
+    <!-- Search Bar -->
+    <form method="GET" class="flex-1 mr-4">
+        <div class="flex items-center bg-white rounded-lg px-3 py-1.5 w-full max-w-md">
+            <span class="material-symbols-outlined text-black text-xl">search</span>
+            <input 
+                name="search"
+                value="{{ search }}"
+                class="bg-transparent border-none focus:ring-0 text-black placeholder-black/50 text-sm w-full ml-2"
+                placeholder="Search products by name or seller..."
+                type="text"
+            />
+        </div>
+    </form>
+
+    <!-- Notifications & Profile -->
+    <div class="flex items-center gap-4">
+        <button class="relative p-2 text-white hover:bg-primary/70 rounded-full transition-colors">
+            {% comment %} <span class="material-symbols-outlined">notifications</span> {% endcomment %}
+            {% comment %} <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white"></span> {% endcomment %}
+        </button>
+
+        <div class="h-8 w-px bg-white/30 mx-2"></div>
+
+        <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block">
+                <p class="text-sm font-semibold text-white">{{ request.user.username }}</p>
+                <p class="text-xs text-white/80"> Admin</p>
+            </div>
+            <div class="size-10 rounded-full bg-white/20 border border-white/30 bg-cover bg-center" style="background-image: url('{{ request.user.profile.image.url }}')"></div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Status Tabs -->
+<div class="flex gap-3 my-4 bg-white p-2 rounded-xl w-max">
+    {% for tab in status_tabs %}
+        <a href="?status={{ tab.key }}&search={{ search }}"
+           class="px-5 py-2 rounded-lg text-sm font-medium transition-colors
+           {% if status == tab.key %}
+                bg-[#4b5d4f] text-white
+           {% else %}
+                text-[#4b5d4f] hover:bg-[#4b5d4f]/10
+           {% endif %}">
+           {{ tab.label }}
+        </a>
+    {% endfor %}
+</div>
+
+<!-- Product Table -->
+<div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-secondary/20">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name / SKU</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seller</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                {% if status == "PENDING" %}
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for product in products %}
+                {% for variant in product.variants.all %}
+                <tr>
+                    <!-- Image -->
+                    <td class="px-6 py-4">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                            {% with image=variant.images.first %}
+                                {% if image and image.image %}
+                                    <img src="{{ image.image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <span class="material-symbols-outlined text-primary">inventory_2</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </td>
+                    <!-- Name + SKU -->
+                    <td class="px-6 py-4">
+                        <p class="font-semibold text-slate-800">{{ product.name }}</p>
+                        <p class="text-xs text-gray-500">SKU: {{ variant.sku_code }}</p>
+                    </td>
+                    <!-- Price -->
+                    <td class="px-6 py-4">₹{{ variant.selling_price }}</td>
+                    <!-- Seller -->
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-500">{{ product.seller.store_name }}</span>
+                    </td>
+                    <!-- Status -->
+                    <td class="px-6 py-4">
+                        {% if product.status == "PENDING" %}
+                            <span class="text-yellow-600 font-semibold">Pending</span>
+                        {% elif product.status == "APPROVED" %}
+                            <span class="text-green-600 font-semibold">Approved</span>
+                        {% elif product.status == "REJECTED" %}
+                            <span class="text-red-600 font-semibold">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <!-- Actions only for PENDING -->
+                    {% if product.status == "PENDING" %}
+                    <td class="px-6 py-4 flex gap-2">
+                        <a href="{% url 'reject_product' product.id %}" class="px-3 py-1 text-red-600 bg-red-50 rounded-md font-semibold hover:bg-red-100 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">close</span> Reject
+                        </a>
+                        <a href="{% url 'approve_product' product.id %}" class="px-3 py-1 text-white bg-[#4b5d4f] rounded-md font-semibold hover:opacity-90 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">check</span> Approve
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-6 text-gray-500">No products found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

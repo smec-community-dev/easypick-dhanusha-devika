@@ -1,0 +1,444 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | {{ product.name }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .font-fill { font-variation-settings: 'FILL' 1, 'wght' 400 !important; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; color: #141514; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .offer-card { border: 1px solid #e5e7eb; background: #ffffff; transition: all 0.2s ease; }
+        .offer-card:hover { border-color: #4b5d4f; box-shadow: 0 4px 12px rgba(75, 93, 79, 0.08); }
+        
+        .color-circle { position: relative; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.active::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 2px solid #4b5d4f;
+            border-radius: 9999px;
+        }
+
+        button.wishlist-btn.fav-active {
+            background-color: rgba(239, 68, 68, 0.15) !important;
+        }
+        button.wishlist-btn.fav-active .material-symbols-outlined {
+            color: #ef4444 !important;
+            font-variation-settings: 'FILL' 1, 'wght' 400 !important;
+            text-shadow: 0 0 4px rgba(239, 68, 68, 0.3) !important;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-background-light">
+
+{% include "includes/navbar.html" %}
+
+<main class="max-w-7xl mx-auto px-6 py-6">
+    <!-- <nav class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-8">
+        <span>Audio & Video</span> <span class="material-symbols-outlined text-xs">chevron_right</span>
+        <span>Speakers</span> <span class="material-symbols-outlined text-xs">chevron_right</span>
+        <span class="text-primary">Portable Bluetooth Speakers</span>
+    </nav> -->
+
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+        <div class="lg:col-span-5 w-full">
+            <div class="sticky top-28 space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex flex-col gap-3 w-20">
+    {% for p_image in product.images.all %}
+    <button onclick="document.getElementById('mainImg').src='{{ p_image.image.url }}'"
+            class="w-16 h-16 rounded-lg border border-gray-300 bg-white p-1 hover:border-black transition">
+
+        <img src="{{ p_image.image.url }}" 
+             class="w-full h-full object-contain">
+
+    </button>
+    {% endfor %}
+</div>
+
+                    <div class="flex-1 bg-white rounded-2xl border border-gray-100 flex items-center justify-center relative p-8 min-h-[400px] order-1 md:order-2">
+                       {% with product.images.all|first as primary_image %}
+    {% if primary_image %}
+        <img id="mainImg"
+             src="{{ primary_image.image.url }}" 
+             class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110"
+             alt="{{ product.product.name }}">
+                                    {% else %}
+                                        <img src="{% static 'placeholder.png' %}" class="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110" alt="{{x.product.name}}">
+                                    {% endif %}
+                        {% endwith %}
+                        
+                        <div class="absolute top-4 right-4">
+                            <button type="button" class="wishlist-btn p-3 bg-white/80 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300 group inline-flex outline-none {% if in_wishlist %}fav-active{% endif %}" data-variant-id="{{ product.id }}">
+                                <span id="wishlistIcon" class="material-symbols-outlined text-gray-400 group-hover:text-red-400 transition-all">
+                                    favorite
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-8">
+            
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight mb-2">{{product.product.name}}</h1>
+                <p class="text-sm text-gray-500 mb-4">{{product.product.description}}</p>
+                <div class="flex items-center gap-2">
+                    <div class="flex text-yellow-400">
+                        <span class="material-symbols-outlined text-sm font-fill">star</span>
+                        <span class="material-symbols-outlined text-sm font-fill">star</span>
+                        <span class="material-symbols-outlined text-sm font-fill">star</span>
+                        <span class="material-symbols-outlined text-sm font-fill">star</span>
+                        <span class="material-symbols-outlined text-sm font-fill">star_half</span>
+                    </div>
+                    <span class="font-bold text-sm">{{ avg_rating|floatformat:1 }}</span>
+                    <span class="text-sm text-gray-500">({{ total_reviews }} reviews)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-10">
+                <div class="space-y-1">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-4xl font-black">{{product.selling_price}}</span>
+                        <span class="text-[10px] text-gray-400 font-bold uppercase">(Incl. all Taxes)</span>
+                    </div>
+                    <!-- <div class="text-xs">
+                        <span class="text-gray-400 line-through">MRP: ₹41,900.00</span>
+                        <span class="text-green-600 font-bold ml-2">(Save ₹5,910, 14.11% off)</span>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- <div class="space-y-4">
+                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Color: <span id="currentColorName" class="text-gray-900 ml-2">Black</span></h4>
+                <div class="flex gap-6 items-center py-1 pl-1">
+                    <button onclick="selectColor(this, 'Black')" class="color-circle active w-8 h-8 rounded-full bg-[#141514] border border-gray-200" title="Black"></button>
+                    <button onclick="selectColor(this, 'Blue Dusk')" class="color-circle w-8 h-8 rounded-full bg-[#3d5a80] border border-gray-200" title="Blue Dusk"></button>
+                    <button onclick="selectColor(this, 'Arctic White')" class="color-circle w-8 h-8 rounded-full bg-[#f3f4f6] border border-gray-200" title="Arctic White"></button>
+                </div>
+            </div> -->
+
+            <!-- <div class="space-y-4">
+                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Super Savings (5 OFFERS)</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="offer-card p-5 rounded-xl">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="material-symbols-outlined text-primary">account_balance</span>
+                            <span class="text-xs font-black uppercase">HSBC Bank Offer</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500">10% Instant Discount up to Rs.2,000 on HSBC Cards...</p>
+                        <button class="text-[10px] font-black text-primary underline uppercase mt-2">View more</button>
+                    </div>
+                </div>
+            </div> -->
+            
+
+            <div class="flex gap-4 pt-4">
+                <a href="{% url 'add_cart' product.id %}" class="flex-1 border-2 border-primary text-primary py-4 rounded-xl font-black text-sm hover:bg-primary/5 transition-all text-center">Add to Cart</a>
+                <a href="{% url 'order_confirm' product.id %}" class="flex-1 bg-primary text-white py-4 rounded-xl font-black text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all text-center">Buy Now</a>
+            </div>
+            
+        </div>
+    </div>
+
+    <section id="reviews" class="mt-24 pt-16 border-t border-gray-200">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-24">
+            
+            <div class="w-full lg:w-1/3 space-y-8 sticky top-28">
+                <h3 class="text-2xl font-black uppercase tracking-tight">Customer Reviews</h3>
+                
+                <div class="flex items-center gap-6">
+                    <div class="text-5xl font-black">{{ avg_rating|floatformat:1 }}</div>
+                    <div>
+                        <div class="flex text-yellow-400 text-2xl">
+                            <span class="material-symbols-outlined font-fill">star</span>
+                            <span class="material-symbols-outlined font-fill">star</span>
+                            <span class="material-symbols-outlined font-fill">star</span>
+                            <span class="material-symbols-outlined font-fill">star</span>
+                            <span class="material-symbols-outlined font-fill">star_half</span>
+                        </div>
+                        <div class="text-sm text-gray-500">Based on {{ total_reviews }} verified reviews</div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    {% for star in rating_data %}
+                    <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-wider">
+                        <span class="w-4">{{ star.star }}★</span>
+                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="bg-primary h-full" style="width: {{ star.percent }}%"></div>
+                        </div>
+                        <span class="text-gray-400 w-8 text-right">{{ star.percent }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button onclick="toggleModal('reviewModal')" class="w-full py-4 bg-white border-2 border-primary text-primary font-black text-sm uppercase rounded-xl hover:bg-primary hover:text-white transition-all shadow-sm">
+                    Write a Review
+                </button>
+            </div>
+
+            <div class="w-full lg:w-2/3 space-y-12">
+                <!-- <div class="flex justify-between items-center border-b border-gray-100 pb-6">
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Showing 1-5 of {{ total_reviews }} reviews</span>
+                    <button class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary">
+                        Sort: Newest <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </button>
+                </div> -->
+
+{% for review in reviews %}
+<div class="space-y-4 pb-8 border-b border-gray-50 last:border-b-0">
+  <div class="flex justify-between items-start">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
+        {{ review.user.first_name.0|upper }}{{ review.user.last_name.0|upper }}
+      </div>
+      <div>
+        <h5 class="text-sm font-bold text-gray-900">{{ review.user.first_name }} {{ review.user.last_name }}</h5>
+        <!-- <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-green-600 font-fill">verified</span>
+          <p class="text-[10px] text-green-600 font-bold uppercase tracking-tighter">Verified Purchase</p>
+        </div> -->
+      </div>
+    </div>
+    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ review.created_at|date:"M d, Y" }}</span>
+  </div>
+  <div class="flex text-yellow-400">
+    {% for i in "12345"|make_list %}
+      {% if forloop.counter <= review.rating %}
+        <span class="material-symbols-outlined text-lg font-fill">star</span>
+      {% else %}
+        <span class="material-symbols-outlined text-lg">star</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <p class="text-sm text-gray-600 leading-relaxed">{{ review.comments }}</p>
+  {% if review.images.all %}
+  <div class="flex flex-wrap gap-3 pt-2">
+    {% for image in review.images.all %}
+    <div class="group relative w-20 h-20 rounded-xl overflow-hidden border border-gray-100 cursor-zoom-in">
+      <img src="{{ image.image.url }}" alt="Review photo" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+      <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="flex items-center gap-6 pt-2">
+    <button class="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase hover:text-primary transition-colors">
+      <span class="material-symbols-outlined text-sm">thumb_up</span> Helpful (24)
+    </button>
+    
+  </div>
+</div>
+{% empty %}
+<div class="text-center py-12 text-gray-500">
+  <span class="material-symbols-outlined text-4xl block mb-4">reviews</span>
+  <p class="text-lg font-medium">No reviews yet</p>
+  <p class="text-sm">Be the first to write a review</p>
+</div>
+{% endfor %}
+
+                
+
+                
+            </div>
+        </div>
+    </section>
+    <section id="related-products" class="mt-24 pt-16 border-t border-gray-200">
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h3 class="text-2xl font-black uppercase tracking-tight">You May Also Like</h3>
+            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Discover similar items</p>
+        </div>
+        <a href="#" class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1">
+            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for related in related_products %}
+        <div class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+            <div class="aspect-square bg-gray-50 relative overflow-hidden flex items-center justify-center p-6">
+                {% with related.images.first as related_image %}
+  {% if related_image and related_image.image_url %}
+    <img src="{{ related_image.image_url.url }}" alt="{{ related.name }}" 
+         class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500">
+  {% else %}
+    <div class="w-full h-full bg-gray-100 flex items-center justify-center rounded-lg">
+      <span class="material-symbols-outlined text-gray-400 text-3xl">image_not_supported</span>
+    </div>
+  {% endif %}
+{% endwith %}
+                
+                <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <a href="{% url 'single' related.id %}" class="w-full bg-white/90 backdrop-blur-md py-2.5 rounded-xl text-[10px] font-black uppercase text-center block shadow-sm hover:bg-primary hover:text-white transition-colors">
+                        Quick View
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-5 space-y-2">
+                <div class="flex justify-between items-start gap-2">
+                    <h4 class="text-sm font-bold text-gray-900 truncate flex-1">{{ related.product.name }}</h4>
+                    <span class="text-xs font-black text-primary">₹{{ related.selling_price }}</span>
+                </div>
+                
+                <div class="flex items-center gap-1 text-yellow-400">
+                    <span class="material-symbols-outlined text-xs font-fill">star</span>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase ml-1">4.5</span>
+                </div>
+
+                <a href="{% url 'single' related.id %}" class="block pt-2">
+                    <button class="w-full py-2 border border-gray-100 rounded-lg text-[9px] font-black uppercase tracking-tighter hover:border-primary hover:text-primary transition-all">
+                        Details
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="col-span-full text-center text-gray-400 text-sm italic">No similar products found.</p>
+        {% endfor %}
+    </div>
+</section>
+</main>
+
+<footer class="mt-20 py-8 bg-white border-t border-gray-100 text-center">
+    <p class="text-gray-400 text-[10px] uppercase tracking-[0.3em] font-bold">© 2026 EasyPick. Quality, Aesthetics, Sustainability.</p>
+</footer>
+
+<div id="reviewModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl w-full max-w-lg p-8 animate-fade-in">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Write a Review</h3>
+            <button onclick="toggleModal('reviewModal')" class="material-symbols-outlined text-gray-400 hover:text-gray-900">close</button>
+        </div>
+<form method="POST" enctype="multipart/form-data" class="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+    {% csrf_token %}
+
+    <h3 class="text-xl font-bold text-gray-800 mb-6">Leave a Review</h3>
+
+    <div class="mb-5">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+        <div class="relative flex items-center">
+            <input type="number" name="rating" min="1" max="5" value="5"
+                class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+            <span class="ml-3 text-sm text-gray-500 italic">/ 5 Stars</span>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Your Feedback</label>
+        <textarea name="comment" rows="4" 
+            placeholder="What did you think of the experience?"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none placeholder-gray-400"></textarea>
+    </div>
+
+    <div class="mb-6">
+        <label for="review-images" class="block text-sm font-semibold text-gray-700 mb-2 cursor-pointer">Photos (Optional)</label>
+        <label for="review-images" class="border-2 border-dashed border-gray-300 rounded-xl p-6 hover:border-primary/50 transition-all block cursor-pointer hover:shadow-sm">
+            <input type="file" id="review-images" name="images" multiple accept="image/*" class="sr-only">
+            <span class="material-symbols-outlined text-4xl text-gray-400 hover:text-primary block mb-2">photo_camera</span>
+            <p class="text-sm font-medium text-gray-700 mb-1">Click to add photos</p>
+            
+        </label>
+    </div>
+
+    <button type="submit"
+        class="w-full py-4 bg-primary hover:bg-opacity-90 text-white font-bold text-sm uppercase tracking-widest rounded-xl shadow-lg shadow-blue-100/50 transform active:scale-[0.98] transition-all">
+        Submit Review
+    </button>
+</form>
+    </div>
+</div>
+
+<script>
+    // Toggle Modal Utility
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    async function toggleWishlist(variantId, button) {
+        try {
+            const response = await fetch(`/toggle_wishlist/${variantId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await response.json();
+            if (data.in_wishlist) button.classList.add('fav-active');
+            else button.classList.remove('fav-active');
+        } catch (error) {
+            console.error('Wishlist toggle failed:', error);
+            alert('Please log in to use wishlist');
+        }
+    }
+
+    document.addEventListener('click', function (e) {
+        const wishBtn = e.target.closest('.wishlist-btn');
+        if (wishBtn) {
+            e.preventDefault();
+            const variantId = wishBtn.dataset.variantId;
+            if (variantId) toggleWishlist(variantId, wishBtn);
+        }
+    });
+
+    const accBtn = document.getElementById('accountButton');
+    const accMenu = document.getElementById('userDropdown');
+    accBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        accMenu.classList.toggle('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!accMenu.contains(e.target) && !accBtn.contains(e.target)) {
+            accMenu.classList.add('hidden');
+        }
+    });
+
+    function selectColor(element, colorName) {
+        document.querySelectorAll('.color-circle').forEach(circle => circle.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('currentColorName').innerText = colorName;
+    }
+
+    function confirmLogout() {
+        if (confirm("Are you sure you want to sign out?")) {
+            window.location.href = "/logout";
+        }
+    }
+</script>
+</body>
+</html>

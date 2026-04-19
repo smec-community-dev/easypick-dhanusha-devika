@@ -1,0 +1,161 @@
+{% extends "seller/base.html" %}
+
+{% block title %}Seller Reviews{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-8">
+
+  <!-- HEADER TITLE -->
+  <h1 class="text-2xl font-bold text-primary">Customer Reviews</h1>
+
+  <!-- ================= SUMMARY ================= -->
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT: Overall Rating -->
+    <div class="lg:col-span-5 bg-white rounded-xl p-8 shadow text-center">
+      <p class="text-xs uppercase text-gray-500 mb-4">Overall Performance</p>
+
+      <!-- AVG RATING -->
+      <div class="flex justify-center items-baseline gap-2">
+        <span class="text-6xl font-bold text-green-800">
+          {{ avg_rating|floatformat:1 }}
+        </span>
+        <span>/5</span>
+      </div>
+
+      <!-- STARS -->
+      <div class="flex justify-center mt-2 text-yellow-500">
+        {% for i in "12345" %}
+          {% if forloop.counter <= avg_rating %}
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">star</span>
+          {% else %}
+            <span class="material-symbols-outlined">star</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <p class="text-sm text-gray-500 mt-2">
+        Based on {{ total_reviews }} reviews
+      </p>
+    </div>
+
+    <!-- RIGHT: Star Percentages -->
+    <div class="lg:col-span-7 bg-white rounded-xl p-8 shadow space-y-4">
+
+      {% for star in "54321" %}
+      <div class="flex items-center gap-4">
+
+        <!-- Star label -->
+        <span class="w-12 text-sm">{{ star }} Star</span>
+
+        <!-- Bar background -->
+        <div class="flex-1 bg-gray-200 h-2 rounded overflow-hidden">
+          <!-- Bar fill -->
+          {% if star == '5' %}
+            <div class="bg-green-700 h-2 rounded" style="width: {{ rating_percentage.5|default:0 }}%;"></div>
+          {% elif star == '4' %}
+            <div class="bg-green-700 h-2 rounded" style="width: {{ rating_percentage.4|default:0 }}%;"></div>
+          {% elif star == '3' %}
+            <div class="bg-green-700 h-2 rounded" style="width: {{ rating_percentage.3|default:0 }}%;"></div>
+          {% elif star == '2' %}
+            <div class="bg-green-700 h-2 rounded" style="width: {{ rating_percentage.2|default:0 }}%;"></div>
+          {% elif star == '1' %}
+            <div class="bg-green-700 h-2 rounded" style="width: {{ rating_percentage.1|default:0 }}%;"></div>
+          {% endif %}
+        </div>
+
+        <!-- Percentage text -->
+        <span class="text-sm">
+          {% if star == '5' %}{{ rating_percentage.5|default:0|floatformat:0 }}%
+          {% elif star == '4' %}{{ rating_percentage.4|default:0|floatformat:0 }}%
+          {% elif star == '3' %}{{ rating_percentage.3|default:0|floatformat:0 }}%
+          {% elif star == '2' %}{{ rating_percentage.2|default:0|floatformat:0 }}%
+          {% elif star == '1' %}{{ rating_percentage.1|default:0|floatformat:0 }}%
+          {% endif %}
+        </span>
+
+      </div>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ================= REVIEWS ================= -->
+  <section>
+    <h2 class="text-xl font-bold text-primary mb-4">Recent Reviews</h2>
+
+    <div class="space-y-6">
+
+      {% for review in reviews %}
+      <div class="bg-white p-6 rounded-xl shadow flex flex-col">
+
+        <!-- CUSTOMER NAME + TIME -->
+        <div class="flex justify-between items-start mb-2">
+          <div>
+            <h3 class="font-bold text-primary">
+              {{ review.user.get_full_name|default:review.user.username }}
+            </h3>
+            <p class="text-xs text-gray-500">
+              {{ review.created_at|timesince }} ago
+            </p>
+          </div>
+
+          <!-- STARS -->
+          <div class="text-yellow-500 flex-shrink-0">
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.rating %}
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">star</span>
+              {% else %}
+                <span class="material-symbols-outlined">star</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- COMMENT -->
+        <p class="text-sm text-gray-600 mt-2">
+          "{{ review.comments }}"
+        </p>
+
+        <!-- PRODUCT BOX BELOW COMMENT -->
+        <div class="bg-gray-50 rounded-lg p-3 flex items-center gap-3 mt-4">
+
+          <!-- PRODUCT IMAGE -->
+          <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+            {% with variant=review.product.variants.first %}
+              {% if variant %}
+                {% with image=variant.images.first %}
+                  {% if image and image.image %}
+                    <img src="{{ image.image.url }}" class="w-full h-full object-cover" alt="{{ review.product.name }}">
+                  {% else %}
+                    <span class="material-symbols-outlined text-primary">
+                      inventory_2
+                    </span>
+                  {% endif %}
+                {% endwith %}
+              {% else %}
+                <span class="material-symbols-outlined text-primary">
+                  inventory_2
+                </span>
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <!-- PRODUCT NAME -->
+          <div class="flex-1">
+            <p class="text-xs font-bold text-primary">Reviewed Product</p>
+            <p class="text-sm font-medium">{{ review.product.name }}</p>
+          </div>
+
+        </div>
+
+      </div>
+      {% empty %}
+      <p>No reviews yet.</p>
+      {% endfor %}
+
+    </div>
+  </section>
+
+</div>
+{% endblock %}

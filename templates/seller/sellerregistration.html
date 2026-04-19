@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyPick - Seller Registration</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+</style>
+</head>
+
+<body class="h-screen overflow-hidden bg-[#e8eae6] flex flex-col">
+
+<!-- 🔹 Navbar -->
+<header class="bg-[#4b5d4f] text-white px-6 py-3 flex justify-between items-center">
+  <h1 class="text-lg font-bold">EasyPick</h1>
+
+  <div class="flex gap-4">
+    <a href="{% url 'home' %}" class="text-sm hover:underline">Home</a>
+    <a href="{% url 'login' %}" class="text-sm hover:underline">Login</a>
+  </div>
+</header>
+
+<!-- 🔹 Main Content -->
+<div class="flex-1 flex items-center justify-center">
+
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-[#4b5d4f] text-white text-center py-5 rounded-t-xl">
+  <h2 class="text-2xl font-bold">Welcome to EasyPick</h2>
+  <p class="text-sm">Create your Seller Account</p>
+</div>
+
+    <!-- Form -->
+    <div class="p-5 max-h-[70vh] overflow-y-auto">
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="bg-red-100 text-red-700 p-2 rounded mb-2 text-sm">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" action="{% url 'seller_register' %}" class="grid grid-cols-2 gap-3">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <input name="username" placeholder="Username"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Email -->
+        <input type="email" name="email" placeholder="Email"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Password -->
+        <input type="password" name="password" placeholder="Password"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Confirm -->
+        <input type="password" name="password2" placeholder="Confirm Password"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Store -->
+        <input name="store_name" placeholder="Store Name"
+          class="col-span-2 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Address -->
+        <textarea name="business_address" placeholder="Business Address"
+          class="col-span-2 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" rows="2" required></textarea>
+
+        <!-- GST -->
+        <input name="gst_number" placeholder="GST Number"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- PAN -->
+        <input name="pan_number" placeholder="PAN Number"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Account -->
+        <input name="bank_account_number" placeholder="Bank Account"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- IFSC -->
+        <input name="ifsc_code" placeholder="IFSC Code"
+          class="col-span-1 px-3 py-2 border rounded focus:ring-2 focus:ring-[#4b5d4f]" required>
+
+        <!-- Button -->
+        <button type="submit"
+          class="col-span-2 bg-[#4b5d4f] text-white py-2 rounded hover:bg-[#3e4d41] mt-2">
+          Register
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

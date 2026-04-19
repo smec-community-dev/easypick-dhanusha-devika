@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyPick | Seller Login</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+</style>
+</head>
+
+<body class="h-screen overflow-hidden bg-[#e8eae6] flex flex-col">
+
+<!-- 🔹 Navbar -->
+<header class="bg-[#4b5d4f] text-white px-6 py-3 flex justify-between items-center">
+  <h1 class="text-lg font-bold">EasyPick</h1>
+
+  <div class="flex gap-4">
+    <a href="{% url 'mainhome' %}" class="text-sm hover:underline">Home</a>
+    <a href="{% url 'seller_register' %}">
+      <button class="bg-white/20 px-3 py-1 rounded text-sm">Sign Up</button>
+    </a>
+  </div>
+</header>
+
+<!-- 🔹 Main Content -->
+<div class="flex-1 flex items-center justify-center">
+
+  <div class="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-[#4b5d4f]/10 text-center py-6">
+      <h2 class="text-2xl font-bold text-[#4b5d4f]">Welcome Back</h2>
+      <p class="text-sm text-gray-600 mt-1">Login to Seller Hub</p>
+    </div>
+
+    <!-- Form -->
+    <div class="p-6">
+      <form method="POST" action="{% url 'seller_login' %}" class="space-y-4">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div>
+          <label class="text-sm font-medium">Username</label>
+          <input type="text" name="username"
+            class="w-full mt-1 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#4b5d4f]"
+            placeholder="Enter username">
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="text-sm font-medium">Password</label>
+          <input type="password" name="password"
+            class="w-full mt-1 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#4b5d4f]"
+            placeholder="Enter password">
+        </div>
+
+        <!-- Button -->
+        <button type="submit"
+          class="w-full bg-[#4b5d4f] text-white py-2 rounded hover:bg-[#3e4d41]">
+          Login
+        </button>
+      </form>
+
+      <!-- Register -->
+      <p class="text-center text-sm mt-4">
+        Don’t have an account?
+        <a href="{% url 'seller_register' %}" class="text-[#4b5d4f] font-semibold">Register</a>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

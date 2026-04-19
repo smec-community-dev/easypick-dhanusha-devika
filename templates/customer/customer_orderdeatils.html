@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Details - EasyPick</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "secondary": "#a2b08a",
+                        "background-light": "#e8eae6",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#141514]">
+{% if no_orders %}
+<div class="max-w-6xl mx-auto px-4 md:px-8 py-8">
+  <div class="bg-white rounded-xl shadow-sm border border-primary/5 p-12 text-center">
+    <span class="material-symbols-outlined text-6xl text-primary/30 mb-6 block mx-auto">shopping_bag</span>
+    <h2 class="text-2xl font-black text-primary mb-2">No Orders Yet</h2>
+    <p class="text-primary/60 mb-8 max-w-md mx-auto">You haven't placed any orders yet. Start shopping to see your order history here.</p>
+    <a href="{% url 'home' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 transition-all">
+      <span class="material-symbols-outlined">storefront</span>
+      Start Shopping
+    </a>
+  </div>
+</div>
+{% else %}
+<!-- Global Navbar -->
+<header class="bg-primary text-white px-6 md:px-12 py-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-white/20 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white">shopping_bag</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="{% url 'home' %}">Shop</a>
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="{% url 'all_category' %}">Categories</a>
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="#">Deals</a>
+<a class="text-sm font-medium text-secondary" href="{% url 'customer_order_history' %}">Orders</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/60 text-sm">search</span>
+<input class="bg-white/10 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-secondary w-48 lg:w-64 placeholder:text-white/60" placeholder="Search orders..." type="text"/>
+</div>
+<button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-secondary text-primary text-[10px] font-bold px-1 rounded-full">{{ user.cart.items.count|default:0 }}</span>
+</button>
+<div class="size-9 rounded-full bg-secondary/30 border border-white/20 flex items-center justify-center overflow-hidden">
+{% if user.profile_image %}
+<img alt="User Profile" class="w-full h-full object-cover" src="{{ user.profile_image.url }}"/>
+{% else %}
+<span class="material-symbols-outlined text-white">person</span>
+{% endif %}
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 md:px-8 py-8">
+<!-- Breadcrumbs & Header Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<nav class="flex items-center gap-2 text-sm text-primary/60 mb-2 font-medium">
+<a class="hover:text-primary transition-colors" href="{% url 'customer_profile' %}">My Account</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="{% url 'customer_order_history' %}">Orders</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-bold">{{ order.order_number }}</span>
+</nav>
+<div class="flex flex-wrap items-center gap-3">
+<h2 class="text-3xl font-black tracking-tight text-primary">Order {{ order.order_number }}</h2>
+{% if order.status == 'Pending' %}
+    <span class="px-3 py-1 bg-gray-200 text-gray-800 text-xs font-bold rounded-full uppercase tracking-wider">
+{% elif order.status == 'Shipped' %}
+    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full uppercase tracking-wider">
+{% elif order.status == 'Delivered' %}
+    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full uppercase tracking-wider">
+{% else %}
+    <span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs font-bold rounded-full uppercase tracking-wider">
+{% endif %}
+    {{ order.status }}
+</span>
+</div>
+<p class="text-primary/70 mt-1">{{ order.order_date|date:"F d, Y 'at' g:i A" }}</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-primary/10 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Invoice
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+                    Track Package
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Tracking & Items -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Shipment Progress -->
+<div class="bg-white rounded-xl shadow-sm border border-primary/5 p-6">
+<h3 class="text-lg font-bold text-primary mb-6">Shipment Progress</h3>
+<div class="relative pb-4">
+<div class="absolute top-4 left-0 w-full h-1 bg-primary/10 rounded"></div>
+<div class="absolute top-4 left-0 w-[65%] h-1 bg-primary rounded"></div>
+<div class="relative flex justify-between">
+<div class="flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center z-10 shadow-lg">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<div class="text-center">
+<p class="text-xs font-bold text-primary">Ordered</p>
+<p class="text-[10px] text-primary/60">{{ order.order_date|date:"M d" }}</p>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center z-10 shadow-lg">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<div class="text-center">
+<p class="text-xs font-bold text-primary">Processed</p>
+<p class="text-[10px] text-primary/60">{{ order.history.first.created_at|date:"M d" }}</p>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center z-10 shadow-lg ring-4 ring-secondary/30">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+</div>
+<div class="text-center">
+<p class="text-xs font-bold text-primary">{% if order.status == 'Shipped' %}Shipped{% else %}Pending{% endif %}</p>
+<p class="text-[10px] text-primary/60">{{ order.history.last.created_at|date:"M d" }}</p>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+</div>
+<div class="text-center">
+<p class="text-xs font-bold text-primary">Delivered</p>
+<p class="text-[10px] text-primary/60">Est. Soon</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-primary/5 flex items-start gap-4">
+<div class="size-10 bg-secondary/20 rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">info</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-primary">{{ order.history.last.status }} - {{ order.history.last.note|default:"Order " }}</p>
+<p class="text-sm text-primary/60">{{ order.history.last.created_at|date:"M d, Y g:i A" }}</p>
+</div>
+</div>
+</div>
+<!-- Items Ordered -->
+<div class="bg-white rounded-xl shadow-sm border border-primary/5 overflow-hidden">
+<div class="p-6 border-b border-primary/5">
+<h3 class="text-lg font-bold text-primary">Items Ordered ({{ order_items.count }})</h3>
+</div>
+<div class="divide-y divide-primary/5">
+{% for item in order_items %}
+<div class="p-6 flex items-center gap-6">
+<div class="size-24 bg-background-light rounded-lg overflow-hidden shrink-0 border border-primary/5">
+{% with item.product.productvariant_set.first.images.first as image %}
+{% if image %}
+<img alt="{{ item.product.name }}" class="w-full h-full object-cover" src="{{ image.image.url }}"/>
+{% else %}
+<div class="w-full h-full bg-gray-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-400 text-xl">image</span>
+</div>
+{% endif %}
+{% endwith %}
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-primary truncate">{{ item.product.name }}</h4>
+<p class="text-sm text-primary/60">
+{% with item.product.productvariant_set.first as variant %}
+{% if variant %}
+SKU: {{ variant.sku_code }} | Qty: {{ item.quantity }}
+{% else %}
+Qty: {{ item.quantity }}
+{% endif %}
+{% endwith %}
+</p>
+<div class="mt-2 flex items-center gap-4 md:hidden">
+<p class="text-sm font-bold text-primary">${{ item.price }}</p>
+<p class="text-sm text-primary/60">Qty: {{ item.quantity }}</p>
+</div>
+</div>
+<div class="hidden md:block text-right">
+<p class="font-bold text-primary">${{ item.price|floatformat:2 }}</p>
+<p class="text-sm text-primary/60">Quantity: {{ item.quantity }}</p>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+</div>
+<!-- Right Column: Summary & Info -->
+<div class="space-y-6">
+<!-- Order Summary -->
+<div class="bg-primary text-white rounded-xl shadow-lg p-6">
+<h3 class="text-lg font-bold mb-6">Order Summary</h3>
+<div class="space-y-3 mb-6 border-b border-white/10 pb-6">
+<div class="flex justify-between text-sm">
+<span class="opacity-80">Subtotal ({{ order_items.count }} items)</span>
+<span>${{ subtotal|floatformat:2 }}</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="opacity-80">Shipping</span>
+<span class="text-secondary font-bold">FREE</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="opacity-80">Tax</span>
+<span>${{ tax|floatformat:2 }}</span>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-xs opacity-60 uppercase font-bold tracking-widest">Total Amount</p>
+<p class="text-3xl font-black">${{ order.total_amount|floatformat:2 }}</p>
+</div>
+<button class="bg-secondary text-primary px-4 py-2 rounded-lg text-sm font-bold hover:bg-white transition-colors" onclick="alert('Help feature coming soon!')">
+                            Help?
+                        </button>
+</div>
+</div>
+<!-- Info Grid -->
+<div class="bg-white rounded-xl shadow-sm border border-primary/5 p-6 space-y-8">
+<!-- Shipping Address -->
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary/60">location_on</span>
+<h3 class="font-bold text-primary uppercase text-xs tracking-widest">Shipping Address</h3>
+</div>
+<div class="pl-7">
+<p class="font-bold text-primary">{{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+<p class="text-sm text-primary/70">
+{% with order.customer.address_set.first as address %}
+{% if address %}
+{{ address.house_no }} {{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip_code }}
+{% else %}
+No shipping address on file
+{% endif %}
+{% endwith %}
+</p>
+<p class="text-sm text-primary/70 font-medium">+1 (555) 123-4567</p>
+</div>
+</div>
+<!-- Payment Method -->
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary/60">credit_card</span>
+<h3 class="font-bold text-primary uppercase text-xs tracking-widest">Payment Method</h3>
+</div>
+<div class="pl-7 flex items-center gap-3">
+<div class="w-10 h-6 bg-background-light rounded flex items-center justify-center border border-primary/10">
+<span class="text-[10px] font-black text-blue-700 italic">{{ order.payment_method }}</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">{{ order.payment_method }} Payment</p>
+<p class="text-xs text-primary/60">{{ order.payment_status }}</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-6 border-t border-primary/5 space-y-3">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-all">
+                            Return or Replace Items
+                        </button>
+<button class="w-full py-2.5 rounded-lg border border-primary/10 bg-background-light text-primary/70 font-bold text-sm hover:bg-white transition-all">
+                            Write a Product Review
+                        </button>
+</div>
+</div>
+<!-- Assistance Card -->
+<div class="bg-secondary/10 border border-secondary/20 rounded-xl p-5 flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+<div>
+<p class="text-sm font-bold text-primary">Need assistance with your order?</p>
+<p class="text-xs text-primary/70 mt-1">Our support team is available 24/7 to help with any shipping or quality issues.</p>
+<a class="text-xs font-bold text-primary underline mt-2 inline-block" href="#">Contact Support</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-12 border-t border-primary/10 py-12 px-6 bg-white">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-6 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px]">shopping_bag</span>
+</div>
+<span class="text-primary font-bold">EasyPick</span>
+<span class="text-primary/40 text-sm ml-4">© 2023 EasyPick Inc. All rights reserved.</span>
+</div>
+<div class="flex gap-8 text-sm font-medium text-primary/60">
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Terms of Service</a>
+<a class="hover:text-primary" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>
+
+

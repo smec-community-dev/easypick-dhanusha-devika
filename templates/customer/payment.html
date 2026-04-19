@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Payment</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .payment-option:checked + label {
+            border-color: #4b5d4f;
+            background-color: #f0f4f1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#141514]">
+
+{% include "includes/navbar.html" %}
+
+<main class="max-w-7xl mx-auto px-4 md:px-12 py-8">
+    <div class="flex justify-center items-center mb-8 space-x-4">
+        <div class="flex items-center text-gray-400">
+            <span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs mr-2">
+                <span class="material-symbols-outlined text-sm text-gray-500">check</span>
+            </span>
+            <span class="text-xs font-bold uppercase tracking-wider">Order Summary</span>
+        </div>
+        <div class="h-[1px] w-12 bg-primary"></div>
+        <div class="flex items-center text-primary">
+            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs mr-2">2</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Payment</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 space-y-4">
+            
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-gray-50 p-4 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-700 uppercase text-xs tracking-widest">Select Payment Method</h3>
+                </div>
+
+                <form id="paymentForm" method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_method" id="payment_method" value="cod">
+                    <input type="hidden" name="quantity" id="form_quantity" value="{{ quantity|default:1 }}">
+
+                    <div class="p-4">
+                        <button type="button" onclick="payOnline()" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl">Pay with Razorpay</button>
+                    </div>
+
+                    <div class="p-4">
+                        <button type="button" onclick="payCOD()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl">Cash on Delivery</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- COD Confirmation Modal -->
+            <div id="codModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[100] hidden">
+                <div class="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">Confirm Cash on Delivery</h3>
+                            <button onclick="closeCODModal()" class="p-2 hover:bg-gray-100 rounded-full">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-green-500 text-4xl mb-4">payments</span>
+                            {% if is_cart %}
+                            <p class="text-lg font-bold text-gray-900 mb-2">
+                                Pay ₹{{ subtotal }} on delivery
+                            </p>
+                            {% else %}
+                            <p class="text-lg font-bold text-gray-900 mb-2">
+                                Pay ₹{{ product.selling_price }} on delivery
+                            </p>
+                            {% endif %}
+                            <p class="text-sm text-gray-600">Cash will be collected when your order is delivered</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            {% if is_cart %}
+                            <h4 class="font-bold text-sm uppercase tracking-wide mb-3">
+                                Order Summary ({{ total_quantity }} items)
+                            </h4>
+                            {% else %}
+                            <h4 class="font-bold text-sm uppercase tracking-wide mb-3">
+                                Order Summary ({{ quantity }} items)
+                            </h4>
+                            {% endif %}
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Subtotal</span>
+                                    <span>₹{{subtotal }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Delivery</span>
+                                    <span>FREE</span>
+                                </div>
+                                
+                                <div class="flex justify-between font-bold text-lg">
+                                    <span>Total</span>
+                                    <span>₹{{ subtotal }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t text-xs text-gray-500 space-y-1">
+                            <p><span class="material-symbols-outlined mr-2">schedule</span>Expected delivery: 2-3 days</p>
+                            <p><span class="material-symbols-outlined mr-2">local_shipping</span>Free delivery across India</p>
+                        </div>
+                    </div>
+                    <div class="p-6 border-t bg-gray-50">
+                        {% if is_cart %}
+    <a href="{% url 'place_cart_order' %}">
+{% else %}
+    <a href="{% url 'place_single_order' product.id %}">
+{% endif %}
+
+<button onclick="placeCODOrder()" 
+    class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg uppercase tracking-wide text-sm flex items-center justify-center gap-2">
+    <span class="material-symbols-outlined">check_circle</span>
+    Place Order
+</button>
+
+</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-orange-500">sell</span>
+                    <span class="text-sm font-bold">Bank Offers Available</span>
+                </div>
+                <ul class="mt-2 space-y-1">
+                    <li class="text-xs text-gray-600">• 10% Instant Discount on HDFC Bank Credit Cards</li>
+                    <li class="text-xs text-gray-600">• 5% Unlimited Cashback on EasyPick Axis Bank Credit Card</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-lg border border-gray-100 sticky top-28 overflow-hidden">
+                <h3 class="p-5 border-b border-gray-50 font-black text-gray-400 uppercase text-xs tracking-[0.2em]">Price Details</h3>
+                <div class="p-6 space-y-5">
+                    <div class="flex justify-between text-sm">
+                        {% if is_cart %}
+<span>Price ({{ total_quantity }} items)</span>
+<span>₹{{ subtotal }}</span>
+{% else %}
+<span>Price ({{quantity}} item)</span>
+<span>₹{{product.selling_price}}</span>
+{% endif %}
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="flex items-center gap-1">Quantity</span>
+                        <span>{{quantity}}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="flex items-center gap-1 text-primary font-medium">Discounts <span class="material-symbols-outlined text-xs">expand_more</span></span>
+                        {% if discount_amount > 0 %}
+                        <span class="text-green-600 font-medium">- ₹{{ discount_amount|floatformat:0 }}</span>
+                        {% else %}
+                        <span class="text-green-600 font-medium">- ₹0</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
+                        <span class="text-lg font-bold">Total Amount</span>
+                        <span class="text-lg font-bold">₹{{total_amount}}</span>
+                    </div>
+
+                    {% if discount_amount > 0 %}
+                    <div class="bg-green-50 p-3 mx-4 mb-4 rounded-lg">
+                        <p class="text-green-700 text-sm font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">loyalty</span>
+                            You'll save ₹{{ discount_amount|floatformat:0 }} on this order!
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function openCODModal() {
+        document.querySelector('#cod').checked = true;
+        document.querySelector('#codModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeCODModal() {
+        document.querySelector('#codModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    
+    function placeCODOrder() {
+        // Simulate order placement
+        alert(`Order placed successfully! Cash on Delivery for ₹{{ price_summary.total }} confirmed.`);
+        // Redirect to order success page
+        window.location.href = '{% url "customer_order_history" %}';
+    }
+
+    function applyCoupon() {
+        const code = document.getElementById('couponCode').value.trim();
+        const message = document.getElementById('couponMessage');
+        if (code === 'SAVE10') {
+            message.textContent = '₹50 discount applied!';
+            message.classList.remove('hidden');
+            message.classList.add('text-green-600');
+            // Update summary - simulate
+            // In production: AJAX to update price_summary
+        } else {
+            message.textContent = 'Invalid coupon';
+            message.classList.remove('hidden');
+            message.classList.add('text-red-600');
+        }
+    }
+    
+    // Payment selection
+    function payCOD() {
+        document.getElementById('payment_method').value = 'cod';
+        document.getElementById('paymentForm').submit();
+    }
+
+    function payOnline() {
+        document.getElementById('payment_method').value = 'online';
+        document.getElementById('paymentForm').submit();
+    }
+
+    document.querySelectorAll('input[name="payment"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            if (e.target.id !== 'cod') {
+                closeCODModal();
+            }
+            console.log("Selected payment method:", e.target.id);
+        });
+    });
+</script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% if razorpay_order %}
+<script>
+    const options = {
+        key: '{{ razorpay_key }}',
+        amount: '{{ razorpay_order.amount }}',
+        currency: '{{ razorpay_order.currency }}',
+        name: 'EasyPick',
+        description: 'Online Payment',
+        order_id: '{{ razorpay_order.id }}',
+        handler: function (response) {
+            const payload = {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+            };
+
+            fetch('{% url "razorpay_verify" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(payload)
+            }).then(r => r.json()).then(data => {
+                if (data.status === 'success') {
+                    alert('Payment successful!');
+                    window.location.href = '{% url "customer_order_history" %}';
+                } else {
+                    alert('Payment verification failed.');
+                }
+            });
+        },
+        theme: { color: '#4b5d4f' }
+    };
+    function updateQuantity(qty) {
+    document.getElementById('form_quantity').value = qty;
+}
+    const rzp = new Razorpay(options);
+    rzp.open();
+</script>
+{% endif %}
+</body>
+</html>
+

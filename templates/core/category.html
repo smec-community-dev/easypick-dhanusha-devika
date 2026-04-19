@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Shop</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#141514] font-display">
+
+{% include "includes/navbar.html" %}
+
+<main class="w-full min-h-screen">
+    <section class="max-w-7xl mx-auto px-6 md:px-12 pt-8 pb-8">
+        <nav class="flex items-center text-sm text-[#737874] mb-4">
+            <a href="/" class="hover:text-primary transition-colors">Home</a>
+            <span class="mx-2 material-symbols-outlined text-xs">chevron_right</span>
+            <span class="font-semibold text-primary">{{category}}</span>
+        </nav>
+        <h1 class="text-4xl font-bold text-[#141514]">Collection</h1>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 md:px-12 pb-20">
+        <div class="flex flex-col lg:flex-row gap-10">
+            
+            <!-- <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 space-y-8">
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-widest mb-4">Categories</h4>
+                        <ul class="space-y-2 text-sm text-[#737874]">
+                            <li class="hover:text-primary cursor-pointer transition-colors">All Items</li>
+                            <li class="hover:text-primary cursor-pointer transition-colors">New Arrivals</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside> -->
+
+            <div class="flex-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for p in products %}
+                    <a href="{% url 'subcategory' p.id %}" class="group block">
+                        <div class="relative overflow-hidden rounded-xl bg-[#f2f3f2] aspect-[3/4] mb-4">
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                                 style='background-image: url("{{ p.subcategory_image.url }}");'>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-base font-semibold text-[#141514] group-hover:text-primary transition-colors leading-tight mb-1">
+                                {{ p.subcategory_name }}
+                            </h3>
+                            <p class="text-[#737874] text-xs mb-3 line-clamp-1">
+                                {{ p.subcategory_description }}
+                            </p>
+                            
+                           
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="col-span-full py-20 text-center">
+                        <span class="material-symbols-outlined text-gray-300 text-6xl mb-4">search_off</span>
+                        <p class="text-gray-500 font-medium">No products found matching your criteria.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-16 flex justify-center">
+                    <nav class="flex items-center gap-2">
+                        <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold shadow-md">1</button>
+                        </nav>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<footer class="bg-white border-t border-[#f2f3f2] py-12 px-6 md:px-12 text-center">
+    <p class="text-[#737874] text-xs uppercase tracking-widest font-bold">© 2026 EasyPick. Crafted for Better Living.</p>
+</footer>
+
+</body>
+</html>

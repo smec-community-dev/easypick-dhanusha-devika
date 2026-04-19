@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About Us | EasyPick</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,line-clamp"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { "primary": "#4b5d4f", "background-light": "#f7f7f7" },
+                    fontFamily: { "display": ["Inter", "sans-serif"] }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-[#141514] font-['Inter']">
+
+    <nav class="bg-primary text-white py-4 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2 text-xl font-extrabold tracking-tight">
+                <span class="material-symbols-outlined">grid_view</span> EasyPick
+            </a>
+            <a href="/" class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider">Back to Shop</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="py-20 px-6 bg-white border-b border-gray-100">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-primary font-bold tracking-widest uppercase text-xs mb-4 block">Our Story</span>
+                <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Defining the Art of <br/><span class="text-primary">Intentional Living.</span></h1>
+                <p class="text-lg text-[#737874] leading-relaxed">
+                    Founded in 2024, EasyPick was born out of a simple frustration: the world has too many choices, but too few of them matter. We set out to curate a collection where every item serves a purpose and carries an aesthetic soul.
+                </p>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-primary text-4xl">eco</span>
+                    <h3 class="text-xl font-bold">Sustainability</h3>
+                    <p class="text-[#737874] text-sm leading-relaxed">We partner with artisans who prioritize the planet, ensuring our footprint is as light as our designs.</p>
+                </div>
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-primary text-4xl">architecture</span>
+                    <h3 class="text-xl font-bold">Quality First</h3>
+                    <p class="text-[#737874] text-sm leading-relaxed">If it doesn't last a lifetime, it doesn't belong in our catalog. We value durability over trends.</p>
+                </div>
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-primary text-4xl">auto_awesome</span>
+                    <h3 class="text-xl font-bold">Minimalism</h3>
+                    <p class="text-[#737874] text-sm leading-relaxed">We believe in "less, but better." Our curation helps you declutter your life and focus on what counts.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-10 border-t border-gray-100 text-center">
+        <p class="text-[#737874] text-xs uppercase tracking-widest">© 2026 EasyPick. Better Choices, Better Life.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<header class="sticky top-0 z-50 w-full bg-[#4a5d4e] text-white px-6 md:px-12 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/10 p-1.5 rounded-lg">
+                <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+            </div>
+            <a href="{% url 'home' %}">
+            <h2 class="text-xl font-extrabold tracking-tight">EasyPicks</h2>
+            </a>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-10">
+            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="{% url 'about' %}">About Us</a>
+            <a class="text-sm font-semibold hover:text-white/80 transition-colors uppercase tracking-wider" href="{% url 'contact' %}">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <form method="GET" action="{% url 'search' %}">
+                <div class="hidden lg:flex items-center bg-white/10 rounded-lg px-3 py-1.5 focus-within:bg-white/20 transition-all">
+                    <input type="text" name="search" placeholder="Search products..." class="bg-transparent outline-none text-white placeholder-white/70 px-2">
+                </div>
+            </form>
+            
+            <div class="flex items-center gap-1">
+                <a href="{% url 'cart' %}" class="inline-block">
+                    <button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        <span id="cart-count-badge" class="absolute top-1 right-1 bg-red-500 text-[10px] font-bold px-1 rounded-full border border-[#4a5d4e]">
+                            {{ cart_item|length }}
+                        </span>
+                    </button>
+                </a>
+                <a href="{% url 'wishlist' %}" class="inline-block">
+                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center">
+                        <span class="material-symbols-outlined">favorite</span>
+                    </button>
+                </a>
+                {% if request.user.is_authenticated%}
+                <div class="relative inline-block">
+                    <button id="accountButton" class="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center outline-none">
+                        <span class="material-symbols-outlined text-white">person</span>
+                        <span class="material-symbols-outlined text-sm hidden md:inline text-white">expand_more</span>
+                    </button>
+                    <div id="userDropdown" class="absolute right-0 top-full pt-2 w-52 hidden z-[100]">
+                        <div class="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 animate-fade-in">
+                            <div class="px-4 py-3 border-b border-gray-50">
+                                <p class="text-[10px] text-[#737874] font-bold uppercase tracking-wider">Account</p>
+                                <p class="text-sm font-bold text-gray-900 truncate">{{request.user.first_name}}</p>
+                            </div>
+                            <!-- <a href="{% url 'customer_dashboard' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
+                                <span class="material-symbols-outlined text-lg text-gray-400">dashboard</span>
+                                My Dashboard
+                            </a> -->
+                            <a href="/customer/profile/" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#141514] hover:bg-gray-50 transition-colors">
+                                <span class="material-symbols-outlined text-lg text-gray-400">account_circle</span>
+                                My Profile
+                            </a>
+                            <div class="my-2 border-t border-gray-100"></div>
+                            <button onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold">
+                                <span class="material-symbols-outlined text-lg">logout</span>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+               <div class="flex items-center gap-4">
+                    <a href="{% url 'login' %}" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all text-sm font-bold border border-white/10 text-white">
+                        <span class="material-symbols-outlined text-lg">login</span>
+                        <span>Login</span>
+                    </a>
+
+                    <div class="relative inline-block group">
+                        <button class="flex items-center gap-2 px-4 py-2 bg-[#4a5d4e] hover:bg-[#3d4d40] rounded-lg transition-all text-sm font-bold text-white">
+                            <span class="material-symbols-outlined text-lg">person_add</span>
+                            <span>Register</span>
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </button>
+                        
+                        <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block z-[100]">
+                            <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden p-2">
+                                <p class="px-3 py-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">Select Role</p>
+                                
+                                <a href="{% url 'customer_register' %}" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                                    <span class="material-symbols-outlined text-blue-500">person</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold">Customer</span>
+                                        <span class="text-[10px] text-gray-500">I want to shop</span>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'seller_register' %}" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                                    <span class="material-symbols-outlined text-green-500">storefront</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold">Seller</span>
+                                        <span class="text-[10px] text-gray-500">I want to sell products</span>
+                                    </div>
+                                </a>
+
+                                {% comment %} <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors border-t border-gray-50 mt-1">
+                                    <span class="material-symbols-outlined text-red-500">admin_panel_settings</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold">Admin</span>
+                                        <span class="text-[10px] text-gray-500">Management access</span>
+                                    </div>
+                                </a> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <button class="p-2 md:hidden hover:bg-white/10 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>

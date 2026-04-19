@@ -1,0 +1,121 @@
+{% extends "admin-app/base.html" %}
+
+{% block title %}Edit Subcategory | EasyPick Admin{% endblock %}
+
+{% block header %}
+<header class="h-16 bg-white border-b flex items-center justify-between px-8">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'admin_category' %}" class="flex items-center justify-center size-8 rounded-full hover:bg-gray-100 transition-colors">
+            <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </a>
+        <h1 class="text-lg font-bold text-primary">Edit Subcategory: <span class="text-gray-500 font-medium">{{ subcategory.subcategory_name }}</span></h1>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+
+    <form method="POST" enctype="multipart/form-data" 
+          class="bg-white rounded-xl border shadow-lg overflow-hidden">
+        
+        {% csrf_token %}
+
+        <div class="p-8 space-y-6">
+            
+            <div>
+                <label class="text-sm font-semibold text-primary">Parent Category</label>
+                <select name="category" id="id_parent_category" required
+                        class="w-full mt-2 border rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none bg-no-repeat bg-[right_1rem_center] bg-[length:1em_1em]"
+                        style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');">
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if subcategory.category.id == cat.id %}selected{% endif %}>
+                            {{ cat.category_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <p class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-wider">Change parent if this subcategory belongs elsewhere</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="text-sm font-semibold text-primary">Subcategory Name</label>
+                    <input type="text" name="subcategory_name" id="id_subcategory_name" 
+                           value="{{ subcategory.subcategory_name }}" required
+                           class="w-full mt-2 border rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold text-primary">Slug</label>
+                    <input type="text" name="slug" id="id_slug" value="{{ subcategory.slug }}" required
+                           class="w-full mt-2 border rounded-lg p-2.5 bg-gray-50 text-gray-400 font-mono text-sm cursor-not-allowed" 
+                           readonly>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-primary">Description</label>
+                <textarea name="subcategory_description" rows="4" required
+                          class="w-full mt-2 border rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">{{ subcategory.subcategory_description }}</textarea>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-primary block mb-2">Subcategory Image</label>
+                <div class="flex items-start gap-6 p-4 border rounded-xl bg-gray-50/50">
+                    {% if subcategory.subcategory_image %}
+                    <div class="shrink-0">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold mb-1">Current Preview</p>
+                        <img src="{{ subcategory.subcategory_image.url }}" alt="{{ subcategory.subcategory_name }}" 
+                             class="size-28 object-cover rounded-lg border shadow-sm bg-white">
+                    </div>
+                    {% endif %}
+                    
+                    <div class="flex-grow">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold mb-1">Upload New Image</p>
+                        <input type="file" name="subcategory_image"
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer">
+                        <p class="text-xs text-gray-400 mt-2 italic">Leave empty to keep the current image.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t flex items-center gap-3">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="is_active" class="sr-only peer" {% if subcategory.is_active %}checked{% endif %}>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <span class="ml-3 text-sm font-semibold text-primary">Active Status</span>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="bg-gray-50 px-8 py-5 flex justify-end items-center gap-4 border-t">
+            <a href="{% url 'admin_category' %}" class="text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors">
+                Discard Changes
+            </a>
+            <button type="submit"
+                    class="bg-primary hover:bg-[#3d4c40] text-white px-10 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
+                Update Subcategory
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    const nameInput = document.getElementById('id_subcategory_name');
+    const slugInput = document.getElementById('id_slug');
+
+    nameInput.addEventListener('input', function () {
+        let slug = nameInput.value
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        slugInput.value = slug;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EasyPick | Browse Categories</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b5d4f",
+                        "background-light": "#f7f7f7",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-[#141514] font-display">
+
+{% include "includes/navbar.html" %}
+
+<main class="w-full min-h-screen">
+    <section class="bg-white text-gray-900 py-16 px-6 md:px-12 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto">
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="/" class="hover:text-black transition-colors">Home</a>
+            <span class="mx-2 material-symbols-outlined text-xs">chevron_right</span>
+            <span class="font-semibold text-gray-900">Categories</span>
+        </nav>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">Our Collections</h1>
+        <p class="mt-4 text-gray-600 max-w-xl text-lg">
+            Explore our curated range of lifestyle essentials, designed for quality and sustainable living.
+        </p>
+    </div>
+</section>
+
+    <section class="max-w-7xl mx-auto px-6 md:px-12 py-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for c in catgeory %}
+            <a href="{% url 'category_view' c.id %}" class="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100">
+                
+                <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                    <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                         style='background-image: url("{{ c.category_image.url }}");'>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-[#141514] group-hover:text-primary transition-colors">
+                            {{ c.category_name }}
+                        </h3>
+                        <span class="material-symbols-outlined text-primary translate-x-[-10px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+                            arrow_forward
+                        </span>
+                    </div>
+                    <p class="text-[#737874] text-sm line-clamp-2 leading-relaxed">
+                        {{ c.category_description }}
+                    </p>
+                    
+                    <div class="mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary/60">
+                        <span>Explore Collection</span>
+                        <div class="h-[1px] flex-1 bg-primary/20"></div>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="col-span-full py-20 text-center">
+                <span class="material-symbols-outlined text-gray-300 text-6xl mb-4">category</span>
+                <p class="text-gray-500">No categories found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<footer class="bg-white border-t border-gray-100 py-10 text-center">
+    <p class="text-[#737874] text-xs uppercase tracking-widest font-bold">© 2026 EasyPick. Quality in every choice.</p>
+</footer>
+
+</body>
+</html>

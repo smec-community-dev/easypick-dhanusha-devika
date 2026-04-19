@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick | Minimalist Desk Lamp</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .filled-star { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full bg-[#1e0f24] text-white border-b border-[#40204b]">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16 gap-8">
+<!-- Logo -->
+<div class="flex items-center gap-3 shrink-0">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight">EasyPick</h1>
+</div>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-1 max-w-md">
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#bd8dce]">
+<span class="material-symbols-outlined text-lg">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 border-none rounded-xl bg-[#40204b] text-sm placeholder-[#bd8dce] focus:ring-2 focus:ring-primary/50 text-white" placeholder="Search products..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links & Icons -->
+<div class="flex items-center gap-4 sm:gap-6">
+<nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Shop</a>
+<a class="hover:text-primary transition-colors" href="#">New Arrivals</a>
+<a class="hover:text-primary transition-colors" href="#">Deals</a>
+</nav>
+<div class="flex items-center gap-2 sm:gap-4">
+<button class="p-2 hover:bg-[#40204b] rounded-xl transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 size-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-[#40204b] rounded-xl transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#40204b] rounded-xl transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+<!-- Breadcrumbs -->
+<nav class="flex text-sm font-medium mb-8 text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary" href="#">Lighting</a>
+<span class="mx-2">/</span>
+<span class="text-slate-900 dark:text-white">Desk Lamps</span>
+</nav>
+<div class="lg:grid lg:grid-cols-12 lg:gap-12 xl:gap-16">
+<!-- Left: Image Gallery -->
+<div class="lg:col-span-7 space-y-4">
+<div class="aspect-square bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden group relative">
+<img alt="Main product" class="w-full h-full object-cover" data-alt="Premium minimalist black desk lamp on desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrq-B0iFP0kgNYyw4JURboGdx5f_q8Paja5LfFygkbpHfAa38pT1Esz-fh8Zmi5Ua3d8Ey7VoLJQE8haRt7QbvqPSDovvs7Q5vr43CAVW3RssAPDISf4m7HGYQI1bATsB_1eCa7aLvS6rrdrpZep3Ci9BNQCDWjeclOdCD8cbACcGtc6m6lMKYYi8pp6ZTza7P3WdeQX2oiN8E9rYNc9b5plQjU_dFCPsF9ioThLsmi5JxmUYGmMHB9LKjUeCiNw96mJFsj1ls9Q8"/>
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<button class="aspect-square rounded-lg overflow-hidden border-2 border-primary ring-2 ring-primary/20">
+<img class="w-full h-full object-cover" data-alt="Main view desk lamp" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpuxD6RRluwjz8ELyAt1dpsCWMO0vuQJTuyV1ZX23xsLR1aCAUlKa5LI46ak-47jbTZg3TChSKKfkzqDVljdzgnkXeFoTJrlkCk07fzI-kgTy-g0eL8w_Drm7lkA-xB9PFzZxi0fhzPuo0UwlyPSXTg_T5hFmdva_sgaHDAKiPCK8u4sKixcesn9Nm0iIId24Wm9vkQO1vT5VT7I79rUfA-7CwxFRjj95_6pOq1FMKH6VvltJZP_29fj1GE2Uavf-6o2Zlgyir5NA"/>
+</button>
+<button class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary/50 transition-all">
+<img class="w-full h-full object-cover" data-alt="Side profile of minimalist lamp" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCISRXaSac6tYluDaWy2IvElgcuYXWKRiqnBNXILtp54HYRTwuYcAzYAUQCfjBpbQ3CqBk2F_crqYHgwLrYRoslC1tiNHS3dxLQZpnLV1zyUa2HdWXI0eJGaWTl6xs9e8x0uInw6YInwXwkIrdGv6AF6yx4xsN3G1D1n5439gr94RoX16R_nRWSVap9huvdfGDYkMxCNx3gAub3EcJoUJFr8NydDwBger7ewyp812pWkjci02chVloHrTNmW6uT_kiOybv4CpQPr5Y"/>
+</button>
+<button class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary/50 transition-all">
+<img class="w-full h-full object-cover" data-alt="LED bulb close up detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPG3aeNBJA7iT7NCKIPEkOXI2bV9i9YJVVnygPBZoU9zdGdlEagYFQ8AUNgT_SmblGRPuZCtvMjONcwEMMoxNYwIJq6Jy5b2pWFmB9UVVrntiyGVlDpiGuWvEQ53ry_r9A1xgOlMUNVc1LLoB8kOAHKc7Tiu4V7cA1hcnmpEo0tRigCND_zbEFqNNRhUf7ckeWQKBJrEkDtUF4VCbLUCs2uxFD2ugmekOSAPw3vHMxvxnvaavH_M2ugGlrsl0Rczla6OENTFiDW3c"/>
+</button>
+<button class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary/50 transition-all">
+<img class="w-full h-full object-cover" data-alt="Desk lamp in home office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUstVF8R1mE_u6Cs_8Y5JO39Eb-EnEfboALgmtvVMWrO2TPqBcrgikg3c1YZe7eIqm6P4Mn2UF_QFKCgu9IldsbweIGVwE_z1C8RWBUlfPuVsPrsXqpJYu6gkFBRLBi26SGgFCMp25MsIMYpqmfu3QMTje49i6ZhkrWdM-G2czs8rRcrQFJVosi2p_cZ4JiWrLVZ6PreSpu69ADYsk_4Xp1WKSgjSrEFfHEgJoiTHkRK9Tu8RgPqVHkElJejT0iHSJp5S_VDt54zc"/>
+</button>
+</div>
+</div>
+<!-- Right: Product Details -->
+<div class="lg:col-span-5 mt-10 lg:mt-0 flex flex-col">
+<div class="mb-6">
+<span class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase rounded-full mb-4">In Stock</span>
+<h1 class="text-3xl lg:text-4xl font-black text-slate-900 dark:text-white mb-2 leading-tight">Minimalist Desk Lamp</h1>
+<div class="flex items-center gap-4">
+<div class="flex text-primary">
+<span class="material-symbols-outlined filled-star text-lg">star</span>
+<span class="material-symbols-outlined filled-star text-lg">star</span>
+<span class="material-symbols-outlined filled-star text-lg">star</span>
+<span class="material-symbols-outlined filled-star text-lg">star</span>
+<span class="material-symbols-outlined text-lg">star_half</span>
+</div>
+<span class="text-slate-500 text-sm font-medium">124 Reviews</span>
+</div>
+</div>
+<div class="mb-8">
+<p class="text-4xl font-bold text-slate-900 dark:text-white">$89.00</p>
+<p class="text-slate-500 dark:text-slate-400 mt-2 text-base leading-relaxed">
+                        A fusion of industrial aesthetics and modern LED technology. Designed for productivity, built for style. Featuring touch-sensitive controls and adjustable brightness levels.
+                    </p>
+</div>
+<!-- Selections -->
+<div class="space-y-8 mb-10">
+<!-- Finish Selection -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-widest mb-4">Finish</h3>
+<div class="flex gap-3">
+<button class="size-10 rounded-full bg-slate-900 ring-2 ring-primary ring-offset-2 dark:ring-offset-background-dark focus:outline-none transition-all" title="Matte Black"></button>
+<button class="size-10 rounded-full bg-slate-400 ring-2 ring-transparent ring-offset-2 dark:ring-offset-background-dark hover:ring-slate-300 transition-all" title="Brushed Steel"></button>
+<button class="size-10 rounded-full bg-slate-100 border border-slate-200 ring-2 ring-transparent ring-offset-2 dark:ring-offset-background-dark hover:ring-slate-300 transition-all" title="Alpine White"></button>
+</div>
+</div>
+<!-- Quantity Selection -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-widest mb-4">Quantity</h3>
+<div class="flex items-center w-32 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden p-1">
+<button class="flex-1 h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="flex-1 text-center font-bold">1</span>
+<button class="flex-1 h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<button class="bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">shopping_cart</span>
+                        Add to Cart
+                    </button>
+<button class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 font-bold py-4 px-8 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">favorite</span>
+                        Wishlist
+                    </button>
+</div>
+<!-- Quick Highlights -->
+<div class="mt-12 grid grid-cols-3 gap-4 border-t border-slate-200 dark:border-slate-800 pt-8">
+<div class="text-center">
+<span class="material-symbols-outlined text-primary mb-1">local_shipping</span>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Free Shipping</p>
+</div>
+<div class="text-center">
+<span class="material-symbols-outlined text-primary mb-1">verified_user</span>
+<p class="text-[10px] font-bold uppercase tracking-tighter">2-Year Warranty</p>
+</div>
+<div class="text-center">
+<span class="material-symbols-outlined text-primary mb-1">eco</span>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Eco-Friendly</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Specifications -->
+<section class="mt-24">
+<h2 class="text-2xl font-bold mb-8 text-slate-900 dark:text-white">Product Specifications</h2>
+<div class="bg-white dark:bg-slate-800/50 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-1 md:grid-cols-2">
+<div class="p-6 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800">
+<ul class="space-y-4">
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Material</span>
+<span class="font-medium">Anodized Aluminum</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Dimensions</span>
+<span class="font-medium">18" H x 6" W x 12" D</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Weight</span>
+<span class="font-medium">2.4 lbs</span>
+</li>
+</ul>
+</div>
+<div class="p-6">
+<ul class="space-y-4">
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Power Source</span>
+<span class="font-medium">Plug-in (6ft Cord)</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Bulb Type</span>
+<span class="font-medium">Integrated LED (3000K-5000K)</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-slate-500">Lifespan</span>
+<span class="font-medium">50,000 Hours</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Customer Reviews -->
+<section class="mt-24">
+<div class="flex flex-wrap items-end justify-between gap-4 mb-10">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Customer Reviews</h2>
+<div class="flex items-center gap-4">
+<p class="text-5xl font-black text-primary">4.8</p>
+<div>
+<div class="flex text-primary mb-1">
+<span class="material-symbols-outlined filled-star">star</span>
+<span class="material-symbols-outlined filled-star">star</span>
+<span class="material-symbols-outlined filled-star">star</span>
+<span class="material-symbols-outlined filled-star">star</span>
+<span class="material-symbols-outlined filled-star">star</span>
+</div>
+<p class="text-sm text-slate-500 font-medium">Based on 124 reviews</p>
+</div>
+</div>
+</div>
+<div class="flex-1 max-w-sm w-full space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold w-4">5</span>
+<div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<span class="text-xs text-slate-500 w-8">85%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold w-4">4</span>
+<div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[10%]"></div>
+</div>
+<span class="text-xs text-slate-500 w-8">10%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold w-4">3</span>
+<div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[3%]"></div>
+</div>
+<span class="text-xs text-slate-500 w-8">3%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold w-4">2</span>
+<div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[1%]"></div>
+</div>
+<span class="text-xs text-slate-500 w-8">1%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold w-4">1</span>
+<div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[1%]"></div>
+</div>
+<span class="text-xs text-slate-500 w-8">1%</span>
+</div>
+</div>
+</div>
+<!-- Review Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-500">JD</div>
+<div>
+<p class="text-sm font-bold">John Doe</p>
+<p class="text-xs text-primary font-bold">Verified Buyer</p>
+</div>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic">
+                        "The minimalist design is exactly what I was looking for. The build quality is exceptional, and the light levels are perfect for late-night work sessions."
+                    </p>
+</div>
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-500">AS</div>
+<div>
+<p class="text-sm font-bold">Alice Smith</p>
+<p class="text-xs text-primary font-bold">Verified Buyer</p>
+</div>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic">
+                        "Sleek and functional. I love the touch controls. It looks like a high-end designer piece but at a much more reasonable price point."
+                    </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Global Footer -->
+<footer class="bg-[#1e0f24] text-white pt-16 pb-8 mt-24">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<!-- Branding -->
+<div>
+<div class="flex items-center gap-3 mb-6">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold">EasyPick</h2>
+</div>
+<p class="text-sm text-[#bd8dce] leading-relaxed">
+                        Curating the world's most functional and beautiful essentials for the modern home and office. Quality you can feel.
+                    </p>
+</div>
+<!-- Links -->
+<div>
+<h3 class="font-bold mb-6 text-sm uppercase tracking-widest">Shop</h3>
+<ul class="space-y-4 text-sm text-[#bd8dce]">
+<li><a class="hover:text-white transition-colors" href="#">Lighting</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Furniture</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Accessories</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Outlet</a></li>
+</ul>
+</div>
+<!-- Support -->
+<div>
+<h3 class="font-bold mb-6 text-sm uppercase tracking-widest">Support</h3>
+<ul class="space-y-4 text-sm text-[#bd8dce]">
+<li><a class="hover:text-white transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Returns &amp; Exchanges</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Contact Us</a></li>
+<li><a class="hover:text-white transition-colors" href="#">FAQs</a></li>
+</ul>
+</div>
+<!-- Newsletter -->
+<div>
+<h3 class="font-bold mb-6 text-sm uppercase tracking-widest">Newsletter</h3>
+<p class="text-xs text-[#bd8dce] mb-4">Stay in the loop with curated picks and exclusive offers.</p>
+<form class="flex flex-col gap-3">
+<input class="w-full px-4 py-2 rounded-lg bg-[#40204b] border-none text-white text-sm focus:ring-2 focus:ring-primary" placeholder="Email address" type="email"/>
+<button class="w-full bg-primary text-white font-bold py-2 rounded-lg text-sm hover:bg-primary/90 transition-colors">
+                            Subscribe
+                        </button>
+</form>
+</div>
+</div>
+<div class="pt-8 border-t border-[#40204b] flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="text-xs text-[#bd8dce]">© 2024 EasyPick Inc. All rights reserved.</p>
+<div class="flex gap-6 text-[#bd8dce]">
+<a class="hover:text-white" href="#"><span class="material-symbols-outlined text-xl">language</span></a>
+<a class="hover:text-white" href="#"><span class="material-symbols-outlined text-xl">share</span></a>
+<a class="hover:text-white" href="#"><span class="material-symbols-outlined text-xl">mail</span></a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyPick Seller Central - Shop Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4a5d4e",
+                        "secondary": "#a2b08a",
+                        "accent": "#e8eae6",
+                        "background-light": "#e8eae6",
+                        "background-dark": "#181a18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item-active { background-color: rgba(255, 255, 255, 0.1); border-left: 4px solid #a2b08a; }
+    </style>
+</head>
+<body class="dark:bg-background-dark font-display text-slate-900 bg-accent">
+<div class="flex min-h-screen">
+<!-- Sidebar (Dark Toned as per SCREEN_23) -->
+<aside class="w-64 text-white flex flex-col fixed h-full z-50" style="background-color: #4a5d4e;">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="color: white;">storefront</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">EasyPick</h1>
+<p class="text-xs text-slate-400">Seller Central</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="color: white;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="color: white;">shopping_bag</span>
+<span class="text-sm font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="color: white;">inventory_2</span>
+<span class="text-sm font-medium">Products</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="color: white;">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<div class="pt-4 pb-2">
+<p class="px-3 text-[10px] uppercase tracking-wider text-slate-500 font-bold">Configuration</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-item-active text-white" href="#">
+<span class="material-symbols-outlined" style="color: white;">settings</span>
+<span class="text-sm font-medium">Shop Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="color: white;">account_balance_wallet</span>
+<span class="text-sm font-medium">Payments</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="flex items-center gap-3 p-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="color: white;">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-semibold truncate">Green Valley Organics</p>
+<p class="text-[10px] text-slate-500 truncate">admin@greenvalley.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 min-h-screen">
+<!-- Top Header (Sticky) -->
+<header class="sticky top-0 z-40 backdrop-blur-md border-b border-slate-200 px-8 py-4 flex justify-between items-center" style="background-color: #4a5d4e;">
+<div>
+<h2 class="text-xl font-bold text-white">Shop Settings</h2>
+<p class="text-xs text-slate-200">Manage your public presence and logistics</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors text-slate-200">Discard</button>
+<button class="px-6 py-2 text-sm font-bold text-white rounded-lg hover:bg-primary/90 shadow-sm transition-colors" style="background-color: #a2b08a;">Save Changes</button>
+</div>
+</header>
+<div class="p-8 max-w-5xl mx-auto space-y-6">
+<!-- Shop Profile Section -->
+<section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">store</span>
+<h3 class="font-bold text-slate-800">Shop Profile</h3>
+</div>
+<div class="p-6">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex flex-col items-center gap-4">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full border-2 border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center overflow-hidden cursor-pointer group-hover:border-primary transition-colors">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Store logo placeholder circular" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhdTGItzIX4GCfdKLzkDoL4fLSlM8mMPbGbjfDJDgJu70BXje6CYely7Q55R3Y29T61jw7pWtPTSoSXLvXlO9AuiQ7XvIQv_DvAwGOk7PyYThI30ZK-8KWdgSYH7XbOyj8HITzkD8-cEBTpa57Wu-hWlikFaTr20YQV5bITu8qP_40PkDH5UmNEaOyQcMT_lmMaZIRLuw3JYbVLEpQk4_l8Tf10JxwNdRcFrT5FfUwrACb2WuHKpLwUUqGX6PmkJ6HSm5DR45RgqY')"></div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white" style="color: #4a5d4e;">upload</span>
+</div>
+</div>
+</div>
+<div class="text-center">
+<p class="text-xs font-semibold text-slate-700">Shop Logo</p>
+<p class="text-[10px] text-slate-400 mt-1">Min 500x500px, JPG/PNG</p>
+</div>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1">Storefront Name</label>
+<input class="w-full rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" placeholder="Enter your shop name" type="text" value="Green Valley Organics"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1">Store Bio / Description</label>
+<textarea class="w-full rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" placeholder="Tell your customers about your shop..." rows="4">Premium organic products sourced directly from local sustainable farms. We believe in quality, transparency, and the best of nature.</textarea>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact & Location Card -->
+<section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">contact_mail</span>
+<h3 class="font-bold text-slate-800">Contact Information</h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1">Public Support Email</label>
+<input class="w-full rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" type="email" value="support@greenvalley.com"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1">Phone Number</label>
+<input class="w-full rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" type="tel" value="+1 (555) 123-4567"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-sm font-semibold text-slate-700 mb-1">Physical Business Address</label>
+<input class="w-full rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" type="text" value="123 Farm Lane, Agriculture District"/>
+<div class="grid grid-cols-3 gap-4 mt-4">
+<input class="rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" placeholder="City" type="text" value="Portland"/>
+<input class="rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" placeholder="State" type="text" value="Oregon"/>
+<input class="rounded-lg border-slate-200 focus:ring-primary focus:border-primary text-sm" placeholder="ZIP" type="text" value="97035"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Shipping Methods Section -->
+<section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">local_shipping</span>
+<h3 class="font-bold text-slate-800">Shipping Methods</h3>
+</div>
+<button class="text-xs font-bold text-primary hover:underline flex items-center gap-1" style="color: #4a5d4e;">
+<span class="material-symbols-outlined text-sm" style="color: #4a5d4e;">add</span> Add Carrier
+                        </button>
+</div>
+<div class="divide-y divide-slate-100">
+<!-- Shipping Row 1 -->
+<div class="p-6 flex items-center justify-between hover:bg-slate-50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">package_2</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">Standard Delivery</p>
+<p class="text-xs text-slate-500">3-5 Business Days • Flat Rate $5.00</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-xs font-semibold text-slate-500 hover:text-primary">Edit Rate</button>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Shipping Row 2 -->
+<div class="p-6 flex items-center justify-between hover:bg-slate-50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">bolt</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">Express Priority</p>
+<p class="text-xs text-slate-500">Next Day Delivery • Calculated by weight</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-xs font-semibold text-slate-500 hover:text-primary">Edit Rate</button>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Settings -->
+<section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+<span class="material-symbols-outlined" style="color: #4a5d4e;">payments</span>
+<h3 class="font-bold text-slate-800">Payment Settings</h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center justify-between p-4 border border-slate-100 rounded-lg bg-slate-50/50">
+<div class="flex items-center gap-4">
+<div class="bg-[#635BFF] p-2 rounded text-white flex items-center justify-center">
+<svg class="w-8 h-4 fill-current" viewbox="0 0 40 16" xmlns="http://www.w3.org/2000/svg"><path d="M40 7.37c0-.9-.45-1.57-1.37-1.57-1.04 0-1.61.9-1.61 2.21 0 1.54.71 2.25 1.61 2.25.7 0 1.34-.4 1.37-1.03h1.75c-.1 1.76-1.5 2.63-3.12 2.63-2.18 0-3.36-1.48-3.36-3.83 0-2.31 1.25-3.83 3.36-3.83 1.5 0 2.92.8 3.12 2.18H40zm-11.45 4.31V5.53h1.7v1.14c.3-.85 1.15-1.28 2.05-1.28v1.73c-.96 0-1.76.43-2.05 1.48V11.7h-1.7zm-2.83-8.82c.6 0 1.05.45 1.05 1.05 0 .58-.45 1.03-1.05 1.03-.6 0-1.05-.45-1.05-1.03 0-.6.45-1.05 1.05-1.05zm-.85 3.03h1.7v6.17h-1.7V5.53zm-3.33 6.17V8.5c0-1.2-.5-1.6-1.28-1.6s-1.4.5-1.4 1.6v2.67h-1.7V5.53h1.7v.91c.4-.62 1.04-1.05 2.02-1.05 1.6 0 2.37.97 2.37 2.47v3.8h-1.7zm-10.43 0H9.55V1.23h1.71v3.31c.4-.38.9-.61 1.52-.61 1.83 0 2.93 1.4 2.93 3.84 0 2.52-1.12 3.93-2.93 3.93-.62 0-1.12-.22-1.52-.61v.6zm-.12-3.84c0 1.5.7 2.22 1.53 2.22s1.53-.72 1.53-2.22c0-1.47-.7-2.19-1.53-2.19s-1.53.72-1.53 2.19zM4.66 8.78c.31.25.75.42 1.25.42.54 0 .9-.22.9-.55 0-.3-.21-.48-.94-.65-.89-.2-1.92-.47-1.92-1.75 0-1.13 1.05-1.85 2.5-1.85.73 0 1.4.15 1.86.43l-.61 1.28c-.37-.2-.84-.34-1.25-.34-.52 0-.81.2-.81.5 0 .28.25.43 1.02.6.98.22 1.84.53 1.84 1.77 0 1.25-1.08 1.93-2.61 1.93-.82 0-1.56-.16-2.1-.47l.87-1.32z"></path></svg>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">Stripe Payments</p>
+<p class="text-xs text-green-600 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="color: #4a5d4e;">check_circle</span> Connected
+                                    </p>
+</div>
+</div>
+<button class="px-4 py-1.5 text-xs font-semibold border border-slate-200 rounded-lg hover:bg-white">Manage Connection</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 border border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-400" style="color: #4a5d4e;">add_card</span>
+<p class="text-xs font-bold text-slate-600">Link Bank Account</p>
+</div>
+<div class="p-4 border border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-400" style="color: #4a5d4e;">receipt_long</span>
+<p class="text-xs font-bold text-slate-600">Tax Information</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Toast Success Message (Floating) -->
+<div class="fixed bottom-8 right-8 flex items-center gap-3 text-white px-4 py-3 rounded-lg shadow-2xl animate-bounce" style="background-color: #4a5d4e;">
+<span class="material-symbols-outlined text-green-400" style="color: #a2b08a;">check_circle</span>
+<p class="text-sm font-medium">All changes are saved up to date.</p>
+<button class="text-slate-400 hover:text-white"><span class="material-symbols-outlined text-sm" style="color: #4a5d4e;">close</span></button>
+</div>
+</main>
+</div>
+</body></html>
